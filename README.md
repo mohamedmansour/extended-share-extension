@@ -9,7 +9,7 @@ Contribute!
 Please submit your pull requests if you have anything interesting! Let me know
 prior implementation :)
 
-Follow me on Twitter ![@mohamedmansour](http://twitter.com/mohamedmansour)
+Follow me on Twitter [@mohamedmansour](http://twitter.com/mohamedmansour)
 
 Screenshots
 -----------------
