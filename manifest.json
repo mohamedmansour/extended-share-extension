@@ -1,0 +1,19 @@
+{
+  "name": "Google Plus Share",
+  "version": "0.1",
+  "description": "Extends Google+ to share to Facebook and Twitter.",
+  "icons": {
+    "16": "img/icon16.png",
+    "32": "img/icon32.png",
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://plus.google.com/*", "http://plus.google.com/*"],
+      "js": ["js/injection.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ]
+}
