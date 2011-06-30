@@ -112,5 +112,9 @@ function render() {
   }
 }
 
-// Start rendering ...
-render();
+// API
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+  if (request.method == 'render') {
+    render();
+  }
+});

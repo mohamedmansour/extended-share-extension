@@ -8,12 +8,12 @@
     "48": "img/icon48.png",
     "128": "img/icon128.png"
   },
-  "content_scripts": [
-    {
+  "permissions": ["tabs"],
+  "background_page": "background.html",
+  "content_scripts": [{
       "matches": ["https://plus.google.com/*", "http://plus.google.com/*"],
       "js": ["js/injection.js"],
       "run_at": "document_end",
       "all_frames": true
-    }
-  ]
+  }]
 }
