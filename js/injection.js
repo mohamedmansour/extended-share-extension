@@ -21,6 +21,8 @@ function parseURL(dom) {
       text = escape(text.innerHTML.substring(0, 100));
     }
     link = link.href;
+    // Support multiple accounts.
+    link = link.replace(/plus\.google\.com\/u\/(\d*)/, 'plus.google.com');
   }
   return {
     status: link ? true : false,
