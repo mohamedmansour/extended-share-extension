@@ -8,7 +8,7 @@
     "48": "img/icon48.png",
     "128": "img/icon128.png"
   },
-  "permissions": ["tabs"],
+  "permissions": ["tabs", "https://plus.google.com/*", "http://plus.google.com/*"],
   "background_page": "background.html",
   "content_scripts": [{
       "matches": ["https://plus.google.com/*", "http://plus.google.com/*"],

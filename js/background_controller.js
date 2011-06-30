@@ -31,6 +31,20 @@ BackgroundController.prototype.onExtensionLoaded = function()
  */
 BackgroundController.prototype.onInstall = function()
 {
+  // Inject the content script to all opened window.
+  chrome.windows.getAll({ populate: true }, function(windows) {
+    for (var w = 0; w < windows.length; w++) {
+      var tabs = windows[w].tabs;
+      for (var t = 0; t < tabs.length; t++) {
+        var tab = tabs[t];
+        if (tab.url.indexOf('https://plus.google.com') == 0 ||
+            tab.url.indexOf('http://plus.google.com') == 0   ) { 
+          chrome.tabs.executeScript(tab.id, { file: '/js/injection.js',
+                                    allFrames: true });
+        }
+      }
+    }
+  });
 };
 
 /**

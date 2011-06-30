@@ -104,13 +104,17 @@ function onSendClick(event) {
  * Render the "Send to ..." Link on each post.
  */
 function render() {
-  var widgets = document.getElementsByName('eswidget');
-  for (var i = 0; i < widgets.length; i++) {
-    var parentNode = widgets[i].parentNode;
-    var shareNode = originalShareNode.cloneNode(true);
-    shareNode.onclick = onSendClick;
-    parentNode.appendChild(originalTextNode.cloneNode(true));
-    parentNode.appendChild(shareNode);
+  var actionBars = document.querySelectorAll('.a-f-i-bg');
+  for (var i = 0; i < actionBars.length; i++) {
+    var actionBar = actionBars[i];
+    // Check if we already injected in this bar, if so, no need to do it again.
+    if (!actionBar.classList.contains('gpi-crx')) {
+      var shareNode = originalShareNode.cloneNode(true);
+      shareNode.onclick = onSendClick;
+      actionBar.appendChild(originalTextNode.cloneNode(true));
+      actionBar.appendChild(shareNode);
+      actionBar.classList.add('gpi-crx');
+    }
   }
 }
 
@@ -120,3 +124,6 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
     render();
   }
 });
+
+// When first injected, render the items.
+render();
