@@ -18,7 +18,7 @@ function parseURL(dom) {
   if (link) {
     text = parent.querySelector('.a-b-f-i-p-R');
     if (text) {
-      text = escape(text.textContent.substring(0, 100));
+      text = encodeURIComponent(text.textContent.substring(0, 100));
     }
     link = link.href;
     // Support multiple accounts.
