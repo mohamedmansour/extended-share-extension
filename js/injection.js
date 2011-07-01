@@ -43,6 +43,21 @@ function destroyDialog(event) {
   dialogNode.parentNode.removeChild(dialogNode);
 }
 
+function createSocialLink(name, url) {
+  var a = document.createElement('a');
+  a.setAttribute('href', url);
+  a.setAttribute('style', 'margin: 0 0 10px 5px');
+  a.onclick = destroyDialog;
+
+  var img = document.createElement('img');
+  img.setAttribute('src', chrome.extension.getURL('/img/' + name + '.jpg'));
+  img.setAttribute('title', 'Share on ' + name);
+  img.setAttribute('style', 'vertical-align: middle');
+
+  a.appendChild(img);
+  return a;
+}
+
 /**
  * Creates the Dialog overlay. Uses the same Dialog Google does for the share
  * button.
@@ -70,23 +85,23 @@ function createDialog(x, y, src) {
   dialogNode.setAttribute('role', 'dialog');
   dialogNode.setAttribute('class', 'va-Q');
   dialogNode.style.width = '225px';
-  var result = parseURL(src);
-  var innerHTML = '<span style="line-height: 32px; font: normal 18px arial, sans-serif; cursor: default;">Send To ...</span> ';
-  if (result.status) {
-    innerHTML += '<a href="http://twitter.com/share?url=' + result.url + '&text=' + result.text + '" style="margin: 0 0 10px 5px">' +
-                 '<img src="' + chrome.extension.getURL('/img/twitter.jpg') + '" title="Share on Twitter" style="vertical-align: middle"/></a>' + 
-                 '<a href="http://www.facebook.com/sharer.php?u=' + result.url + '&t=' + result.text + '" style="margin: 0 0 10px 5px">' +
-                 '<img src="' + chrome.extension.getURL('/img/facebook.jpg') + '" title="Share on Facebook" style="vertical-align: middle"/></a>';
-  }
-  else {
-    innerHTML += 'Cannot find URL, please file bug to developer. hello@mohamedmansour.com';
-  }
-  innerHTML += '';
-
-  dialogNode.innerHTML = innerHTML;
   dialogNode.style.left = (x - 100) + 'px';
   dialogNode.style.top = (y - 50) + 'px';
   dialogNode.style.padding = '10px';
+  
+  var dialogHeader = document.createElement('span');
+  dialogHeader.setAttribute('style', 'line-height: 32px; font: normal 18px arial, sans-serif; cursor: default');
+  dialogHeader.innerHTML = 'Send To ...';
+  dialogNode.appendChild(dialogHeader);
+
+  var result = parseURL(src);
+  if (result.status) {
+    dialogNode.appendChild(createSocialLink('twitter', 'http://twitter.com/share?url=' + result.url + '&text=' + result.text));
+    dialogNode.appendChild(createSocialLink('facebook', 'http://www.facebook.com/sharer.php?u=' + result.url + '&t=' + result.text));
+  } else {
+    dialogNode.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
+  }
+  
   dialogNode.appendChild(closeButton);
   document.body.appendChild(dialogNode);
 }
