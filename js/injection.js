@@ -72,6 +72,7 @@ function createDialog(x, y, src) {
   dialogGlassPane.style.opacity = 0.75;
   dialogGlassPane.style.width = window.innerWidth + 'px';
   dialogGlassPane.style.height = window.innerHeight + 'px';
+  dialogGlassPane.style.position = 'fixed';
   document.body.appendChild(dialogGlassPane);
 
   var closeButton = document.createElement('div');
