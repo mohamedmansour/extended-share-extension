@@ -62,31 +62,31 @@ function createDialog(x, y, src) {
   var closeButton = document.createElement('div');
   closeButton.setAttribute('role', 'button');
   closeButton.setAttribute('class', 'd-s-r tk3N6e-e tk3N6e-e-vj');
-  closeButton.setAttribute('style', '-webkit-user-select: none');
+  closeButton.setAttribute('style', '-webkit-user-select: none; margin: 0 0 0 5px; min-width: 0');
   closeButton.innerHTML = 'Close';
   closeButton.onclick = destroyDialog;
 
   var dialogNode = document.createElement('div');
   dialogNode.setAttribute('role', 'dialog');
   dialogNode.setAttribute('class', 'va-Q');
-  dialogNode.style.width = '175px';
+  dialogNode.style.width = '225px';
   var result = parseURL(src);
-  var innerHTML = '<div class="va-Q-R"><span class="va-Q-R-G">Send To ... </span></div>' +
-                  '<div class="va-Q-p">';
+  var innerHTML = '<span style="line-height: 32px; font: normal 18px arial, sans-serif; cursor: default;">Send To ...</span> ';
   if (result.status) {
-    innerHTML += '<a href="http://twitter.com/share?url=' + result.url + '&text=' + result.text + '" style="margin: 0 10px;">' +
-                 '<img src="' + chrome.extension.getURL('/img/twitter.jpg') + '" title="Share on Twitter"/></a>' + 
-                 '<a href="http://www.facebook.com/sharer.php?u=' + result.url + '&t=' + result.text + '" style="margin: 0 10px;">' +
-                 '<img src="' + chrome.extension.getURL('/img/facebook.jpg') + '" title="Share on Facebook"/></a>';
+    innerHTML += '<a href="http://twitter.com/share?url=' + result.url + '&text=' + result.text + '" style="margin: 0 0 10px 5px">' +
+                 '<img src="' + chrome.extension.getURL('/img/twitter.jpg') + '" title="Share on Twitter" style="vertical-align: middle"/></a>' + 
+                 '<a href="http://www.facebook.com/sharer.php?u=' + result.url + '&t=' + result.text + '" style="margin: 0 0 10px 5px">' +
+                 '<img src="' + chrome.extension.getURL('/img/facebook.jpg') + '" title="Share on Facebook" style="vertical-align: middle"/></a>';
   }
   else {
     innerHTML += 'Cannot find URL, please file bug to developer. hello@mohamedmansour.com';
   }
-  innerHTML += '</div>';
+  innerHTML += '';
 
   dialogNode.innerHTML = innerHTML;
   dialogNode.style.left = (x - 100) + 'px';
   dialogNode.style.top = (y - 50) + 'px';
+  dialogNode.style.padding = '10px';
   dialogNode.appendChild(closeButton);
   document.body.appendChild(dialogNode);
 }
