@@ -41,8 +41,28 @@ function destroyDialog(event) {
   var dialogNode = document.querySelector('.va-Q');
   dialogGlassPane.parentNode.removeChild(dialogGlassPane);
   dialogNode.parentNode.removeChild(dialogNode);
+
+  // Cleanup a ESC hook.
+  window.removeEventListener('keyup', onKeyPressed, false);
 }
 
+/**
+ * On global keypress to watch for ESC key.
+ *
+ * @param {Object<KeyEvent>} event The key event.
+ */
+function onKeyPressed(event) {
+  if (event.keyCode  == 27) { // ESCAPE.
+    destroyDialog();
+  }
+}
+
+/**
+ * Creates the social hyperlink image.
+ *
+ * @param {string} name The name of the social interaction. Twitter || Facebook
+ * @param {string} url The post URL.
+ */
 function createSocialLink(name, url) {
   var a = document.createElement('a');
   a.setAttribute('href', url);
@@ -73,23 +93,17 @@ function createDialog(x, y, src) {
   dialogGlassPane.style.width = window.innerWidth + 'px';
   dialogGlassPane.style.height = window.innerHeight + 'px';
   dialogGlassPane.style.position = 'fixed';
+  dialogGlassPane.onclick = destroyDialog;
   document.body.appendChild(dialogGlassPane);
-
-  var closeButton = document.createElement('div');
-  closeButton.setAttribute('role', 'button');
-  closeButton.setAttribute('class', 'd-s-r tk3N6e-e tk3N6e-e-vj');
-  closeButton.setAttribute('style', '-webkit-user-select: none; margin: 0 0 0 5px; min-width: 0');
-  closeButton.innerHTML = 'Close';
-  closeButton.onclick = destroyDialog;
 
   var dialogNode = document.createElement('div');
   dialogNode.setAttribute('role', 'dialog');
   dialogNode.setAttribute('class', 'va-Q');
-  dialogNode.style.width = '225px';
+  dialogNode.style.width = '165px';
   dialogNode.style.left = (x - 100) + 'px';
   dialogNode.style.top = (y - 50) + 'px';
   dialogNode.style.padding = '10px';
-  
+
   var dialogHeader = document.createElement('span');
   dialogHeader.setAttribute('style', 'line-height: 32px; font: normal 18px arial, sans-serif; cursor: default');
   dialogHeader.innerHTML = 'Send To ...';
@@ -102,8 +116,9 @@ function createDialog(x, y, src) {
   } else {
     dialogNode.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
-  
-  dialogNode.appendChild(closeButton);
+
+  // Register a ESC hook.
+  window.addEventListener('keyup', onKeyPressed, false);
   document.body.appendChild(dialogNode);
 }
 
