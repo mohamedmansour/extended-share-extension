@@ -11,6 +11,11 @@ prior implementation :)
 
 Follow me on Twitter [@mohamedmansour](http://twitter.com/mohamedmansour)
 
+Icons
+-----------------
+Social Network Icon Pack by [Komodo Media, Rogie King](http://www.komodomedia.com/) is licensed under a [Creative Commons Attribution-Share Alike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
+Based on a work at [www.komodomedia.com](http://www.komodomedia.com/download/#social-network-icon-pack).
+
 Screenshots
 -----------------
 ![Screenshot of the Chrome Extension](https://github.com/mohamedmansour/google-plus-extension/raw/master/screenshot/shareA.jpg)
