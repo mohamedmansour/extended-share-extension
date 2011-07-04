@@ -1,13 +1,13 @@
 // Shared DOM.
-var originalTextNode = document.createTextNode('  -  ');
+var originalTextNode = document.createTextNode(' \u00a0-\u00a0 ');
 var originalShareNode = document.createElement('span');
 originalShareNode.setAttribute('role', 'button');
 originalShareNode.setAttribute('class', 'd-h external-share');
-originalShareNode.innerHTML = 'Send to ...';
+originalShareNode.innerHTML = 'Share on ...';
 
 /**
  * Figures out where the direct link URL is for the post within the |dom|.
- * This might change in the future since we are scraping it. 
+ * This might change in the future since we are scraping it.
  *
  * @param {Object<HTMLElement>} dom The parent DOM source for the item.
  */
@@ -38,7 +38,7 @@ function parseURL(dom) {
  */
 function destroyDialog(event) {
   var dialogGlassPane = document.querySelector('.va-Q-zb');
-  var dialogNode = document.querySelector('.va-Q');
+  var dialogNode = document.querySelector('.tk3N6e-Ca');
   dialogGlassPane.parentNode.removeChild(dialogGlassPane);
   dialogNode.parentNode.removeChild(dialogNode);
 
@@ -66,7 +66,7 @@ function onKeyPressed(event) {
 function createSocialLink(name, url) {
   var a = document.createElement('a');
   a.setAttribute('href', url);
-  a.setAttribute('style', 'margin: 0 0 10px 5px');
+  a.setAttribute('style', 'margin: 0 .4em');
   a.onclick = destroyDialog;
 
   var img = document.createElement('img');
@@ -98,15 +98,13 @@ function createDialog(x, y, src) {
 
   var dialogNode = document.createElement('div');
   dialogNode.setAttribute('role', 'dialog');
-  dialogNode.setAttribute('class', 'va-Q');
-  dialogNode.style.width = '165px';
+  dialogNode.setAttribute('class', 'tk3N6e-Ca');
   dialogNode.style.left = (x - 100) + 'px';
   dialogNode.style.top = (y - 50) + 'px';
-  dialogNode.style.padding = '10px';
 
   var dialogHeader = document.createElement('span');
-  dialogHeader.setAttribute('style', 'line-height: 32px; font: normal 18px arial, sans-serif; cursor: default');
-  dialogHeader.innerHTML = 'Send To ...';
+  dialogHeader.setAttribute('style', 'font-size: 1.4em;');
+  dialogHeader.innerHTML = 'Share on ';
   dialogNode.appendChild(dialogHeader);
 
   var result = parseURL(src);
@@ -132,7 +130,7 @@ function onSendClick(event) {
 }
 
 /**
- * Render the "Send to ..." Link on each post.
+ * Render the "Share on ..." Link on each post.
  */
 function render() {
   var actionBars = document.querySelectorAll('.a-f-i-bg');
