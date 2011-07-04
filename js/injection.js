@@ -70,7 +70,7 @@ function createSocialLink(name, url) {
   a.onclick = destroyDialog;
 
   var img = document.createElement('img');
-  img.setAttribute('src', chrome.extension.getURL('/img/' + name + '.jpg'));
+  img.setAttribute('src', chrome.extension.getURL('/img/' + name + '.png'));
   img.setAttribute('title', 'Share on ' + name);
   img.setAttribute('style', 'vertical-align: middle');
 
