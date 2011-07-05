@@ -1,13 +1,26 @@
 // Shared DOM.
-var originalTextNode = document.createTextNode('  -  ');
+var originalTextNode = document.createTextNode(' \u00a0-\u00a0 ');
 var originalShareNode = document.createElement('span');
 originalShareNode.setAttribute('role', 'button');
 originalShareNode.setAttribute('class', 'd-h external-share');
-originalShareNode.innerHTML = 'Send to ...';
+originalShareNode.innerHTML = 'Share on...'
+var dialogClass = 'tk3N6e-Ca';
+var shareContainer = document.createElement('div');
+shareContainer.setAttribute('class', 'tk3N6e-Ca');
+shareContainer.setAttribute('style', 'left: 172px; margin-top: 4px');
+shareContainer.innerHTML =
+    // content
+    '<div class="tk3N6e-Ca-p-b">'+
+        '<div class="lgPbs" style="margin-right: 1em">Share on...</div>'+
+    '</div>'+
+    // cross to close
+    '<div class="tk3N6e-Ca-kmh2Gb-b tk3N6e-Ca-kmh2Gb" role="button" tabindex="0"><div class="tk3N6e-Ca-uqvIpc"></div></div>'+
+    // arrow on top
+    '<div class="tk3N6e-Ca-kc-b tk3N6e-Ca-kc tk3N6e-Ca-Hi" style="left: 20px; "><div class="tk3N6e-Ca-jQ8oHc"></div><div class="tk3N6e-Ca-ez0xG"></div></div>';
 
 /**
  * Figures out where the direct link URL is for the post within the |dom|.
- * This might change in the future since we are scraping it. 
+ * This might change in the future since we are scraping it.
  *
  * @param {Object<HTMLElement>} dom The parent DOM source for the item.
  */
@@ -36,14 +49,12 @@ function parseURL(dom) {
  *
  * @param {Object<MouseEvent>} event The mouse event.
  */
-function destroyDialog(event) {
-  var dialogGlassPane = document.querySelector('.va-Q-zb');
-  var dialogNode = document.querySelector('.va-Q');
-  dialogGlassPane.parentNode.removeChild(dialogGlassPane);
-  dialogNode.parentNode.removeChild(dialogNode);
-
-  // Cleanup a ESC hook.
-  window.removeEventListener('keyup', onKeyPressed, false);
+function hideDialog(event) {
+  var dialogNode = document.querySelector('.' + dialogClass);
+  if (dialogNode)
+  {
+      dialogNode.style.display = 'none';
+  }
 }
 
 /**
@@ -53,7 +64,7 @@ function destroyDialog(event) {
  */
 function onKeyPressed(event) {
   if (event.keyCode  == 27) { // ESCAPE.
-    destroyDialog();
+    hideDialog();
   }
 }
 
@@ -66,8 +77,8 @@ function onKeyPressed(event) {
 function createSocialLink(name, url) {
   var a = document.createElement('a');
   a.setAttribute('href', url);
-  a.setAttribute('style', 'margin: 0 0 10px 5px');
-  a.onclick = destroyDialog;
+  a.setAttribute('style', 'margin: 0 .4em');
+  a.onclick = hideDialog;
 
   var img = document.createElement('img');
   img.setAttribute('src', chrome.extension.getURL('/img/' + name + '.png'));
@@ -86,40 +97,28 @@ function createSocialLink(name, url) {
  * @param {number} y The mouse y position.
  * @param {Object<HTMLElement>} src The parent DOM source for the item.
  */
-function createDialog(x, y, src) {
-  var dialogGlassPane = document.createElement('div');
-  dialogGlassPane.setAttribute('class', 'va-Q-zb');
-  dialogGlassPane.style.opacity = 0.75;
-  dialogGlassPane.style.width = window.innerWidth + 'px';
-  dialogGlassPane.style.height = window.innerHeight + 'px';
-  dialogGlassPane.style.position = 'fixed';
-  dialogGlassPane.onclick = destroyDialog;
-  document.body.appendChild(dialogGlassPane);
-
-  var dialogNode = document.createElement('div');
-  dialogNode.setAttribute('role', 'dialog');
-  dialogNode.setAttribute('class', 'va-Q');
-  dialogNode.style.width = '165px';
-  dialogNode.style.left = (x - 100) + 'px';
-  dialogNode.style.top = (y - 50) + 'px';
-  dialogNode.style.padding = '10px';
-
-  var dialogHeader = document.createElement('span');
-  dialogHeader.setAttribute('style', 'line-height: 32px; font: normal 18px arial, sans-serif; cursor: default');
-  dialogHeader.innerHTML = 'Send To ...';
-  dialogNode.appendChild(dialogHeader);
+function createDialog(src, event) {
+  dialogNode = shareContainer.cloneNode(true);
+  nodeToFill = dialogNode.querySelector('.lgPbs');
 
   var result = parseURL(src);
   if (result.status) {
-    dialogNode.appendChild(createSocialLink('twitter', 'http://twitter.com/share?url=' + result.url + '&text=' + result.text));
-    dialogNode.appendChild(createSocialLink('facebook', 'http://www.facebook.com/sharer.php?u=' + result.url + '&t=' + result.text));
+    nodeToFill.appendChild(createSocialLink('twitter', 'http://twitter.com/share?url=' + result.url + '&text=' + result.text));
+    nodeToFill.appendChild(createSocialLink('facebook', 'http://www.facebook.com/sharer.php?u=' + result.url + '&t=' + result.text));
   } else {
-    dialogNode.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
+    nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
+  }
+
+  var closeCross = dialogNode.querySelector('.tk3N6e-Ca-kmh2Gb');
+  closeCross.onclick = function()
+  {
+    this.parentNode.style.display = 'none';
   }
 
   // Register a ESC hook.
   window.addEventListener('keyup', onKeyPressed, false);
-  document.body.appendChild(dialogNode);
+  
+  src.parentNode.appendChild(dialogNode);
 }
 
 /**
@@ -127,12 +126,21 @@ function createDialog(x, y, src) {
  *
  * @param {Object<MouseEvent>} event The mouse event.
  */
-function onSendClick(event) {
-  createDialog(event.pageX, event.pageY, event.srcElement)
+function onSendClick(event)
+{
+  var element = event.srcElement.parentNode.querySelector('.' + dialogClass);
+  if (!element)
+  {
+      createDialog(event.srcElement, event)
+  }
+  else
+  {
+      element.style.display = 'block';
+  }
 }
 
 /**
- * Render the "Send to ..." Link on each post.
+ * Render the "Share on ..." Link on each post.
  */
 function render() {
   var actionBars = document.querySelectorAll('.a-f-i-bg');
