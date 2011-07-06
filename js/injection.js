@@ -1,17 +1,20 @@
+// Constants
+var bubbleClass = '.tk3N6e-Ca';
+
 // Shared DOM.
 var originalTextNode = document.createTextNode(' \u00a0-\u00a0 ');
 var originalShareNode = document.createElement('span');
 originalShareNode.setAttribute('role', 'button');
 originalShareNode.setAttribute('class', 'd-h external-share');
-originalShareNode.innerHTML = 'Share on...'
-var dialogClass = 'tk3N6e-Ca';
-var shareContainer = document.createElement('div');
-shareContainer.setAttribute('class', 'tk3N6e-Ca');
-shareContainer.setAttribute('style', 'left: 172px; margin-top: 4px');
-shareContainer.innerHTML =
+originalShareNode.innerHTML = 'Share on...';
+
+var originalBubbleContainer = document.createElement('div');
+originalBubbleContainer.setAttribute('class', 'tk3N6e-Ca');
+originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px');
+originalBubbleContainer.innerHTML =
     // content
     '<div class="tk3N6e-Ca-p-b">'+
-        '<div class="lgPbs" style="margin-right: 1em">Share on...</div>'+
+        '<div class="lgPbs" style="margin-right: 1em; margin-bottom: 0px;">Share on...</div>'+
     '</div>'+
     // cross to close
     '<div class="tk3N6e-Ca-kmh2Gb-b tk3N6e-Ca-kmh2Gb" role="button" tabindex="0"><div class="tk3N6e-Ca-uqvIpc"></div></div>'+
@@ -45,27 +48,16 @@ function parseURL(dom) {
 }
 
 /**
- * Removes the dialog from the DOM. Same functionality as the share button.
+ * Removes the bubble from the DOM. Same functionality as the share button.
  *
  * @param {Object<MouseEvent>} event The mouse event.
  */
-function hideDialog(event) {
-  var dialogNode = document.querySelector('.' + dialogClass);
-  if (dialogNode)
-  {
-      dialogNode.style.display = 'none';
+function destroyBubble(event) {
+  var element = event.srcElement.parentNode.parentNode;
+  if (element && element.className != 'tk3N6e-Ca') {
+    element = element.parentNode.parentNode;
   }
-}
-
-/**
- * On global keypress to watch for ESC key.
- *
- * @param {Object<KeyEvent>} event The key event.
- */
-function onKeyPressed(event) {
-  if (event.keyCode  == 27) { // ESCAPE.
-    hideDialog();
-  }
+  element.parentNode.removeChild(element);
 }
 
 /**
@@ -78,7 +70,7 @@ function createSocialLink(name, url) {
   var a = document.createElement('a');
   a.setAttribute('href', url);
   a.setAttribute('style', 'margin: 0 .4em');
-  a.onclick = hideDialog;
+  a.onclick = destroyBubble;
 
   var img = document.createElement('img');
   img.setAttribute('src', chrome.extension.getURL('/img/' + name + '.png'));
@@ -90,16 +82,15 @@ function createSocialLink(name, url) {
 }
 
 /**
- * Creates the Dialog overlay. Uses the same Dialog Google does for the share
- * button.
+ * Creates the bubble overlay. Uses same CSS used in 
  *
  * @param {number} x The mouse x position.
  * @param {number} y The mouse y position.
  * @param {Object<HTMLElement>} src The parent DOM source for the item.
  */
-function createDialog(src, event) {
-  dialogNode = shareContainer.cloneNode(true);
-  nodeToFill = dialogNode.querySelector('.lgPbs');
+function createBubble(src, event) {
+  var bubbleContainer = originalBubbleContainer.cloneNode(true);
+  var nodeToFill = bubbleContainer.querySelector('.lgPbs');
 
   var result = parseURL(src);
   if (result.status) {
@@ -109,16 +100,10 @@ function createDialog(src, event) {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
 
-  var closeCross = dialogNode.querySelector('.tk3N6e-Ca-kmh2Gb');
-  closeCross.onclick = function()
-  {
-    this.parentNode.style.display = 'none';
-  }
-
-  // Register a ESC hook.
-  window.addEventListener('keyup', onKeyPressed, false);
+  var closeCross = bubbleContainer.querySelector('.tk3N6e-Ca-kmh2Gb');
+  closeCross.onclick = destroyBubble;
   
-  src.parentNode.appendChild(dialogNode);
+  src.parentNode.appendChild(bubbleContainer);
 }
 
 /**
@@ -126,16 +111,13 @@ function createDialog(src, event) {
  *
  * @param {Object<MouseEvent>} event The mouse event.
  */
-function onSendClick(event)
-{
-  var element = event.srcElement.parentNode.querySelector('.' + dialogClass);
-  if (!element)
-  {
-      createDialog(event.srcElement, event)
+function onSendClick(event) {
+  var element = event.srcElement.parentNode.querySelector(bubbleClass);
+  if (!element) {
+    createBubble(event.srcElement, event);
   }
-  else
-  {
-      element.style.display = 'block';
+  else {
+    element.style.display = 'block';
   }
 }
 
