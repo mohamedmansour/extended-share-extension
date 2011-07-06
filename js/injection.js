@@ -1,6 +1,3 @@
-// Constants
-var bubbleClass = '.tk3N6e-Ca';
-
 // Shared DOM.
 var originalTextNode = document.createTextNode(' \u00a0-\u00a0 ');
 var originalShareNode = document.createElement('span');
@@ -112,7 +109,7 @@ function createBubble(src, event) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 function onSendClick(event) {
-  var element = event.srcElement.parentNode.querySelector(bubbleClass);
+  var element = event.srcElement.parentNode.querySelector('.tk3N6e-Ca');
   if (!element) {
     createBubble(event.srcElement, event);
   }
