@@ -32,7 +32,7 @@ function parseURL(dom) {
   if (link) {
     text = parent.querySelector('.a-b-f-i-p-R');
     if (text) {
-      text = encodeURIComponent(text.textContent.substring(0, 100));
+      text = encodeURIComponent(text.textContent);
     }
     link = link.href;
     // Support multiple accounts.
@@ -40,7 +40,7 @@ function parseURL(dom) {
   }
   return {
     status: link ? true : false,
-    url: link,
+    link: link,
     text: text,
     title: title
   };
@@ -64,8 +64,15 @@ function destroyBubble(event) {
  *
  * @param {string} name The name of the social interaction. Twitter || Facebook
  * @param {string} url The post URL.
+ * @param {string} result The URL detail request that contains the parsed data.
+ * @param {boolean} limit True if you want to limit it to 100 chars.
+ *                        later one, we will figure out the max length.
  */
-function createSocialLink(name, url) {
+function createSocialLink(name, url, result, limit) {
+  url = url.replace('\${link}', result.link);
+  url = url.replace('\${text}', limit ? result.text.substring(0, 100) : result.text);
+  url = url.replace('\${title}', result.title);
+
   var a = document.createElement('a');
   a.setAttribute('href', url);
   a.setAttribute('style', 'margin: 0 .4em');
@@ -93,9 +100,9 @@ function createBubble(src, event) {
 
   var result = parseURL(src);
   if (result.status) {
-    nodeToFill.appendChild(createSocialLink('twitter', 'http://twitter.com/share?url=' + result.url + '&text=' + result.text));
-    nodeToFill.appendChild(createSocialLink('facebook', 'http://www.facebook.com/sharer.php?u=' + result.url + '&t=' + result.text));
-    nodeToFill.appendChild(createSocialLink('linkedin', 'http://www.linkedin.com/shareArticle?mini=true&url=' + result.url + '&title=' + result.title + '&summary=' + result.text));
+    nodeToFill.appendChild(createSocialLink('twitter', 'http://twitter.com/share?url=${link}&text=${text}', result, true));
+    nodeToFill.appendChild(createSocialLink('facebook', 'http://www.facebook.com/sharer.php?u=${link}&t=${text}', result));
+    nodeToFill.appendChild(createSocialLink('linkedin', 'http://www.linkedin.com/shareArticle?mini=true&url=${link}&title=${title}&summary=${text}', result));
   } else {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
