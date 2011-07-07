@@ -32,7 +32,7 @@ function parseURL(dom) {
   if (link) {
     text = parent.querySelector('.a-b-f-i-p-R');
     if (text) {
-      text = encodeURIComponent(text.textContent);
+      text = encodeURIComponent(text.innerText);
     }
     link = link.href;
     // Support multiple accounts.
