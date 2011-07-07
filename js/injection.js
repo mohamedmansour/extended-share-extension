@@ -28,6 +28,7 @@ function parseURL(dom) {
   var parent = dom.parentNode.parentNode.parentNode;
   var link = parent.querySelector('a[target="_blank"]');
   var text = '';
+  var title = '';
   if (link) {
     text = parent.querySelector('.a-b-f-i-p-R');
     if (text) {
@@ -40,7 +41,8 @@ function parseURL(dom) {
   return {
     status: link ? true : false,
     url: link,
-    text: text
+    text: text,
+    title: title
   };
 }
 
@@ -93,6 +95,7 @@ function createBubble(src, event) {
   if (result.status) {
     nodeToFill.appendChild(createSocialLink('twitter', 'http://twitter.com/share?url=' + result.url + '&text=' + result.text));
     nodeToFill.appendChild(createSocialLink('facebook', 'http://www.facebook.com/sharer.php?u=' + result.url + '&t=' + result.text));
+    nodeToFill.appendChild(createSocialLink('linkedin', 'http://www.linkedin.com/shareArticle?mini=true&url=' + result.url + '&title=' + result.title + '&summary=' + result.text));
   } else {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
