@@ -34,6 +34,9 @@ function parseURL(dom) {
     if (text) {
       text = encodeURIComponent(text.innerText);
     }
+    else {
+      text = ''; // Empty for now till we figure out what to do.
+    }
     link = link.href;
     // Support multiple accounts.
     link = link.replace(/plus\.google\.com\/u\/(\d*)/, 'plus.google.com');
