@@ -32,7 +32,7 @@ function parseURL(dom) {
   if (link) {
     text = parent.querySelector('.a-b-f-i-p-R');
     if (text) {
-      text = encodeURIComponent(text.innerText);
+      text = text.innerText;
     }
     else {
       text = ''; // Empty for now till we figure out what to do.
@@ -72,8 +72,9 @@ function destroyBubble(event) {
  *                        later one, we will figure out the max length.
  */
 function createSocialLink(name, url, result, limit) {
+  var text = limit ? result.text.substring(0, 100) : result.text;
   url = url.replace('\${link}', result.link);
-  url = url.replace('\${text}', limit ? result.text.substring(0, 100) : result.text);
+  url = url.replace('\${text}',  encodeURIComponent(text.trim()));
   url = url.replace('\${title}', result.title);
 
   var a = document.createElement('a');
