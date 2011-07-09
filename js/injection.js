@@ -130,31 +130,51 @@ function onSendClick(event) {
     element.style.display = 'block';
   }
 }
+/**
+ * Render all the items in the current page.
+ */
+function renderAll() {
+  var actionBars = document.querySelectorAll('.a-f-i-bg');
+  for (var i = 0; i < actionBars.length; i++) {
+    renderItem(actionBars[i]);
+  }
+}
+
+/**
+ * Render the "Share on ..." Link on each post.
+ *
+ * @param {Object<ModifiedDOM>} event modified event.
+ */
+function renderItem(itemDOM) {
+  if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
+    var shareNode = originalShareNode.cloneNode(true);
+    shareNode.onclick = onSendClick;
+    itemDOM.appendChild(originalTextNode.cloneNode(true));
+    itemDOM.appendChild(shareNode);
+    itemDOM.classList.add('gpi-crx');
+  }
+}
 
 /**
  * Render the "Share on ..." Link on each post.
  */
-function render() {
-  var actionBars = document.querySelectorAll('.a-f-i-bg');
-  for (var i = 0; i < actionBars.length; i++) {
-    var actionBar = actionBars[i];
-    // Check if we already injected in this bar, if so, no need to do it again.
-    if (!actionBar.classList.contains('gpi-crx')) {
-      var shareNode = originalShareNode.cloneNode(true);
-      shareNode.onclick = onSendClick;
-      actionBar.appendChild(originalTextNode.cloneNode(true));
-      actionBar.appendChild(shareNode);
-      actionBar.classList.add('gpi-crx');
-    }
+function onGooglePlusContentModified(e) {
+  if (e.target.id.indexOf('update') == 0) {
+    var actionBar = e.target.querySelector('.a-f-i-bg');
+    renderItem(actionBar);
   }
 }
 
-// API
+// API to handle when clicking on different HTML5 push API. This somehow doesn't
+// play well with DOMSubtreeModified
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
   if (request.method == 'render') {
-    render();
+    renderAll();
   }
 });
 
-// When first injected, render the items.
-render();
+// Listen when the subtree is modified for new posts.
+var googlePlusContentPane = document.querySelector('.a-b-f-i-oa');
+if (googlePlusContentPane) {
+   googlePlusContentPane.addEventListener('DOMSubtreeModified', onGooglePlusContentModified, false);
+}
