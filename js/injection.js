@@ -107,6 +107,8 @@ function createBubble(src, event) {
     nodeToFill.appendChild(createSocialLink('twitter', 'http://twitter.com/share?url=${link}&text=${text}', result, true));
     nodeToFill.appendChild(createSocialLink('facebook', 'http://www.facebook.com/sharer.php?u=${link}&t=${text}', result));
     nodeToFill.appendChild(createSocialLink('linkedin', 'http://www.linkedin.com/shareArticle?mini=true&url=${link}&title=${title}&summary=${text}', result));
+    nodeToFill.appendChild(createSocialLink('plurk', 'http://www.plurk.com/?qualifier=shares&status=' + result.url + ' ([Google plus]:)' + '(' + result.text + ')'));
+
   } else {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
