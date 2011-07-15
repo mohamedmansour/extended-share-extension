@@ -11,9 +11,9 @@ Injection = function()
   this.originalShareNode.innerHTML = 'Share on...';
 
   this.originalBubbleContainer = document.createElement('div');
-  this.originalShareNode.setAttribute('class', 'tk3N6e-Ca');
-  this.originalShareNode.setAttribute('style', 'left: 172px; margin-top: 4px');
-  this.originalShareNode.innerHTML =
+  this.originalBubbleContainer.setAttribute('class', 'tk3N6e-Ca');
+  this.originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px');
+  this.originalBubbleContainer.innerHTML =
       // content
       '<div class="tk3N6e-Ca-p-b">'+
           '<div class="lgPbs" style="margin-right: 1em; margin-bottom: 0px;">Share on...</div>'+
@@ -29,12 +29,12 @@ Injection = function()
  */
 Injection.prototype.init = function()
 {
-  chrome.extension.onRequest.addListener(this.onExternalRequest.bind(this));
-
   // Listen when the subtree is modified for new posts.
   var googlePlusContentPane = document.querySelector('.a-b-f-i-oa');
   if (googlePlusContentPane) {
-     googlePlusContentPane.addEventListener('DOMSubtreeModified', this.onGooglePlusContentModified.bind(this), false);
+     googlePlusContentPane.addEventListener('DOMSubtreeModified',
+                                            this.onGooglePlusContentModified.bind(this), false);
+     chrome.extension.onRequest.addListener(this.onExternalRequest.bind(this));
   }
 };
 
