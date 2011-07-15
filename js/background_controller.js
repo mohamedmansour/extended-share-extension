@@ -14,7 +14,7 @@ BackgroundController = function()
 BackgroundController.prototype.onExtensionLoaded = function()
 {
   var currVersion = chrome.app.getDetails().version;
-  var prevVersion = localStorage['version'];
+  var prevVersion = settings.version;
   if (currVersion != prevVersion) {
     // Check if we just installed this extension.
     if (typeof prevVersion == 'undefined') {
@@ -22,7 +22,7 @@ BackgroundController.prototype.onExtensionLoaded = function()
     } else {
       this.onUpdate(prevVersion, currVersion);
     }
-    localStorage['version'] = currVersion;
+    settings.version = currVersion;
   }
 };
 

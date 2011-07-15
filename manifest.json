@@ -10,6 +10,7 @@
   },
   "permissions": ["tabs", "https://plus.google.com/*", "http://plus.google.com/*"],
   "background_page": "background.html",
+  "options_page": "options.html",
   "content_scripts": [{
       "matches": ["https://plus.google.com/*", "http://plus.google.com/*"],
       "js": ["js/injection.js"],

@@ -1,5 +1,6 @@
 /**
- * 
+ * Injection Content Script.
+ * @constructor
  */
 Injection = function()
 {
@@ -25,7 +26,7 @@ Injection = function()
 };
 
 /**
- * Initialize
+ * Initialize the events that will be listening within this DOM.
  */
 Injection.prototype.init = function()
 {
@@ -193,7 +194,7 @@ Injection.prototype.onGooglePlusContentModified = function(e)
     var actionBar = e.target.querySelector('.a-f-i-bg');
     this.renderItem(actionBar);
   }
-}
+};
 
 // API to handle when clicking on different HTML5 push API. This somehow doesn't
 // play well with DOMSubtreeModified
@@ -204,5 +205,6 @@ Injection.prototype.onExternalRequest = function(request, sender, sendResponse)
   }
 };
 
+// Main
 var injection = new Injection();
 injection.init();
