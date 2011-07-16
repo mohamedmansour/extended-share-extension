@@ -110,9 +110,9 @@ Injection.prototype.createSocialLink = function(share, result)
   var url = share.url;
   var limit = share.trim;
   var text = limit ? result.text.substring(0, 100) : result.text;
-  url = url.replace('\${link}', result.link);
+  url = url.replace('\${link}', encodeURIComponent(result.link));
   url = url.replace('\${text}',  encodeURIComponent(text.trim()));
-  url = url.replace('\${title}', result.title);
+  url = url.replace('\${title}', encodeURIComponent(result.title));
 
   var a = document.createElement('a');
   a.setAttribute('href', url);

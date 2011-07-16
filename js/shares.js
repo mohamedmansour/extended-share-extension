@@ -30,5 +30,11 @@ Shares = {
     icon: '/img/linkedin.png',
     url: 'http://www.linkedin.com/shareArticle?mini=true&url=${link}&title=${title}&summary=${text}',
     trim: false
+  },
+  tumblr: {
+    name: 'Tumblr',
+    icon: '/img/tumblr.png',
+    url: 'http://www.tumblr.com/share?v=3&u=${link}&t=${text}',
+    trim: false
   }
 };
