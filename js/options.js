@@ -57,7 +57,7 @@ function onRestore() {
   var container_shares = $('container-shares');
   for (var i in Shares) {
      var share = Shares[i];
-     container_shares.appendChild(createSharesItem(share.name));
+     container_shares.appendChild(createSharesItem(share));
   }
   
   if (bkg.settings.shares) {
@@ -72,26 +72,30 @@ function onRestore() {
 }
 
 function createSharesItem(shareItem) {
-  //var container = document.createElement('p');
-  var item = shareItem.toLowerCase();
-  
+
   // Render label.
+  var item_name = shareItem.name.toLowerCase();
   var label = document.createElement('label');
-  label.setAttribute('for', item);
+  label.setAttribute('class', 'shareIcon');
+  label.setAttribute('for', item_name);
 
   // Text formatted into Camel Case
-  var item_formatted = item.split('_').map(function(v){
+  var item_formatted = item_name.split('_').map(function(v){
     return v.slice(0,1).toUpperCase() + v.slice(1);
   }).join(' ');
-
-  label.appendChild(document.createTextNode(item_formatted));
 
   // Render input.
   var input = document.createElement('input');
   input.setAttribute('type', 'checkbox');
   input.setAttribute('name', 'shares');
-  input.setAttribute('id', item);
+  input.setAttribute('id', item_name);
   label.appendChild(input);
+
+  // Render icon.
+  var icon = document.createElement('image');
+  icon.src = shareItem.icon;
+  icon.title = item_formatted;
+  label.appendChild(icon);
   
   return label;
 }
