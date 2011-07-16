@@ -1,5 +1,16 @@
 /**
  * Shares List.
+ *
+ * The format to share would be adding a JSON object that has the keys:
+ *   - name (The name of the extension that appears on the hover)
+ *   - icon (relative path of the icon)
+ *   - url (contains some attributes that will be replaced)
+ *   - trim  (true to trim upto 100 chars)
+ *
+ * The URL has the following keys that will be replaced:
+ *   - ${link} The link to share.
+ *   - ${text} The text to place.
+ *   - ${title} The title of the post.
  */
 Shares = {
   twitter: {
