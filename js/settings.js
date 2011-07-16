@@ -15,7 +15,7 @@ settings = {
   },
   get shares() {
     var key = localStorage['shares'];
-    return (typeof key == 'undefined') ? null : key.split(', ');
+    return (typeof key == 'undefined') ? ['twitter', 'facebook'] : key.split(', ');
   },
   set shares(val) {
     if (typeof val == 'object') {
