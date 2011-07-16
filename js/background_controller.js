@@ -35,6 +35,7 @@ BackgroundController.prototype.onInstall = function()
     chrome.tabs.executeScript(tab.id, { file: '/js/injection.js',
                               allFrames: true });
   });
+  chrome.tabs.create({url: 'options.html'});
 };
 
 /**
