@@ -31,20 +31,72 @@ BackgroundController.prototype.onExtensionLoaded = function()
  */
 BackgroundController.prototype.onInstall = function()
 {
-  // Inject the content script to all opened window.
+  this.doWorkTabs(function(tab) {
+    chrome.tabs.executeScript(tab.id, { file: '/js/injection.js',
+                              allFrames: true });
+  });
+};
+
+/**
+ * Do some work on all tabs that are on Google Plus.
+ *
+ * @param {Function<Tab>} callback The callback with the tab results.
+ */
+BackgroundController.prototype.doWorkTabs = function(callback)
+{
+  self = this;
   chrome.windows.getAll({ populate: true }, function(windows) {
     for (var w = 0; w < windows.length; w++) {
       var tabs = windows[w].tabs;
       for (var t = 0; t < tabs.length; t++) {
         var tab = tabs[t];
-        if (tab.url.indexOf('https://plus.google.com') == 0 ||
-            tab.url.indexOf('http://plus.google.com') == 0   ) { 
-          chrome.tabs.executeScript(tab.id, { file: '/js/injection.js',
-                                    allFrames: true });
+        if (self.isValidURL(tab.url)) { 
+          callback(tab);
         }
       }
     }
   });
+};
+
+/**
+ * Prepares the objects for the shares installed for the user.
+ *
+ * @return The JSON object repsenting the current Shares. 
+ */
+BackgroundController.prototype.prepareShareResponse = function()
+{
+  var result = {};
+  if (settings.shares) {
+    var shares = {};
+    for (var i in settings.shares) {
+      var share = settings.shares[i];
+      shares[share] = Shares[share]
+    }
+    result = shares;
+  }
+  return result;
+};
+
+/**
+ * Inform all Content Scripts that new settings are available.
+ */
+BackgroundController.prototype.updateSettings = function()
+{
+  self = this;
+  this.doWorkTabs(function(tab) {
+    chrome.tabs.sendRequest(tab.id, { method: 'SettingsUpdated', data: self.prepareShareResponse() });
+  });
+};
+
+/**
+ * Check if the URL is part of plus websites.
+ 
+ * @param {string} url The URL to check if valid.
+ */
+BackgroundController.prototype.isValidURL = function(url)
+{
+  return (url.indexOf('https://plus.google.com') == 0 ||
+          url.indexOf('http://plus.google.com') == 0);
 };
 
 /**
@@ -67,6 +119,7 @@ BackgroundController.prototype.init = function()
   // push API, so content scripts don't get recognized always. We inject
   // the content script once, and listen for URL changes.
   chrome.tabs.onUpdated.addListener(this.tabUpdated.bind(this));
+  chrome.extension.onRequest.addListener(this.onExternalRequest.bind(this));
 };
 
 /**
@@ -80,6 +133,23 @@ BackgroundController.prototype.init = function()
 BackgroundController.prototype.tabUpdated = function(tabId, changeInfo, tab)
 {
   if (changeInfo.status == 'complete') {
-    chrome.tabs.sendRequest(tabId, { method: 'render' });
+    chrome.tabs.sendRequest(tabId, { method: 'RenderShares' });
+  }
+};
+
+/**
+ * Listen on requests coming from content scripts.
+ *
+ * @param {object} request The request object to match data.
+ * @param {object} sender The sender object to know what the source it.
+ * @param {Function} sendResponse The response callback.
+ */
+BackgroundController.prototype.onExternalRequest = function(request, sender, sendResponse)
+{
+  if (request.method == 'GetSettings') {
+    sendResponse({ data: this.prepareShareResponse() });
+  }
+  else {
+    sendResponse({});
   }
 };

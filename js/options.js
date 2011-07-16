@@ -36,6 +36,7 @@ function onSave() {
     }
   }
   bkg.settings.shares = shares;
+  bkg.backgroundController.updateSettings();
 
   // Update status to let user know options were saved.
   var info = $('info-message');
@@ -55,9 +56,10 @@ function onRestore() {
   $('opt_out').checked = bkg.settings.opt_out;
 
   var container_shares = $('container-shares');
-  for (var i in Shares) {
-     var share = Shares[i];
-     container_shares.appendChild(createSharesItem(share));
+  for (var share in Shares) {
+    if (Shares.hasOwnProperty(share)) {
+      container_shares.appendChild(createSharesItem(Shares[share]));
+     }
   }
   
   if (bkg.settings.shares) {
@@ -71,6 +73,12 @@ function onRestore() {
   }
 }
 
+/**
+ * Creates the share item for each social feed.
+ *
+ * @param {object} shareItem The item that is being shared for social.
+ * @return the DOM to create.
+ */
 function createSharesItem(shareItem) {
 
   // Render label.
@@ -99,16 +107,3 @@ function createSharesItem(shareItem) {
   
   return label;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

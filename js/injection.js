@@ -4,6 +4,7 @@
  */
 Injection = function()
 {
+  this.availableShares = [];
   this.originalTextNode = document.createTextNode(' \u00a0-\u00a0 ');
 
   this.originalShareNode = document.createElement('span');
@@ -33,10 +34,19 @@ Injection.prototype.init = function()
   // Listen when the subtree is modified for new posts.
   var googlePlusContentPane = document.querySelector('.a-b-f-i-oa');
   if (googlePlusContentPane) {
-     googlePlusContentPane.addEventListener('DOMSubtreeModified',
-                                            this.onGooglePlusContentModified.bind(this), false);
-     chrome.extension.onRequest.addListener(this.onExternalRequest.bind(this));
+    chrome.extension.sendRequest({method: 'GetSettings'}, this.onSettingsReceived.bind(this));
+    googlePlusContentPane.addEventListener('DOMSubtreeModified',
+                                           this.onGooglePlusContentModified.bind(this), false);
+    chrome.extension.onRequest.addListener(this.onExternalRequest.bind(this));
   }
+};
+
+/**
+ * Settings received, update content script.
+ */
+Injection.prototype.onSettingsReceived = function(response)
+{
+  this.availableShares = response.data;
 };
 
 /**
@@ -88,14 +98,17 @@ Injection.prototype.destroyBubble = function(event)
 /**
  * Creates the social hyperlink image.
  *
- * @param {string} name The name of the social interaction. Twitter || Facebook
- * @param {string} url The post URL.
+ * @param {string} share The social share object defined in Shares array.
  * @param {string} result The URL detail request that contains the parsed data.
  * @param {boolean} limit True if you want to limit it to 100 chars.
  *                        later one, we will figure out the max length.
  */
-Injection.prototype.createSocialLink = function(name, url, result, limit)
+Injection.prototype.createSocialLink = function(share, result)
 {
+  var image = share.icon;
+  var name = share.name;
+  var url = share.url;
+  var limit = share.trim;
   var text = limit ? result.text.substring(0, 100) : result.text;
   url = url.replace('\${link}', result.link);
   url = url.replace('\${text}',  encodeURIComponent(text.trim()));
@@ -107,7 +120,7 @@ Injection.prototype.createSocialLink = function(name, url, result, limit)
   a.onclick = this.destroyBubble.bind(this);
 
   var img = document.createElement('img');
-  img.setAttribute('src', chrome.extension.getURL('/img/' + name + '.png'));
+  img.setAttribute('src', chrome.extension.getURL(image));
   img.setAttribute('title', 'Share on ' + name);
   img.setAttribute('style', 'vertical-align: middle');
 
@@ -129,9 +142,10 @@ Injection.prototype.createBubble = function(src, event)
 
   var result = this.parseURL(src);
   if (result.status) {
-    nodeToFill.appendChild(this.createSocialLink('twitter', 'http://twitter.com/share?url=${link}&text=${text}', result, true));
-    nodeToFill.appendChild(this.createSocialLink('facebook', 'http://www.facebook.com/sharer.php?u=${link}&t=${text}', result));
-    nodeToFill.appendChild(this.createSocialLink('linkedin', 'http://www.linkedin.com/shareArticle?mini=true&url=${link}&title=${title}&summary=${text}', result));
+    for (var i in this.availableShares) {
+      var share = this.availableShares[i];
+      nodeToFill.appendChild(this.createSocialLink(share, result));
+    }
   } else {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
@@ -196,12 +210,17 @@ Injection.prototype.onGooglePlusContentModified = function(e)
   }
 };
 
-// API to handle when clicking on different HTML5 push API. This somehow doesn't
-// play well with DOMSubtreeModified
+/**
+ * API to handle when clicking on different HTML5 push API. This somehow doesn't
+ * play well with DOMSubtreeModified
+ */
 Injection.prototype.onExternalRequest = function(request, sender, sendResponse)
 {
-  if (request.method == 'render') {
+  if (request.method == 'RenderShares') {
     this.renderAll();
+  }
+  else if (request.method == 'SettingsUpdated') {
+    this.onSettingsReceived(request);
   }
 };
 
