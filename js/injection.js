@@ -17,14 +17,16 @@ Injection = function() {
   this.originalBubbleContainer.setAttribute('class', 'tk3N6e-Ca');
   this.originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px');
   this.originalBubbleContainer.innerHTML =
-      // content
-      '<div class="tk3N6e-Ca-p-b">'+
-          '<div class="lgPbs" style="margin-right: 1em; margin-bottom: 0px;">Share on...</div>'+
-      '</div>'+
-      // cross to close
-      '<div class="tk3N6e-Ca-kmh2Gb-b tk3N6e-Ca-kmh2Gb" role="button" tabindex="0"><div class="tk3N6e-Ca-uqvIpc"></div></div>'+
-      // arrow on top
-      '<div class="tk3N6e-Ca-kc-b tk3N6e-Ca-kc tk3N6e-Ca-Hi" style="left: 20px; "><div class="tk3N6e-Ca-jQ8oHc"></div><div class="tk3N6e-Ca-ez0xG"></div></div>';
+      // Content
+      '<div class="tk3N6e-Ca-p-b">' +
+          '<div class="lgPbs" style="margin-bottom: 0px;"></div>' +
+      '</div>' +
+      // Cross to close
+      '<div class="tk3N6e-Ca-kmh2Gb-b tk3N6e-Ca-kmh2Gb" role="button" tabindex="0" style="padding: 5px"><div class="tk3N6e-Ca-uqvIpc"></div></div>' +
+      // Arrow on top
+      '<div class="tk3N6e-Ca-kc-b tk3N6e-Ca-kc tk3N6e-Ca-Hi" style="left: 20px; "><div class="tk3N6e-Ca-jQ8oHc"></div><div class="tk3N6e-Ca-ez0xG"></div></div>' +
+      // Settings on bottom
+      '<div class="gp-crx-settings" style="cursor: pointer;position: absolute;right: 0;padding-right: 5px;font-size: 10px; color: #aaa" role="button" tabindex="0">options</div>'
 };
 
 /**
@@ -93,6 +95,16 @@ Injection.prototype.destroyBubble = function(event) {
 };
 
 /**
+ * Visits the options page.
+ * 
+ * @param {Object<MouseEvent>} event The mouse event.
+ */
+Injection.prototype.visitOptions = function(event) {
+  this.destroyBubble(event);
+  window.open(chrome.extension.getURL('options.html'));
+};
+
+/**
  * Creates the social hyperlink image.
  *
  * @param {string} share The social share object defined in Shares array.
@@ -147,6 +159,9 @@ Injection.prototype.createBubble = function(src, event) {
 
   var closeCross = bubbleContainer.querySelector('.tk3N6e-Ca-kmh2Gb');
   closeCross.onclick = this.destroyBubble.bind(this);
+
+  var settingsButton = bubbleContainer.querySelector('.gp-crx-settings');
+  settingsButton.onclick = this.visitOptions.bind(this);
   
   src.parentNode.appendChild(bubbleContainer);
 };
