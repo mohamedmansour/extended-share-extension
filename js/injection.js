@@ -175,8 +175,15 @@ Injection.prototype.onSendClick = function(event)
 /**
  * Render all the items in the current page.
  */
-Injection.prototype.renderAll = function()
+Injection.prototype.resetAndRenderAll = function()
 {
+  var googlePlusContentPane = document.querySelector('.a-b-f-i-oa');
+  if (googlePlusContentPane) {
+    googlePlusContentPane.removeEventListener('DOMSubtreeModified',
+                                              this.onGooglePlusContentModified.bind(this), false);
+    googlePlusContentPane.addEventListener('DOMSubtreeModified',
+                                           this.onGooglePlusContentModified.bind(this), false);
+  }
   var actionBars = document.querySelectorAll('.a-f-i-bg');
   for (var i = 0; i < actionBars.length; i++) {
     this.renderItem(actionBars[i]);
@@ -217,7 +224,7 @@ Injection.prototype.onGooglePlusContentModified = function(e)
 Injection.prototype.onExternalRequest = function(request, sender, sendResponse)
 {
   if (request.method == 'RenderShares') {
-    this.renderAll();
+    this.resetAndRenderAll();
   }
   else if (request.method == 'SettingsUpdated') {
     this.onSettingsReceived(request);
