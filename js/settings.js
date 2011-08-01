@@ -1,4 +1,8 @@
-// Global Settings.
+/**
+ * Global Settings.
+ *
+ * @author Mohamed Mansour 2011 (http://mohamedmansour.com)
+ */
 settings = {
   get version() {
     return localStorage['version'];

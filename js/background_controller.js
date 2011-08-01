@@ -1,9 +1,10 @@
 /**
  * Manages a single instance of the entire application.
+ *
+ * @author Mohamed Mansour 2011 (http://mohamedmansour.com)
  * @constructor
  */
-BackgroundController = function()
-{
+BackgroundController = function() {
   this.onExtensionLoaded();
 };
 
@@ -11,8 +12,7 @@ BackgroundController = function()
  * Triggered when the extension just loaded. Should be the first thing
  * that happens when chrome loads the extension.
  */
-BackgroundController.prototype.onExtensionLoaded = function()
-{
+BackgroundController.prototype.onExtensionLoaded = function() {
   var currVersion = chrome.app.getDetails().version;
   var prevVersion = settings.version;
   if (currVersion != prevVersion) {
@@ -29,8 +29,7 @@ BackgroundController.prototype.onExtensionLoaded = function()
 /**
  * Triggered when the extension just installed.
  */
-BackgroundController.prototype.onInstall = function()
-{
+BackgroundController.prototype.onInstall = function() {
   this.doWorkTabs(function(tab) {
     chrome.tabs.executeScript(tab.id, { file: '/js/injection.js',
                               allFrames: true });
@@ -43,8 +42,7 @@ BackgroundController.prototype.onInstall = function()
  *
  * @param {Function<Tab>} callback The callback with the tab results.
  */
-BackgroundController.prototype.doWorkTabs = function(callback)
-{
+BackgroundController.prototype.doWorkTabs = function(callback) {
   self = this;
   chrome.windows.getAll({ populate: true }, function(windows) {
     for (var w = 0; w < windows.length; w++) {
@@ -64,8 +62,7 @@ BackgroundController.prototype.doWorkTabs = function(callback)
  *
  * @return The JSON object repsenting the current Shares. 
  */
-BackgroundController.prototype.prepareShareResponse = function()
-{
+BackgroundController.prototype.prepareShareResponse = function() {
   var result = {};
   if (settings.shares) {
     var shares = {};
@@ -81,8 +78,7 @@ BackgroundController.prototype.prepareShareResponse = function()
 /**
  * Inform all Content Scripts that new settings are available.
  */
-BackgroundController.prototype.updateSettings = function()
-{
+BackgroundController.prototype.updateSettings = function() {
   self = this;
   this.doWorkTabs(function(tab) {
     chrome.tabs.sendRequest(tab.id, { method: 'SettingsUpdated', data: self.prepareShareResponse() });
@@ -94,8 +90,7 @@ BackgroundController.prototype.updateSettings = function()
  
  * @param {string} url The URL to check if valid.
  */
-BackgroundController.prototype.isValidURL = function(url)
-{
+BackgroundController.prototype.isValidURL = function(url) {
   return (url.indexOf('https://plus.google.com') == 0 ||
           url.indexOf('http://plus.google.com') == 0);
 };
@@ -107,15 +102,13 @@ BackgroundController.prototype.isValidURL = function(url)
  * @param {string} previous The previous version.
  * @param {string} current  The new version updating to.
  */
-BackgroundController.prototype.onUpdate = function(previous, current)
-{
+BackgroundController.prototype.onUpdate = function(previous, current) {
 };
 
 /**
  * Initialize the main Background Controller
  */
-BackgroundController.prototype.init = function()
-{
+BackgroundController.prototype.init = function() {
   // Listens on new tab updates. Google+ uses new sophisticated HTML5 history
   // push API, so content scripts don't get recognized always. We inject
   // the content script once, and listen for URL changes.
@@ -131,8 +124,7 @@ BackgroundController.prototype.init = function()
  * @param {object} changeInfo lists the changes of the states.
  * @param {object<Tab>} tab The state of the tab that was updated.
  */
-BackgroundController.prototype.tabUpdated = function(tabId, changeInfo, tab)
-{
+BackgroundController.prototype.tabUpdated = function(tabId, changeInfo, tab) {
   if (changeInfo.status == 'complete') {
     chrome.tabs.sendRequest(tabId, { method: 'RenderShares' });
   }
@@ -145,8 +137,7 @@ BackgroundController.prototype.tabUpdated = function(tabId, changeInfo, tab)
  * @param {object} sender The sender object to know what the source it.
  * @param {Function} sendResponse The response callback.
  */
-BackgroundController.prototype.onExternalRequest = function(request, sender, sendResponse)
-{
+BackgroundController.prototype.onExternalRequest = function(request, sender, sendResponse) {
   if (request.method == 'GetSettings') {
     sendResponse({ data: this.prepareShareResponse() });
   }

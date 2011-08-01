@@ -1,3 +1,9 @@
+/**
+ * Options controller.
+ *
+ * @author Mohamed Mansour 2011 (http://mohamedmansour.com)
+ */
+ 
 // Extensions pages can all have access to the bacground page.
 var bkg = chrome.extension.getBackgroundPage();
 

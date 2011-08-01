@@ -11,6 +11,8 @@
  *   - ${link} The link to share.
  *   - ${text} The text to place.
  *   - ${title} The title of the post.
+ *
+ * @author Mohamed Mansour 2011 (http://mohamedmansour.com)
  */
 Shares = {
   twitter: {

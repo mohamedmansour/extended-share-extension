@@ -1,4 +1,10 @@
 /**
+ * Global functions.
+ *
+ * @author Mohamed Mansour 2011 (http://mohamedmansour.com)
+ */
+
+/**
  * Short form for getting elements by id.
  * @param {string} id The id.
  */

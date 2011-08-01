@@ -1,9 +1,10 @@
 /**
  * Injection Content Script.
+ *
+ * @author Mohamed Mansour 2011 (http://mohamedmansour.com)
  * @constructor
  */
-Injection = function()
-{
+Injection = function() {
   this.availableShares = [];
   this.originalTextNode = document.createTextNode(' \u00a0-\u00a0 ');
 
@@ -29,8 +30,7 @@ Injection = function()
 /**
  * Initialize the events that will be listening within this DOM.
  */
-Injection.prototype.init = function()
-{
+Injection.prototype.init = function() {
   // Listen when the subtree is modified for new posts.
   var googlePlusContentPane = document.querySelector('.a-b-f-i-oa');
   if (googlePlusContentPane) {
@@ -44,8 +44,7 @@ Injection.prototype.init = function()
 /**
  * Settings received, update content script.
  */
-Injection.prototype.onSettingsReceived = function(response)
-{
+Injection.prototype.onSettingsReceived = function(response) {
   this.availableShares = response.data;
 };
 
@@ -55,8 +54,7 @@ Injection.prototype.onSettingsReceived = function(response)
  *
  * @param {Object<HTMLElement>} dom The parent DOM source for the item.
  */
-Injection.prototype.parseURL = function(dom)
-{
+Injection.prototype.parseURL = function(dom) {
   var parent = dom.parentNode.parentNode.parentNode;
   var link = parent.querySelector('a[target="_blank"]');
   var text = '';
@@ -86,8 +84,7 @@ Injection.prototype.parseURL = function(dom)
  *
  * @param {Object<MouseEvent>} event The mouse event.
  */
-Injection.prototype.destroyBubble = function(event)
-{
+Injection.prototype.destroyBubble = function(event) {
   var element = event.srcElement.parentNode.parentNode;
   if (element && element.className != 'tk3N6e-Ca') {
     element = element.parentNode.parentNode;
@@ -103,8 +100,7 @@ Injection.prototype.destroyBubble = function(event)
  * @param {boolean} limit True if you want to limit it to 100 chars.
  *                        later one, we will figure out the max length.
  */
-Injection.prototype.createSocialLink = function(share, result)
-{
+Injection.prototype.createSocialLink = function(share, result) {
   var image = share.icon;
   var name = share.name;
   var url = share.url;
@@ -135,8 +131,7 @@ Injection.prototype.createSocialLink = function(share, result)
  * @param {number} y The mouse y position.
  * @param {Object<HTMLElement>} src The parent DOM source for the item.
  */
-Injection.prototype.createBubble = function(src, event)
-{
+Injection.prototype.createBubble = function(src, event) {
   var bubbleContainer = this.originalBubbleContainer.cloneNode(true);
   var nodeToFill = bubbleContainer.querySelector('.lgPbs');
 
@@ -161,8 +156,7 @@ Injection.prototype.createBubble = function(src, event)
  *
  * @param {Object<MouseEvent>} event The mouse event.
  */
-Injection.prototype.onSendClick = function(event)
-{
+Injection.prototype.onSendClick = function(event) {
   var element = event.srcElement.parentNode.querySelector('.tk3N6e-Ca');
   if (!element) {
     this.createBubble(event.srcElement, event);
@@ -195,8 +189,7 @@ Injection.prototype.resetAndRenderAll = function()
  *
  * @param {Object<ModifiedDOM>} event modified event.
  */
-Injection.prototype.renderItem = function(itemDOM)
-{
+Injection.prototype.renderItem = function(itemDOM) {
   if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
     var shareNode = this.originalShareNode.cloneNode(true);
     shareNode.onclick = this.onSendClick.bind(this);
@@ -209,8 +202,7 @@ Injection.prototype.renderItem = function(itemDOM)
 /**
  * Render the "Share on ..." Link on each post.
  */
-Injection.prototype.onGooglePlusContentModified = function(e)
-{
+Injection.prototype.onGooglePlusContentModified = function(e) {
   if (e.target.id.indexOf('update') == 0) {
     var actionBar = e.target.querySelector('.a-f-i-bg');
     this.renderItem(actionBar);
@@ -221,8 +213,7 @@ Injection.prototype.onGooglePlusContentModified = function(e)
  * API to handle when clicking on different HTML5 push API. This somehow doesn't
  * play well with DOMSubtreeModified
  */
-Injection.prototype.onExternalRequest = function(request, sender, sendResponse)
-{
+Injection.prototype.onExternalRequest = function(request, sender, sendResponse) {
   if (request.method == 'RenderShares') {
     this.resetAndRenderAll();
   }
