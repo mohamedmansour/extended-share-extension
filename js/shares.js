@@ -36,5 +36,11 @@ Shares = {
     icon: '/img/tumblr.png',
     url: 'http://www.tumblr.com/share?v=3&u=${link}&t=${text}',
     trim: false
+  },
+  identica: {
+    name: 'Identica',
+    icon: '/img/identica.png',
+    url: 'http://identi.ca/notice/new?status_textarea=${text} ${link}',
+    trim: false
   }
 };
