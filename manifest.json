@@ -1,18 +1,18 @@
 {
   "name": "Extended Share for Google Plus",
-  "version": "1.5.3",
-  "description": "Extends Google+ to share to Facebook, LinkedIn and Twitter.",
+  "version": "1.5.5",
+  "description": "Extends Google+ to share to Facebook, LinkedIn, Twitter, and many more.",
   "icons": {
     "16": "img/icon16.png",
     "32": "img/icon32.png",
     "48": "img/icon48.png",
     "128": "img/icon128.png"
   },
-  "permissions": ["tabs", "https://plus.google.com/*", "http://plus.google.com/*"],
+  "permissions": ["tabs", "https://plus.google.com/*"],
   "background_page": "background.html",
   "options_page": "options.html",
   "content_scripts": [{
-      "matches": ["https://plus.google.com/*", "http://plus.google.com/*"],
+      "matches": ["https://plus.google.com/*"],
       "js": ["js/injection.js"],
       "run_at": "document_end",
       "all_frames": true
