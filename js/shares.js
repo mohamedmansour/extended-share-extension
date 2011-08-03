@@ -56,5 +56,11 @@ Shares = {
     icon: '/img/reddit.png',
     url: 'http://www.reddit.com/submit?url=${link}&title=${title}',
     trim: false
+  },
+  pingfm: {
+    name: 'ping.fm',
+    icon: '/img/pingfm.png',
+    url: 'http://ping.fm/ref/?link=${link}&title=${title}',
+    trim: false
   }
 };
