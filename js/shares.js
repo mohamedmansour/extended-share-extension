@@ -62,5 +62,11 @@ Shares = {
     icon: '/img/pingfm.png',
     url: 'http://ping.fm/ref/?link=${link}&title=${title}',
     trim: false
+  },
+  hyves: {
+    name: 'hyves',
+    icon: '/img/hyves.png',
+    url: 'http://www.hyves-share.nl/button/tip/?tipcategoryid=12&rating=5&title=${title}&body=${text}',
+    trim: false
   }
 };
