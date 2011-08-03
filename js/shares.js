@@ -44,5 +44,11 @@ Shares = {
     icon: '/img/identica.png',
     url: 'http://identi.ca/notice/new?status_textarea=${text} ${link}',
     trim: false
+  },
+  posterous: {
+    name: 'Posterous',
+    icon: '/img/posterous.png',
+    url: ' http://posterous.com/share?linkto=${link}&title=${title}&selection=${text}',
+    trim: false
   }
 };
