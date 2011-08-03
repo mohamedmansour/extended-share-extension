@@ -1,15 +1,15 @@
-Google+ Twitter and Facebook Share Chrome Extension
+Extended Share for Google+ Chrome Extension
 =====================================
 
 This Google Chrome extension will inject a link to your Google Plus profile so
-that you can share your post to Twitter or Facebook.
+that you can share your post to many social networks.
 
 Contribute!
 -----------------
 Please submit your pull requests if you have anything interesting! Let me know
 prior implementation :)
 
-Follow me on Twitter [@mohamedmansour](http://twitter.com/mohamedmansour)
+Follow me on [Google+](https://plus.google.com/116805285176805120365/about)
 
 Icons
 -----------------
