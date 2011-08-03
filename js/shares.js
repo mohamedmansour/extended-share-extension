@@ -50,5 +50,11 @@ Shares = {
     icon: '/img/posterous.png',
     url: ' http://posterous.com/share?linkto=${link}&title=${title}&selection=${text}',
     trim: false
+  },
+  reddit: {
+    name: 'reddit',
+    icon: '/img/reddit.png',
+    url: 'http://www.reddit.com/submit?url=${link}&title=${title}',
+    trim: false
   }
 };
