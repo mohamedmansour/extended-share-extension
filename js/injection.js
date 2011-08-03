@@ -10,31 +10,42 @@ Injection = function() {
 
   this.originalShareNode = document.createElement('span');
   this.originalShareNode.setAttribute('role', 'button');
-  this.originalShareNode.setAttribute('class', 'd-h external-share');
+  this.originalShareNode.setAttribute('class', 'd-k external-share');
   this.originalShareNode.innerHTML = 'Share on...';
 
   this.originalBubbleContainer = document.createElement('div');
-  this.originalBubbleContainer.setAttribute('class', 'tk3N6e-Ca');
-  this.originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px');
+  this.originalBubbleContainer.setAttribute('class', 'l-D');
+  this.originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px; opacity: 1; ');
   this.originalBubbleContainer.innerHTML =
-      // Content
-      '<div class="tk3N6e-Ca-p-b">' +
-          '<div class="lgPbs" style="margin-bottom: 0px;"></div>' +
+      '<div class="l-D-n-b">' + 
+      // Content.
+      '  <div class="Iy" style="width: auto">' + 
+      '    <div class="Jy" style="margin-bottom: 0px;"></div>' + 
+      '  </div>' + 
+      '</div>' + 
+      // Close buttoin.
+      '<div class="l-D-ei-b l-D-ei" role="button" tabindex="0" style="padding: 5px"><div class="l-D-gp"></div></div>' +
+      // Arrow on top.
+      '<div class="l-D-Hb-b l-D-Hb l-D-Id" style="left: 20px; ">' + 
+      '  <div class="l-D-fd"></div>' + 
+      '  <div class="l-D-ed"></div>' + 
       '</div>' +
-      // Cross to close
-      '<div class="tk3N6e-Ca-kmh2Gb-b tk3N6e-Ca-kmh2Gb" role="button" tabindex="0" style="padding: 5px"><div class="tk3N6e-Ca-uqvIpc"></div></div>' +
-      // Arrow on top
-      '<div class="tk3N6e-Ca-kc-b tk3N6e-Ca-kc tk3N6e-Ca-Hi" style="left: 20px; "><div class="tk3N6e-Ca-jQ8oHc"></div><div class="tk3N6e-Ca-ez0xG"></div></div>' +
-      // Settings on bottom
-      '<div class="gp-crx-settings" style="cursor: pointer;position: absolute;right: 0;padding-right: 5px;font-size: 10px; color: #aaa" role="button" tabindex="0">options</div>'
+      '<div class="gp-crx-settings" style="cursor: pointer;position: absolute;right: 0;padding-right: 5px;font-size: 10px; color: #aaa" role="button" tabindex="0">options</div>';
 };
+
+Injection.STREAM_CONTAINER_ID = 'er';
+Injection.STREAM_ARTICLE_ID = 'Uj';
+Injection.STREAM_ACTION_BAR_ID = 'Xn';
+Injection.BUBBLE_CONTAINER_ID = 'l-D';
+Injection.BUBBLE_SHARE_CONTENT_ID = 'Jy';
+Injection.BUBBLE_CLOSE_ID = 'l-D-ei-b';
 
 /**
  * Initialize the events that will be listening within this DOM.
  */
 Injection.prototype.init = function() {
   // Listen when the subtree is modified for new posts.
-  var googlePlusContentPane = document.querySelector('.a-b-f-i-oa');
+  var googlePlusContentPane = document.querySelector('.' + Injection.STREAM_CONTAINER_ID);
   if (googlePlusContentPane) {
     chrome.extension.sendRequest({method: 'GetSettings'}, this.onSettingsReceived.bind(this));
     googlePlusContentPane.addEventListener('DOMSubtreeModified',
@@ -62,7 +73,7 @@ Injection.prototype.parseURL = function(dom) {
   var text = '';
   var title = '';
   if (link) {
-    text = parent.querySelector('.a-b-f-i-p-R');
+    text = parent.querySelector('.' + Injection.STREAM_ARTICLE_ID);
     if (text) {
       text = text.innerText;
     }
@@ -87,9 +98,9 @@ Injection.prototype.parseURL = function(dom) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.destroyBubble = function(event) {
-  var element = event.srcElement.parentNode.parentNode;
-  if (element && element.className != 'tk3N6e-Ca') {
-    element = element.parentNode.parentNode;
+  var element = event.srcElement;
+  while (element.className != Injection.BUBBLE_CONTAINER_ID) {
+    element = element.parentNode;
   }
   element.parentNode.removeChild(element);
 };
@@ -145,7 +156,7 @@ Injection.prototype.createSocialLink = function(share, result) {
  */
 Injection.prototype.createBubble = function(src, event) {
   var bubbleContainer = this.originalBubbleContainer.cloneNode(true);
-  var nodeToFill = bubbleContainer.querySelector('.lgPbs');
+  var nodeToFill = bubbleContainer.querySelector('.' + Injection.BUBBLE_SHARE_CONTENT_ID);
 
   var result = this.parseURL(src);
   if (result.status) {
@@ -157,7 +168,7 @@ Injection.prototype.createBubble = function(src, event) {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
 
-  var closeCross = bubbleContainer.querySelector('.tk3N6e-Ca-kmh2Gb');
+  var closeCross = bubbleContainer.querySelector('.' + Injection.BUBBLE_CLOSE_ID);
   closeCross.onclick = this.destroyBubble.bind(this);
 
   var settingsButton = bubbleContainer.querySelector('.gp-crx-settings');
@@ -172,7 +183,7 @@ Injection.prototype.createBubble = function(src, event) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.onSendClick = function(event) {
-  var element = event.srcElement.parentNode.querySelector('.tk3N6e-Ca');
+  var element = event.srcElement.parentNode.querySelector('.' + Injection.BUBBLE_CONTAINER_ID);
   if (!element) {
     this.createBubble(event.srcElement, event);
   }
@@ -186,14 +197,14 @@ Injection.prototype.onSendClick = function(event) {
  */
 Injection.prototype.resetAndRenderAll = function()
 {
-  var googlePlusContentPane = document.querySelector('.a-b-f-i-oa');
+  var googlePlusContentPane = document.querySelector('.'  + Injection.STREAM_CONTAINER_ID);
   if (googlePlusContentPane) {
     googlePlusContentPane.removeEventListener('DOMSubtreeModified',
                                               this.onGooglePlusContentModified.bind(this), false);
     googlePlusContentPane.addEventListener('DOMSubtreeModified',
                                            this.onGooglePlusContentModified.bind(this), false);
   }
-  var actionBars = document.querySelectorAll('.a-f-i-bg');
+  var actionBars = document.querySelectorAll('.' + Injection.STREAM_ACTION_BAR_ID);
   for (var i = 0; i < actionBars.length; i++) {
     this.renderItem(actionBars[i]);
   }
@@ -219,7 +230,7 @@ Injection.prototype.renderItem = function(itemDOM) {
  */
 Injection.prototype.onGooglePlusContentModified = function(e) {
   if (e.target.id.indexOf('update') == 0) {
-    var actionBar = e.target.querySelector('.a-f-i-bg');
+    var actionBar = document.querySelector('.' + Injection.STREAM_ACTION_BAR_ID);
     this.renderItem(actionBar);
   }
 };
