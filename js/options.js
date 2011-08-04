@@ -64,7 +64,7 @@ function onRestore() {
   var container_shares = $('container-shares');
   for (var share in Shares) {
     if (Shares.hasOwnProperty(share)) {
-      container_shares.appendChild(createSharesItem(Shares[share]));
+      container_shares.appendChild(createSharesItem(share));
      }
   }
   
@@ -85,30 +85,25 @@ function onRestore() {
  * @param {object} shareItem The item that is being shared for social.
  * @return the DOM to create.
  */
-function createSharesItem(shareItem) {
+function createSharesItem(share) {
+  var shareItem = Shares[share];
 
   // Render label.
-  var item_name = shareItem.name.toLowerCase();
   var label = document.createElement('label');
   label.setAttribute('class', 'shareIcon');
-  label.setAttribute('for', item_name);
-
-  // Text formatted into Camel Case
-  var item_formatted = item_name.split('_').map(function(v){
-    return v.slice(0,1).toUpperCase() + v.slice(1);
-  }).join(' ');
+  label.setAttribute('for', share);
 
   // Render input.
   var input = document.createElement('input');
   input.setAttribute('type', 'checkbox');
   input.setAttribute('name', 'shares');
-  input.setAttribute('id', item_name);
+  input.setAttribute('id', share);
   label.appendChild(input);
 
   // Render icon.
   var icon = document.createElement('image');
   icon.src = shareItem.icon;
-  icon.title = item_formatted;
+  icon.title = shareItem.name;
   label.appendChild(icon);
   
   return label;
