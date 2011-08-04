@@ -48,11 +48,11 @@ Shares = {
   posterous: {
     name: 'Posterous',
     icon: '/img/posterous.png',
-    url: ' http://posterous.com/share?linkto=${link}&title=${title}&selection=${text}',
+    url: 'http://posterous.com/share?linkto=${link}&title=${title}&selection=${text}',
     trim: false
   },
   reddit: {
-    name: 'reddit',
+    name: 'Reddit',
     icon: '/img/reddit.png',
     url: 'http://www.reddit.com/submit?url=${link}&title=${title}',
     trim: false
