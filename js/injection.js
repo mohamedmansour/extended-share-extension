@@ -160,11 +160,19 @@ Injection.prototype.createBubble = function(src, event) {
 
   var result = this.parseURL(src);
   if (result.status) {
+    var numberOfShares = 0;
     for (var i in this.availableShares) {
-      var share = this.availableShares[i];
-      nodeToFill.appendChild(this.createSocialLink(share, result));
+      if (this.availableShares.hasOwnProperty(i)) {
+        numberOfShares++;
+        var share = this.availableShares[i];
+        nodeToFill.appendChild(this.createSocialLink(share, result));
+      }
     }
-  } else {
+    if (numberOfShares == 0) {
+      nodeToFill.appendChild(document.createTextNode('No share links enabled, visit options to add a couple!'));
+    }
+  }
+  else {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
 
