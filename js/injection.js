@@ -14,31 +14,31 @@ Injection = function() {
   this.originalShareNode.innerHTML = 'Share on...';
 
   this.originalBubbleContainer = document.createElement('div');
-  this.originalBubbleContainer.setAttribute('class', 'l-D');
+  this.originalBubbleContainer.setAttribute('class', 'j-B');
   this.originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px; opacity: 1; ');
   this.originalBubbleContainer.innerHTML =
-      '<div class="l-D-n-b">' + 
+      '<div class="j-B-m-c">' + 
       // Content.
-      '  <div class="Iy" style="width: auto">' + 
-      '    <div class="Jy" style="margin-bottom: 0px;"></div>' + 
+      '  <div class="Fn" style="width: auto">' + 
+      '    <div class="d-q-p" style="margin-bottom: 0px;"></div>' + 
       '  </div>' + 
       '</div>' + 
-      // Close buttoin.
-      '<div class="l-D-ei-b l-D-ei" role="button" tabindex="0" style="padding: 5px"><div class="l-D-gp"></div></div>' +
+      // Close button.
+      '<div class="j-B-Ih-c j-B-Ih" role="button" tabindex="0" style="padding: 5px"><div class="j-B-ap"></div></div>' +
       // Arrow on top.
-      '<div class="l-D-Hb-b l-D-Hb l-D-Id" style="left: 20px; ">' + 
-      '  <div class="l-D-fd"></div>' + 
-      '  <div class="l-D-ed"></div>' + 
+      '<div class="j-B-Vb-c j-B-Vb j-B-ud" style="left: 20px; ">' + 
+      '  <div class="j-B-Wc"></div>' + 
+      '  <div class="j-B-Vc"></div>' + 
       '</div>' +
       '<div class="gp-crx-settings" style="cursor: pointer;position: absolute;right: 0;padding-right: 5px;font-size: 10px; color: #aaa" role="button" tabindex="0">options</div>';
 };
 
-Injection.STREAM_CONTAINER_ID = 'er';
-Injection.STREAM_ARTICLE_ID = 'Uj';
-Injection.STREAM_ACTION_BAR_ID = 'Xn';
-Injection.BUBBLE_CONTAINER_ID = 'l-D';
-Injection.BUBBLE_SHARE_CONTENT_ID = 'Jy';
-Injection.BUBBLE_CLOSE_ID = 'l-D-ei-b';
+Injection.STREAM_CONTAINER_ID = 'Wq';
+Injection.STREAM_ARTICLE_ID = 'Gt';
+Injection.STREAM_ACTION_BAR_ID = 'Jn';
+Injection.BUBBLE_CONTAINER_ID = 'j-B';
+Injection.BUBBLE_SHARE_CONTENT_ID = 'd-q-p';
+Injection.BUBBLE_CLOSE_ID = 'j-B-ap';
 
 /**
  * Initialize the events that will be listening within this DOM.
