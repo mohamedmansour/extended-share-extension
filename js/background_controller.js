@@ -58,30 +58,15 @@ BackgroundController.prototype.doWorkTabs = function(callback) {
 };
 
 /**
- * Prepares the objects for the shares installed for the user.
- *
- * @return The JSON object repsenting the current Shares. 
- */
-BackgroundController.prototype.prepareShareResponse = function() {
-  var result = {};
-  if (settings.shares) {
-    var shares = {};
-    for (var i in settings.shares) {
-      var share = settings.shares[i];
-      shares[share] = Shares[share]
-    }
-    result = shares;
-  }
-  return result;
-};
-
-/**
  * Inform all Content Scripts that new settings are available.
  */
 BackgroundController.prototype.updateSettings = function() {
   self = this;
   this.doWorkTabs(function(tab) {
-    chrome.tabs.sendRequest(tab.id, { method: 'SettingsUpdated', data: self.prepareShareResponse() });
+    chrome.tabs.sendRequest(tab.id, {
+        method: 'SettingsUpdated',
+        data: settings.shares
+    });
   });
 };
 
@@ -139,7 +124,9 @@ BackgroundController.prototype.tabUpdated = function(tabId, changeInfo, tab) {
  */
 BackgroundController.prototype.onExternalRequest = function(request, sender, sendResponse) {
   if (request.method == 'GetSettings') {
-    sendResponse({ data: this.prepareShareResponse() });
+    sendResponse({
+        data: settings.shares
+    });
   }
   else {
     sendResponse({});

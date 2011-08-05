@@ -11,7 +11,7 @@ Injection = function() {
   this.originalShareNode = document.createElement('span');
   this.originalShareNode.setAttribute('role', 'button');
   this.originalShareNode.setAttribute('class', 'd-k external-share');
-  this.originalShareNode.innerHTML = 'Share on...';
+  this.originalShareNode.innerHTML = 'Share on ...';
 
   this.originalBubbleContainer = document.createElement('div');
   this.originalBubbleContainer.setAttribute('class', 'j-B');
@@ -55,9 +55,45 @@ Injection.prototype.init = function() {
 };
 
 /**
+ * This does an array comparison to see if two arrays are the same. This assumes the arrays are
+ * already sorted.
+ *
+ * @param {Array<string>} a sorted array.
+ * @param {Array<string>} b sorted array.
+ * @return true if arrays are the same otherwise false.
+ */
+Injection.prototype.compareArrays = function(a, b) {
+  if (a.length != b.length) {
+    return false;
+  }
+  for (var i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) { 
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
  * Settings received, update content script.
  */
-Injection.prototype.onSettingsReceived = function(response) {
+Injection.prototype.onSettingsReceived = function(response) { 
+  // If only a single share is enabled, just rename all the links to that share name.
+  if (!this.compareArrays(this.availableShares, response.data)) {
+    var existingShares = document.querySelectorAll('.external-share');
+    if (response.data.length == 1) {
+      var shareName = Shares[response.data[0]].name;
+      for (var i in existingShares) {
+        existingShares[i].innerHTML = 'Share on ' + shareName;
+      }
+    }
+    else {
+      for (var i in existingShares) {
+        existingShares[i].innerHTML = 'Share on ...';
+      }
+    }
+  }
+
   this.availableShares = response.data;
 };
 
@@ -116,12 +152,10 @@ Injection.prototype.visitOptions = function(event) {
 };
 
 /**
- * Creates the social hyperlink image.
+ * Computes the 
  *
  * @param {string} share The social share object defined in Shares array.
  * @param {string} result The URL detail request that contains the parsed data.
- * @param {boolean} limit True if you want to limit it to 100 chars.
- *                        later one, we will figure out the max length.
  */
 Injection.prototype.createSocialLink = function(share, result) {
   var image = share.icon;
@@ -132,14 +166,24 @@ Injection.prototype.createSocialLink = function(share, result) {
   url = url.replace('\${link}', encodeURIComponent(result.link));
   url = url.replace('\${text}',  encodeURIComponent(text.trim()));
   url = url.replace('\${title}', encodeURIComponent(result.title));
+  return url;
+};
 
+/**
+ * Creates the social hyperlink image.
+ *
+ * @param {string} icon The image for the share name.
+ * @param {string} name The social name 
+ * @param {string} url The URL to share.
+ */
+Injection.prototype.createSocialIcon = function(icon, name, url) {
   var a = document.createElement('a');
   a.setAttribute('href', url);
   a.setAttribute('style', 'margin: 0 .4em');
   a.onclick = this.destroyBubble.bind(this);
 
   var img = document.createElement('img');
-  img.setAttribute('src', chrome.extension.getURL(image));
+  img.setAttribute('src', chrome.extension.getURL(icon));
   img.setAttribute('title', 'Share on ' + name);
   img.setAttribute('style', 'vertical-align: middle');
 
@@ -160,15 +204,19 @@ Injection.prototype.createBubble = function(src, event) {
 
   var result = this.parseURL(src);
   if (result.status) {
-    var numberOfShares = 0;
-    for (var i in this.availableShares) {
-      if (this.availableShares.hasOwnProperty(i)) {
-        numberOfShares++;
-        var share = this.availableShares[i];
-        nodeToFill.appendChild(this.createSocialLink(share, result));
+    if (this.availableShares.length > 1) { // User has some shares, display them.
+      for (var i in this.availableShares) {
+        var share = Shares[this.availableShares[i]];
+        var url = this.createSocialLink(share, result);
+        nodeToFill.appendChild(this.createSocialIcon(share.icon, share.name, url));
       }
     }
-    if (numberOfShares == 0) {
+    else if (this.availableShares.length == 1) { // Single share, auto link it directly.
+      var url = this.createSocialLink(Shares[this.availableShares[0]], result);
+      window.open(url);
+      return; // TODO(mohamed): Figure out a better way.
+    }
+    else { // Nothing setup.
       nodeToFill.appendChild(document.createTextNode('No share links enabled, visit options to add a couple!'));
     }
   }
@@ -226,6 +274,9 @@ Injection.prototype.resetAndRenderAll = function()
 Injection.prototype.renderItem = function(itemDOM) {
   if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
     var shareNode = this.originalShareNode.cloneNode(true);
+    if (this.availableShares.length == 1) {
+      shareNode.innerHTML = 'Share on ' + Shares[this.availableShares[0]].name;
+    }
     shareNode.onclick = this.onSendClick.bind(this);
     itemDOM.appendChild(this.originalTextNode.cloneNode(true));
     itemDOM.appendChild(shareNode);
@@ -237,7 +288,7 @@ Injection.prototype.renderItem = function(itemDOM) {
  * Render the "Share on ..." Link on each post.
  */
 Injection.prototype.onGooglePlusContentModified = function(e) {
-  if (e.target.id.indexOf('update') == 0) {
+  if (e.target.nodeType == Node.ELEMENT_NODE && e.target.id.indexOf('update') == 0) {
     var actionBar = document.querySelector('.' + Injection.STREAM_ACTION_BAR_ID);
     this.renderItem(actionBar);
   }

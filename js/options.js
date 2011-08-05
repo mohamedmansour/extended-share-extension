@@ -34,12 +34,9 @@ function onSave() {
   bkg.settings.opt_out = $('opt_out').checked;
 
   var shares = [];
-  var shareNodes = document.querySelectorAll("input[name='shares']");
-  for (var node in shareNodes) {
-    var share = shareNodes[node];
-    if (share.checked) {
-      shares.push(share.id);
-    }
+  var shareNodes = document.querySelectorAll("input[name='shares']:checked");
+  for (var i = 0; i < shareNodes.length; i++) {
+    shares.push(shareNodes[i].id);
   }
   bkg.settings.shares = shares;
   bkg.backgroundController.updateSettings();

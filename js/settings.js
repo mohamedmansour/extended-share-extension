@@ -19,11 +19,11 @@ settings = {
   },
   get shares() {
     var key = localStorage['shares'];
-    return (typeof key == 'undefined') ? ['twitter', 'facebook'] : key.split(', ');
+    return (typeof key == 'undefined') ? ['facebook', 'twitter'] : (key == '' ? [] : key.split(', '));
   },
   set shares(val) {
     if (typeof val == 'object') {
-      localStorage['shares'] = val.join(', ');
+      localStorage['shares'] = val.sort().join(', ');
     }
   }
 };
