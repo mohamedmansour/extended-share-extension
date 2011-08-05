@@ -36,6 +36,7 @@ Injection = function() {
 Injection.STREAM_CONTAINER_ID = 'Wq';
 Injection.STREAM_ARTICLE_ID = 'Gt';
 Injection.STREAM_ACTION_BAR_ID = 'Jn';
+Injection.STREAM_AUTHOR_ID = 'IE';
 Injection.BUBBLE_CONTAINER_ID = 'j-B';
 Injection.BUBBLE_SHARE_CONTENT_ID = 'd-q-p';
 Injection.BUBBLE_CLOSE_ID = 'j-B-ap';
@@ -107,7 +108,10 @@ Injection.prototype.parseURL = function(dom) {
   var parent = dom.parentNode.parentNode.parentNode;
   var link = parent.querySelector('a[target="_blank"]');
   var text = '';
-  var title = '';
+  var title = parent.querySelector('.' + this.STREAM_AUTHOR_ID);
+  if (title) {
+    title = title.innerText + ' @ Google+';
+  }
   if (link) {
     text = parent.querySelector('.' + Injection.STREAM_ARTICLE_ID);
     if (text) {
