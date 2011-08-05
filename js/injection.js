@@ -303,12 +303,13 @@ Injection.prototype.onGooglePlusContentModified = function(e) {
  * play well with DOMSubtreeModified
  */
 Injection.prototype.onExternalRequest = function(request, sender, sendResponse) {
-  if (request.method == 'RenderShares') {
+  if (request.method == 'RenderShares' || request.method == 'InitialInjection') {
     this.resetAndRenderAll();
   }
   else if (request.method == 'SettingsUpdated') {
     this.onSettingsReceived(request);
   }
+  sendResponse({});
 };
 
 // Main
