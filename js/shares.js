@@ -66,7 +66,7 @@ Shares = {
   hyves: {
     name: 'hyves',
     icon: '/img/hyves.png',
-    url: 'http://www.hyves-share.nl/button/tip/?tipcategoryid=12&rating=5&title=${title}&body=${text}',
+    url: 'http://www.hyves-share.nl/button/tip/?tipcategoryid=12&rating=5&title=${title}&body=${text}[url=${link}]${link}[/url]',
     trim: false
   }
 };
