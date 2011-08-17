@@ -10,36 +10,36 @@ Injection = function() {
 
   this.originalShareNode = document.createElement('span');
   this.originalShareNode.setAttribute('role', 'button');
-  this.originalShareNode.setAttribute('class', 'd-k external-share');
+  this.originalShareNode.setAttribute('class', 'b-j external-share');
   this.originalShareNode.innerHTML = 'Share on ...';
 
   this.originalBubbleContainer = document.createElement('div');
-  this.originalBubbleContainer.setAttribute('class', 'j-B');
+  this.originalBubbleContainer.setAttribute('class', 'g-K');
   this.originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px; opacity: 1; ');
   this.originalBubbleContainer.innerHTML =
-      '<div class="j-B-m-c">' + 
+      '<div class="g-K-m-e">' + 
       // Content.
       '  <div class="Fn" style="width: auto">' + 
-      '    <div class="d-q-p" style="margin-bottom: 0px;"></div>' + 
+      '    <div class="b-o-l" style="margin-bottom: 0px;"></div>' + 
       '  </div>' + 
       '</div>' + 
       // Close button.
-      '<div class="j-B-Ih-c j-B-Ih" role="button" tabindex="0" style="padding: 5px"><div class="j-B-ap"></div></div>' +
+      '<div class="g-K-sg-e g-K-sg" role="button" tabindex="0" style="padding: 5px"><div class="g-K-Fj"></div></div>' +
       // Arrow on top.
-      '<div class="j-B-Vb-c j-B-Vb j-B-ud" style="left: 20px; ">' + 
-      '  <div class="j-B-Wc"></div>' + 
-      '  <div class="j-B-Vc"></div>' + 
+      '<div class="g-K-bc-e g-K-bc g-K-se" style="left: 20px; ">' + 
+      '  <div class="g-K-Gc"></div>' + 
+      '  <div class="g-K-Fc"></div>' + 
       '</div>' +
       '<div class="gp-crx-settings" style="cursor: pointer;position: absolute;right: 0;padding-right: 5px;font-size: 10px; color: #aaa" role="button" tabindex="0">options</div>';
 };
 
-Injection.STREAM_CONTAINER_ID = 'Wq';
-Injection.STREAM_ARTICLE_ID = 'Gt';
-Injection.STREAM_ACTION_BAR_ID = 'Jn';
-Injection.STREAM_AUTHOR_ID = 'IE';
-Injection.BUBBLE_CONTAINER_ID = 'j-B';
-Injection.BUBBLE_SHARE_CONTENT_ID = 'd-q-p';
-Injection.BUBBLE_CLOSE_ID = 'j-B-ap';
+Injection.STREAM_CONTAINER_ID = 'pr';
+Injection.STREAM_ARTICLE_ID = '.ej.Bx';
+Injection.STREAM_ACTION_BAR_ID = '.ll';
+Injection.STREAM_AUTHOR_ID = '.hC a';
+Injection.BUBBLE_CONTAINER_ID = 'g-K';
+Injection.BUBBLE_SHARE_CONTENT_ID = '.b-o-l';
+Injection.BUBBLE_CLOSE_ID = '.g-K-sg-e.g-K-sg';
 
 /**
  * Initialize the events that will be listening within this DOM.
@@ -108,12 +108,12 @@ Injection.prototype.parseURL = function(dom) {
   var parent = dom.parentNode.parentNode.parentNode;
   var link = parent.querySelector('a[target="_blank"]');
   var text = '';
-  var title = parent.querySelector('.' + this.STREAM_AUTHOR_ID);
+  var title = parent.querySelector(Injection.STREAM_AUTHOR_ID);
   if (title) {
     title = title.innerText + ' @ Google+';
   }
   if (link) {
-    text = parent.querySelector('.' + Injection.STREAM_ARTICLE_ID);
+    text = parent.querySelector(Injection.STREAM_ARTICLE_ID);
     if (text) {
       text = text.innerText;
     }
@@ -204,7 +204,7 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
  */
 Injection.prototype.createBubble = function(src, event) {
   var bubbleContainer = this.originalBubbleContainer.cloneNode(true);
-  var nodeToFill = bubbleContainer.querySelector('.' + Injection.BUBBLE_SHARE_CONTENT_ID);
+  var nodeToFill = bubbleContainer.querySelector(Injection.BUBBLE_SHARE_CONTENT_ID);
 
   var result = this.parseURL(src);
   if (result.status) {
@@ -228,7 +228,7 @@ Injection.prototype.createBubble = function(src, event) {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
 
-  var closeCross = bubbleContainer.querySelector('.' + Injection.BUBBLE_CLOSE_ID);
+  var closeCross = bubbleContainer.querySelector(Injection.BUBBLE_CLOSE_ID);
   closeCross.onclick = this.destroyBubble.bind(this);
 
   var settingsButton = bubbleContainer.querySelector('.gp-crx-settings');
@@ -255,8 +255,7 @@ Injection.prototype.onSendClick = function(event) {
 /**
  * Render all the items in the current page.
  */
-Injection.prototype.resetAndRenderAll = function()
-{
+Injection.prototype.resetAndRenderAll = function() {
   var googlePlusContentPane = document.querySelector('.'  + Injection.STREAM_CONTAINER_ID);
   if (googlePlusContentPane) {
     googlePlusContentPane.removeEventListener('DOMSubtreeModified',
@@ -264,7 +263,7 @@ Injection.prototype.resetAndRenderAll = function()
     googlePlusContentPane.addEventListener('DOMSubtreeModified',
                                            this.onGooglePlusContentModified.bind(this), false);
   }
-  var actionBars = document.querySelectorAll('.' + Injection.STREAM_ACTION_BAR_ID);
+  var actionBars = document.querySelectorAll(Injection.STREAM_ACTION_BAR_ID);
   for (var i = 0; i < actionBars.length; i++) {
     this.renderItem(actionBars[i]);
   }
@@ -293,7 +292,7 @@ Injection.prototype.renderItem = function(itemDOM) {
  */
 Injection.prototype.onGooglePlusContentModified = function(e) {
   if (e.target.nodeType == Node.ELEMENT_NODE && e.target.id.indexOf('update') == 0) {
-    var actionBar = document.querySelector('.' + Injection.STREAM_ACTION_BAR_ID);
+    var actionBar = document.querySelector(Injection.STREAM_ACTION_BAR_ID);
     this.renderItem(actionBar);
   }
 };
