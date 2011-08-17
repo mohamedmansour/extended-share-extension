@@ -33,7 +33,8 @@ Injection = function() {
       '<div class="gp-crx-settings" style="cursor: pointer;position: absolute;right: 0;padding-right: 5px;font-size: 10px; color: #aaa" role="button" tabindex="0">options</div>';
 };
 
-Injection.STREAM_CONTAINER_ID = 'pr';
+Injection.CONTENT_PANE_ID = '#contentPane';
+//Injection.STREAM_CONTAINER_ID = 'pr';
 Injection.STREAM_ARTICLE_ID = '.ej.Bx';
 Injection.STREAM_ACTION_BAR_ID = '.ll';
 Injection.STREAM_AUTHOR_ID = '.hC a';
@@ -46,10 +47,14 @@ Injection.BUBBLE_CLOSE_ID = '.g-K-sg-e.g-K-sg';
  */
 Injection.prototype.init = function() {
   // Listen when the subtree is modified for new posts.
-  var googlePlusContentPane = document.querySelector('.' + Injection.STREAM_CONTAINER_ID);
+  var googlePlusContentPane = document.querySelector(Injection.CONTENT_PANE_ID);
   if (googlePlusContentPane) {
     chrome.extension.sendRequest({method: 'GetSettings'}, this.onSettingsReceived.bind(this));
+    /*
     googlePlusContentPane.addEventListener('DOMSubtreeModified',
+                                           this.onGooglePlusContentModified.bind(this), false);
+    */
+    googlePlusContentPane.addEventListener('DOMNodeInserted',
                                            this.onGooglePlusContentModified.bind(this), false);
     chrome.extension.onRequest.addListener(this.onExternalRequest.bind(this));
   }
@@ -256,17 +261,14 @@ Injection.prototype.onSendClick = function(event) {
  * Render all the items in the current page.
  */
 Injection.prototype.resetAndRenderAll = function() {
-  var googlePlusContentPane = document.querySelector('.'  + Injection.STREAM_CONTAINER_ID);
+  var googlePlusContentPane = document.querySelector(Injection.CONTENT_PANE_ID);
   if (googlePlusContentPane) {
-    googlePlusContentPane.removeEventListener('DOMSubtreeModified',
+    googlePlusContentPane.removeEventListener('DOMNodeInserted',
                                               this.onGooglePlusContentModified.bind(this), false);
-    googlePlusContentPane.addEventListener('DOMSubtreeModified',
+    googlePlusContentPane.addEventListener('DOMNodeInserted',
                                            this.onGooglePlusContentModified.bind(this), false);
   }
-  var actionBars = document.querySelectorAll(Injection.STREAM_ACTION_BAR_ID);
-  for (var i = 0; i < actionBars.length; i++) {
-    this.renderItem(actionBars[i]);
-  }
+  this.renderAllItems();
 };
 
 /**
@@ -291,11 +293,28 @@ Injection.prototype.renderItem = function(itemDOM) {
  * Render the "Share on ..." Link on each post.
  */
 Injection.prototype.onGooglePlusContentModified = function(e) {
-  if (e.target.nodeType == Node.ELEMENT_NODE && e.target.id.indexOf('update') == 0) {
-    var actionBar = document.querySelector(Injection.STREAM_ACTION_BAR_ID);
+  // This happens when a new stream is selected
+  if (e.relatedNode && e.relatedNode.parentNode && e.relatedNode.parentNode.id == 'contentPane') {
+    // We're only interested in the insertion of entire content pane
+    this.renderAllItems(e.target);
+  } else if (e.target.nodeType == Node.ELEMENT_NODE && e.target.id.indexOf('update') == 0) {
+    var actionBar = e.target.querySelector(Injection.STREAM_ACTION_BAR_ID);
     this.renderItem(actionBar);
   }
 };
+
+/**
+ * Render on all the items of the documents, or within the specified subtree
+ * if applicable
+ */
+Injection.prototype.renderAllItems = function(subtreeDOM) {
+  var actionBars = typeof subtreeDOM == 'undefined' ?
+    document.querySelectorAll(Injection.STREAM_ACTION_BAR_ID) :
+    subtreeDOM.querySelectorAll(Injection.STREAM_ACTION_BAR_ID);
+  for (var i = 0; i < actionBars.length; i++) {
+    this.renderItem(actionBars[i]);
+  }
+}
 
 /**
  * API to handle when clicking on different HTML5 push API. This somehow doesn't
