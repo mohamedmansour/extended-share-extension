@@ -10,37 +10,36 @@ Injection = function() {
 
   this.originalShareNode = document.createElement('span');
   this.originalShareNode.setAttribute('role', 'button');
-  this.originalShareNode.setAttribute('class', 'b-j external-share');
+  this.originalShareNode.setAttribute('class', 'c-j external-share');
   this.originalShareNode.innerHTML = 'Share on ...';
 
   this.originalBubbleContainer = document.createElement('div');
-  this.originalBubbleContainer.setAttribute('class', 'g-K');
+  this.originalBubbleContainer.setAttribute('class', 'g-J');
   this.originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px; opacity: 1; ');
   this.originalBubbleContainer.innerHTML =
-      '<div class="g-K-m-e">' + 
+      '<div class="g-J-n-e">' + 
       // Content.
-      '  <div class="Fn" style="width: auto">' + 
-      '    <div class="b-o-l" style="margin-bottom: 0px;"></div>' + 
+      '  <div class="Ln" style="width: auto">' + 
+      '    <div class="c-m-l" style="margin-bottom: 0px;"></div>' + 
       '  </div>' + 
       '</div>' + 
       // Close button.
-      '<div class="g-K-sg-e g-K-sg" role="button" tabindex="0" style="padding: 5px"><div class="g-K-Fj"></div></div>' +
+      '<div class="g-J-kg-e g-J-kg" role="button" tabindex="0" style="padding: 5px"><div class="g-J-zj"></div></div>' +
       // Arrow on top.
-      '<div class="g-K-bc-e g-K-bc g-K-se" style="left: 20px; ">' + 
-      '  <div class="g-K-Gc"></div>' + 
-      '  <div class="g-K-Fc"></div>' + 
+      '<div class="g-J-ec-e g-J-ec g-J-oe" style="left: 20px; ">' + 
+      '  <div class="g-J-Ac"></div>' + 
+      '  <div class="g-J-zc"></div>' + 
       '</div>' +
       '<div class="gp-crx-settings" style="cursor: pointer;position: absolute;right: 0;padding-right: 5px;font-size: 10px; color: #aaa" role="button" tabindex="0">options</div>';
 };
 
 Injection.CONTENT_PANE_ID = '#contentPane';
-//Injection.STREAM_CONTAINER_ID = 'pr';
-Injection.STREAM_ARTICLE_ID = '.ej.Bx';
-Injection.STREAM_ACTION_BAR_ID = '.ll';
-Injection.STREAM_AUTHOR_ID = '.hC a';
-Injection.BUBBLE_CONTAINER_ID = 'g-K';
-Injection.BUBBLE_SHARE_CONTENT_ID = '.b-o-l';
-Injection.BUBBLE_CLOSE_ID = '.g-K-sg-e.g-K-sg';
+Injection.STREAM_ARTICLE_ID = '.eo.kp';
+Injection.STREAM_ACTION_BAR_ID = '.ol';
+Injection.STREAM_AUTHOR_ID = '.CC a';
+Injection.BUBBLE_CONTAINER_ID = 'g-J';
+Injection.BUBBLE_SHARE_CONTENT_ID = '.c-m-l';
+Injection.BUBBLE_CLOSE_ID = '.g-J-kg-e.g-J-kg';
 
 /**
  * Initialize the events that will be listening within this DOM.
@@ -50,10 +49,6 @@ Injection.prototype.init = function() {
   var googlePlusContentPane = document.querySelector(Injection.CONTENT_PANE_ID);
   if (googlePlusContentPane) {
     chrome.extension.sendRequest({method: 'GetSettings'}, this.onSettingsReceived.bind(this));
-    /*
-    googlePlusContentPane.addEventListener('DOMSubtreeModified',
-                                           this.onGooglePlusContentModified.bind(this), false);
-    */
     googlePlusContentPane.addEventListener('DOMNodeInserted',
                                            this.onGooglePlusContentModified.bind(this), false);
     chrome.extension.onRequest.addListener(this.onExternalRequest.bind(this));
