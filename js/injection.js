@@ -10,36 +10,38 @@ Injection = function() {
 
   this.originalShareNode = document.createElement('span');
   this.originalShareNode.setAttribute('role', 'button');
-  this.originalShareNode.setAttribute('class', 'c-j external-share');
+  this.originalShareNode.setAttribute('class', 'a-j external-share');
   this.originalShareNode.innerHTML = 'Share on ...';
 
   this.originalBubbleContainer = document.createElement('div');
-  this.originalBubbleContainer.setAttribute('class', 'g-J');
+  this.originalBubbleContainer.setAttribute('class', 'e-x');
   this.originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px; opacity: 1; ');
   this.originalBubbleContainer.innerHTML =
-      '<div class="g-J-n-e">' + 
+      '<div class="e-x-r-i">' + 
       // Content.
-      '  <div class="Ln" style="width: auto">' + 
-      '    <div class="c-m-l" style="margin-bottom: 0px;"></div>' + 
+      '  <div class="rw" style="width: auto">' + 
+      '    <div class="a-l-k" style="margin-bottom: 0px;"></div>' + 
       '  </div>' + 
       '</div>' + 
       // Close button.
-      '<div class="g-J-kg-e g-J-kg" role="button" tabindex="0" style="padding: 5px"><div class="g-J-zj"></div></div>' +
+      '<div class="e-x-he-i e-x-he" role="button" tabindex="0" style="padding: 5px">' +
+      '  <div class="e-x-wh"></div>' +
+      '</div>' +
       // Arrow on top.
-      '<div class="g-J-ec-e g-J-ec g-J-oe" style="left: 20px; ">' + 
-      '  <div class="g-J-Ac"></div>' + 
-      '  <div class="g-J-zc"></div>' + 
+      '<div class="e-x-Ga-i e-x-Ga e-x-sb" style="left: 20px; ">' + 
+      '  <div class="e-x-xa"></div>' + 
+      '  <div class="e-x-ya"></div>' + 
       '</div>' +
       '<div class="gp-crx-settings" style="cursor: pointer;position: absolute;right: 0;padding-right: 5px;font-size: 10px; color: #aaa" role="button" tabindex="0">options</div>';
 };
 
 Injection.CONTENT_PANE_ID = '#contentPane';
-Injection.STREAM_ARTICLE_ID = '.eo.kp';
-Injection.STREAM_ACTION_BAR_ID = '.ol';
-Injection.STREAM_AUTHOR_ID = '.CC a';
-Injection.BUBBLE_CONTAINER_ID = 'g-J';
-Injection.BUBBLE_SHARE_CONTENT_ID = '.c-m-l';
-Injection.BUBBLE_CLOSE_ID = '.g-J-kg-e.g-J-kg';
+Injection.STREAM_ARTICLE_ID = '.Us.Gk';
+Injection.STREAM_ACTION_BAR_ID = '.dl';
+Injection.STREAM_AUTHOR_ID = '.eE a';
+Injection.BUBBLE_CONTAINER_ID = 'e-x';
+Injection.BUBBLE_SHARE_CONTENT_ID = '.rw';
+Injection.BUBBLE_CLOSE_ID = '.e-x-he-i.e-x-he';
 
 /**
  * Initialize the events that will be listening within this DOM.
