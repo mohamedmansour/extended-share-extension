@@ -68,5 +68,47 @@ Shares = {
     icon: '/img/hyves.png',
     url: 'http://www.hyves-share.nl/button/tip/?tipcategoryid=12&rating=5&title=${title}&body=${text}[url=${link}]${link}[/url]',
     trim: false
+  },
+  netvibes: {
+    name: 'Netvibes',
+    icon: '/img/netvibes.png',
+    url: 'http://www.addtoany.com/add_to/netvibes_share?linkurl=${link}&linkname=${title}',
+    trim: false
+  },
+  technorati: {
+    name: 'Technorati',
+    icon: '/img/technorati.png',
+    url: 'http://technorati.com/faves?sub=addfavbtn&add=${link}',
+    trim: false
+  },
+  stumbleupon: {
+    name: 'StumbleUpon',
+    icon: '/img/stumbleupon.png',
+    url: 'http://www.stumbleupon.com/submit?url=${link}&title=${title}',
+    trim: false
+  },
+  yahoo: {
+    name: 'Yahoo! Bookmarks',
+    icon: '/img/yahoo.png',
+    url: 'http://bookmarks.yahoo.com/toolbar/savebm?u=${link}&t=${title}',
+    trim: false
+  },
+  blogger: {
+    name: 'Google Blogger',
+    icon: '/img/blogger.png',
+    url: 'http://www.blogger.com/blog-this.g?t&u=${link}&title=${title}&n=${text}&pli=1',
+    trim: false
+  },
+  digg: {
+    name: 'Digg',
+    icon: '/img/digg.png',
+    url: 'http://digg.com/submit?phase=2&url=${link}&title=${title}&summary=${text}',
+    trim: false
+  },
+  google: {
+    name: 'Google Bookmarks',
+    icon: '/img/google.png',
+    url: 'ttps://www.google.com/bookmarks/mark?op=edit&bkmk=${link}&title=${title}',
+    trim: false
   }
 };
