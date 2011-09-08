@@ -108,7 +108,13 @@ Shares = {
   google: {
     name: 'Google Bookmarks',
     icon: '/img/google.png',
-    url: 'ttps://www.google.com/bookmarks/mark?op=edit&bkmk=${link}&title=${title}',
+    url: 'https://www.google.com/bookmarks/mark?op=edit&bkmk=${link}&title=${title}',
+    trim: false
+  },
+  addthis: {
+    name: 'Add This',
+    icon: '/img/addthis.png',
+    url: ' http://www.addthis.com/bookmark.php?url=${link}&title=${title}',
     trim: false
   }
 };
