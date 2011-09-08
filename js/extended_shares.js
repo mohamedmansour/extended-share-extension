@@ -114,7 +114,7 @@ Shares = {
   addthis: {
     name: 'Add This',
     icon: '/img/addthis.png',
-    url: 'http://www.addthis.com/bookmark.php?url=${link}&title=${title}',
+    url: 'http://www.addthis.com/bookmark.php?url=${link}&title=${text}',
     trim: false
   }
 };
