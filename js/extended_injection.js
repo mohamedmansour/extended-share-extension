@@ -187,7 +187,6 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
   a.setAttribute('href', '#');
   a.setAttribute('style', 'margin: 0 .4em');
   a.onclick = function() {
-    debugger;
     chrome.extension.sendRequest({method: 'OpenURL', data: url});
     this.destroyBubble.bind(this);
     return false;
