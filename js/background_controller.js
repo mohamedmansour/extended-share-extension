@@ -138,6 +138,10 @@ BackgroundController.prototype.onExternalRequest = function(request, sender, sen
         data: settings.shares
     });
   }
+  else if (request.method == 'OpenURL') {
+    chrome.tabs.create({url: request.data});
+    sendResponse({});
+  }
   else {
     sendResponse({});
   }

@@ -184,9 +184,14 @@ Injection.prototype.createSocialLink = function(share, result) {
  */
 Injection.prototype.createSocialIcon = function(icon, name, url) {
   var a = document.createElement('a');
-  a.setAttribute('href', url);
+  a.setAttribute('href', '#');
   a.setAttribute('style', 'margin: 0 .4em');
-  a.onclick = this.destroyBubble.bind(this);
+  a.onclick = function() {
+    debugger;
+    chrome.extension.sendRequest({method: 'OpenURL', data: url});
+    this.destroyBubble.bind(this);
+    return false;
+  }.bind(this);
 
   var img = document.createElement('img');
   img.setAttribute('src', chrome.extension.getURL(icon));
@@ -219,7 +224,9 @@ Injection.prototype.createBubble = function(src, event) {
     }
     else if (this.availableShares.length == 1) { // Single share, auto link it directly.
       var url = this.createSocialLink(Shares[this.availableShares[0]], result);
-      window.open(url);
+      // Pass the URL to the background page so we can open it. This is needed
+      // to overcome the block that Google+ is putting to redirect links.
+      chrome.extension.sendRequest({method: 'OpenURL', data: url});
       return; // TODO(mohamed): Figure out a better way.
     }
     else { // Nothing setup.
