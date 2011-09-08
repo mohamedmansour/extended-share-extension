@@ -40,7 +40,7 @@ Injection.STREAM_ARTICLE_ID = '.Us.Gk';
 Injection.STREAM_ACTION_BAR_ID = '.dl';
 Injection.STREAM_AUTHOR_ID = '.eE a';
 Injection.BUBBLE_CONTAINER_ID = 'e-x';
-Injection.BUBBLE_SHARE_CONTENT_ID = '.rw';
+Injection.BUBBLE_SHARE_CONTENT_ID = '.a-l-k';
 Injection.BUBBLE_CLOSE_ID = '.e-x-he-i.e-x-he';
 
 /**
