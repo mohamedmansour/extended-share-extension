@@ -90,7 +90,7 @@ Shares = {
   yahoo: {
     name: 'Yahoo! Bookmarks',
     icon: '/img/yahoo.png',
-    url: 'http://bookmarks.yahoo.com/toolbar/savebm?u=${link}&t=${title}',
+    url: 'http://bookmarks.yahoo.com/toolbar/savebm?u=${link}&t=${title}&d=${text}',
     trim: false
   },
   blogger: {
