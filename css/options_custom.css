@@ -1,3 +1,17 @@
+.shareIcon {
+  width: 48px;
+  height: 58px;
+  text-align: center;
+  display: inline-block;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
 .shareIcon  img {
   vertical-align: middle;
+}
+
+.shareIcon:hover {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
 }
