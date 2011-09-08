@@ -13,7 +13,7 @@
   "options_page": "options.html",
   "content_scripts": [{
       "matches": ["https://plus.google.com/*"],
-      "js": ["js/shares.js", "js/injection.js"],
+      "js": ["js/extended_shares.js", "js/extended_injection.js"],
       "run_at": "document_end",
       "all_frames": true
   }]

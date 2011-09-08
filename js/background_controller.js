@@ -31,9 +31,9 @@ BackgroundController.prototype.onExtensionLoaded = function() {
  */
 BackgroundController.prototype.onInstall = function() {
   this.doWorkTabs(function(tab) {
-    chrome.tabs.executeScript(tab.id, { file: 'js/shares.js',
+    chrome.tabs.executeScript(tab.id, { file: 'js/extended_shares.js',
                               allFrames: true }, function() {
-      chrome.tabs.executeScript(tab.id, { file: 'js/injection.js',
+      chrome.tabs.executeScript(tab.id, { file: 'js/extended_injection.js',
                                 allFrames: true }, function() {
         // This is needed because all the DOM is already inserted, no events
         // would have been fired. This will force the events to fire after
