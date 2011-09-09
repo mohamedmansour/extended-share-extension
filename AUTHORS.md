@@ -6,6 +6,7 @@ Mohamed Mansour (https://github.com/mohamedmansour)
 
 Contributors
 ------------
+* Mohamed Mansour (https://github.com/mohamedmansour)
 * Yuxuan Wang (https://github.com/fishy)
 * Maxime Thirouin (https://github.com/MoOx)
 * Christian Jung (https://github.com/campino2k)
