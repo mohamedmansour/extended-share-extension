@@ -20,6 +20,6 @@ Google Plus Vector Icon by [Sean McCabe](http://boldperspective.com/2011/free-go
 
 Screenshots
 -----------------
-![Screenshot of the Chrome Extension](https://github.com/mohamedmansour/google-plus-extension/raw/master/screenshot/shareA.jpg)
-![Screenshot of the Chrome Extension](https://github.com/mohamedmansour/google-plus-extension/raw/master/screenshot/shareB.jpg)
+![Screenshot of the Chrome Extension](https://github.com/mohamedmansour/google-plus-extension/raw/master/screenshot/marquee.jpg)
+
 
