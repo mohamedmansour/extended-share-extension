@@ -7,7 +7,8 @@ that you can share your post to many social networks.
 Contribute!
 -----------------
 Please submit your pull requests if you have anything interesting! Let me know
-prior implementation :)
+prior implementation :) The people who contributed to this project are mentioned
+here in [AUTHORS](https://github.com/mohamedmansour/google-plus-extension/raw/master/AUTHORS)
 
 Follow me on [Google+](https://plus.google.com/116805285176805120365/about)
 
