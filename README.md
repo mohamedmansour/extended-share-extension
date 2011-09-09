@@ -8,7 +8,7 @@ Contribute!
 -----------------
 Please submit your pull requests if you have anything interesting! Let me know
 prior implementation :) The people who contributed to this project are mentioned
-here in [AUTHORS](https://github.com/mohamedmansour/google-plus-extension/raw/master/AUTHORS)
+here in [AUTHORS](https://github.com/mohamedmansour/google-plus-extension/raw/master/AUTHORS.md)
 
 Follow me on [Google+](https://plus.google.com/116805285176805120365/about)
 
