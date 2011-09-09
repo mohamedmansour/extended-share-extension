@@ -112,31 +112,31 @@ Injection.prototype.parseURL = function(dom) {
   var text = '';
   var title = parent.querySelector(Injection.STREAM_AUTHOR_ID);
 
-  var postContent = dom.parentNode.previousSibling.cloneNode(true);
-  var tmp = postContent.querySelectorAll("span[class]");
-  if (tmp && tmp.length)
-  {
-      var editLink = tmp[tmp.length - 1];
-      editLink.parentNode.removeChild(editLink);
-  }
-
   if (title) {
     title = title.innerText + ' @ Google+';
   }
+
   if (link) {
+    // Smartly find out the contents of that div.
+    var postContent = dom.parentNode.previousSibling.cloneNode(true);
+    var tmp = postContent.querySelectorAll('span[class]');
+    if (tmp && tmp.length) {
+        var editLink = tmp[tmp.length - 1];
+        editLink.parentNode.removeChild(editLink);
+    }
     if (postContent.innerText.replace(/\s+/g, '')) {
       // prevent huge querystring
       // addthis trims automatically to fit on twitter
       text = postContent.innerText.substring(0, 800);
     }
     else {
-        text = parent.querySelector(Injection.STREAM_ARTICLE_ID);
-        if (text) {
-          text = text.innerText;
-        }
-        else {
-          text = ''; // Empty for now till we figure out what to do.
-        }
+      text = parent.querySelector(Injection.STREAM_ARTICLE_ID);
+      if (text) {
+        text = text.innerText;
+      }
+      else {
+        text = ''; // Empty for now till we figure out what to do.
+      }
     }
     link = link.href;
     // Support multiple accounts.
