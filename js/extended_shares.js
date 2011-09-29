@@ -116,5 +116,11 @@ Shares = {
     icon: '/img/addthis.png',
     url: 'http://www.addthis.com/bookmark.php?url=${link}&title=${text}',
     trim: false
+  },
+  livejournal: {
+    name: 'Live Journal',
+    icon: '/img/lj.png',
+    url: 'http://www.livejournal.com/update.bml/?event=${text}<a href="${link}">${title}</a>&subject=${title}',
+    trim: false
   }
 };
