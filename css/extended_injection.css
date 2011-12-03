@@ -1,10 +1,17 @@
+.external-share {
+  color: #36C;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+}
+
 .gp-crx-settings {
   cursor: pointer;
   position: absolute;
   right: 0;
   padding-right: 5px;
   font-size: 10px; 
-  color: #aaa";
+  color: #aaa;
 }
 
 .gp-crx-close {

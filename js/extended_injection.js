@@ -10,7 +10,7 @@ Injection = function() {
 
   this.originalShareNode = document.createElement('span');
   this.originalShareNode.setAttribute('role', 'button');
-  this.originalShareNode.setAttribute('class', 'a-j external-share');
+  this.originalShareNode.setAttribute('class', 'external-share');
   this.originalShareNode.innerHTML = 'Share on ...';
 
   this.originalBubbleContainer = document.createElement('div');
