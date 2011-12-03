@@ -8,7 +8,7 @@ Contribute!
 -----------------
 Please submit your pull requests if you have anything interesting! Let me know
 prior implementation :) The people who contributed to this project are mentioned
-here in [AUTHORS](https://github.com/mohamedmansour/google-plus-extension/raw/master/AUTHORS.md)
+here in [AUTHORS](https://github.com/mohamedmansour/extended-share-extension/raw/master/AUTHORS.md)
 
 Follow me on [Google+](https://plus.google.com/116805285176805120365/about)
 
@@ -20,6 +20,6 @@ Google Plus Vector Icon by [Sean McCabe](http://boldperspective.com/2011/free-go
 
 Screenshots
 -----------------
-![Screenshot of the Chrome Extension](https://github.com/mohamedmansour/google-plus-extension/raw/master/screenshot/marquee.png)
+![Screenshot of the Chrome Extension](https://github.com/mohamedmansour/extended-share-extension/raw/master/screenshot/marquee.png)
 
 
