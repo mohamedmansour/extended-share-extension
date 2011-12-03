@@ -119,7 +119,7 @@ Shares = {
   },
   livejournal: {
     name: 'Live Journal',
-    icon: '/img/lj.png',
+    icon: '/img/livejournal.png',
     url: 'http://www.livejournal.com/update.bml/?event=${text}<a href="${link}">${title}</a>&subject=${title}',
     trim: false
   }
