@@ -37,7 +37,7 @@ Injection = function() {
 Injection.CONTENT_PANE_ID = '#contentPane';
 Injection.STREAM_ARTICLE_ID = '.Us.Gk';
 Injection.STREAM_ACTION_BAR_ID = '.dl';
-Injection.STREAM_AUTHOR_ID = '.eE a';
+Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
 Injection.BUBBLE_SHARE_CONTENT_ID = '.gp-crx-shares';
 Injection.BUBBLE_CLOSE_ID = '.gp-crx-close';
@@ -109,7 +109,7 @@ Injection.prototype.parseURL = function(dom) {
   var parent = dom.parentNode.parentNode.parentNode;
   var link = parent.querySelector('a[target="_blank"]');
   var text = '';
-  var title = parent.querySelector(Injection.STREAM_AUTHOR_ID);
+  var title = parent.querySelector(Injection.STREAM_AUTHOR_SELECTOR);
 
   if (title) {
     title = title.innerText + ' @ Google+';
