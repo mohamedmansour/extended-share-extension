@@ -14,6 +14,16 @@
   color: #aaa;
 }
 
+.gp-crx-wrapper {
+  width: auto;
+}
+
+.gp-crx-shares {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0px;
+}
+
 .gp-crx-close {
   cursor: pointer;
   background: url('chrome-extension://__MSG_@@extension_id__/img/popup_close.png') no-repeat;

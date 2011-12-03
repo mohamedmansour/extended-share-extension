@@ -16,10 +16,10 @@ Injection = function() {
   this.originalBubbleContainer = document.createElement('div');
   this.originalBubbleContainer.setAttribute('class', 'gp-crx-bubble');
   this.originalBubbleContainer.innerHTML =
-      '<div class="e-x-r-i">' + 
+      '<div class="gp-crx-content">' + 
       // Content.
-      '  <div class="rw" style="width: auto">' + 
-      '    <div class="a-l-k" style="margin-bottom: 0px;"></div>' + 
+      '  <div class="gp-crx-wrapper">' + 
+      '    <div class="gp-crx-shares"></div>' + 
       '  </div>' + 
       '</div>' + 
       // Close button.
@@ -39,7 +39,7 @@ Injection.STREAM_ARTICLE_ID = '.Us.Gk';
 Injection.STREAM_ACTION_BAR_ID = '.dl';
 Injection.STREAM_AUTHOR_ID = '.eE a';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
-Injection.BUBBLE_SHARE_CONTENT_ID = '.a-l-k';
+Injection.BUBBLE_SHARE_CONTENT_ID = '.gp-crx-shares';
 Injection.BUBBLE_CLOSE_ID = '.gp-crx-close';
 
 /**
