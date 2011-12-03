@@ -24,7 +24,7 @@ Injection = function() {
       '  </div>' + 
       '</div>' + 
       // Close button.
-      '<div class="e-x-he-i e-x-he" role="button" tabindex="0" style="padding: 5px">' +
+      '<div class="gp-crx-close" role="button" tabindex="0">' +
       '  <div class="e-x-wh"></div>' +
       '</div>' +
       // Arrow on top.
@@ -41,7 +41,7 @@ Injection.STREAM_ACTION_BAR_ID = '.dl';
 Injection.STREAM_AUTHOR_ID = '.eE a';
 Injection.BUBBLE_CONTAINER_ID = 'e-x';
 Injection.BUBBLE_SHARE_CONTENT_ID = '.a-l-k';
-Injection.BUBBLE_CLOSE_ID = '.e-x-he-i.e-x-he';
+Injection.BUBBLE_CLOSE_ID = '.gp-crx-close';
 
 /**
  * Initialize the events that will be listening within this DOM.

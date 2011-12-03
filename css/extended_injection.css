@@ -6,3 +6,16 @@
   font-size: 10px; 
   color: #aaa";
 }
+
+.gp-crx-close {
+  cursor: pointer;
+  background: url('chrome-extension://__MSG_@@extension_id__/img/popup_close.png') no-repeat;
+  border: 1px solid transparent;
+  height: 21px;
+  opacity: .4;
+  outline: 0;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 21px;
+}
