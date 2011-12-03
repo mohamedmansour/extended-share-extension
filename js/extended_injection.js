@@ -35,7 +35,7 @@ Injection = function() {
 };
 
 Injection.CONTENT_PANE_ID = '#contentPane';
-Injection.STREAM_ARTICLE_ID = '.Us.Gk';
+Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
 Injection.STREAM_ACTION_BAR_ID = '.dl';
 Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
