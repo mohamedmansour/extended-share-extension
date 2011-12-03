@@ -33,3 +33,37 @@
   margin-top: 4px;
   opacity: 1;
 }
+
+.gp-crx-arrow {
+  position: absolute;
+  left: 20px;
+  top: -9px;
+}
+
+.gp-crx-arrow-left, .gp-crx-arrow-right {
+  display: block;
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+
+.gp-crx-arrow-left {
+  border: 9px solid;
+}
+
+.gp-crx-arrow-right {
+  border:8px solid;
+}
+
+.gp-crx-arrow .gp-crx-arrow-right {
+  border-color: white transparent;
+  left: -8px;
+  border-top-width: 0;
+  top: 1px;
+}
+
+.gp-crx-arrow .gp-crx-arrow-left {
+  border-color: #BBB transparent;
+  left: -9px;
+  border-top-width: 0;
+}

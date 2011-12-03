@@ -27,9 +27,9 @@ Injection = function() {
       '  <div class="e-x-wh"></div>' +
       '</div>' +
       // Arrow on top.
-      '<div class="e-x-Ga-i e-x-Ga e-x-sb" style="left: 20px; ">' + 
-      '  <div class="e-x-xa"></div>' + 
-      '  <div class="e-x-ya"></div>' + 
+      '<div class="gp-crx-arrow">' + 
+      '  <div class="gp-crx-arrow-left"></div>' + 
+      '  <div class="gp-crx-arrow-right"></div>' + 
       '</div>' +
       '<div class="gp-crx-settings" role="button" tabindex="0">options</div>';
 };
