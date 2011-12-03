@@ -24,7 +24,7 @@ Injection = function() {
       '</div>' + 
       // Close button.
       '<div class="gp-crx-close" role="button" tabindex="0">' +
-      '  <div class="e-x-wh"></div>' +
+      '  <div></div>' +
       '</div>' +
       // Arrow on top.
       '<div class="gp-crx-arrow">' + 
