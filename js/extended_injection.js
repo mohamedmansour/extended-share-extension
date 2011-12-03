@@ -36,7 +36,8 @@ Injection = function() {
 
 Injection.CONTENT_PANE_ID = '#contentPane';
 Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
-Injection.STREAM_ACTION_BAR_ID = '.dl';
+Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
+Injection.STREAM_ACTION_BAR_SELECTOR = 'div > div:nth-of-type(2) > div:nth-of-type(2)';
 Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
 Injection.BUBBLE_SHARE_CONTENT_ID = '.gp-crx-shares';
@@ -318,7 +319,7 @@ Injection.prototype.onGooglePlusContentModified = function(e) {
     // We're only interested in the insertion of entire content pane
     this.renderAllItems(e.target);
   } else if (e.target.nodeType == Node.ELEMENT_NODE && e.target.id.indexOf('update') == 0) {
-    var actionBar = e.target.querySelector(Injection.STREAM_ACTION_BAR_ID);
+    var actionBar = e.target.querySelector(Injection.STREAM_ACTION_BAR_SELECTOR);
     this.renderItem(actionBar);
   }
 };
@@ -328,9 +329,9 @@ Injection.prototype.onGooglePlusContentModified = function(e) {
  * if applicable
  */
 Injection.prototype.renderAllItems = function(subtreeDOM) {
+  var barSelector = Injection.STREAM_UPDATE_SELECTOR + '>' +Injection.STREAM_ACTION_BAR_SELECTOR;
   var actionBars = typeof subtreeDOM == 'undefined' ?
-    document.querySelectorAll(Injection.STREAM_ACTION_BAR_ID) :
-    subtreeDOM.querySelectorAll(Injection.STREAM_ACTION_BAR_ID);
+    document.querySelectorAll(barSelector) : subtreeDOM.querySelectorAll(barSelector);
   for (var i = 0; i < actionBars.length; i++) {
     this.renderItem(actionBars[i]);
   }
