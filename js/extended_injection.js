@@ -14,8 +14,7 @@ Injection = function() {
   this.originalShareNode.innerHTML = 'Share on ...';
 
   this.originalBubbleContainer = document.createElement('div');
-  this.originalBubbleContainer.setAttribute('class', 'e-x');
-  this.originalBubbleContainer.setAttribute('style', 'left: 172px; margin-top: 4px; opacity: 1; ');
+  this.originalBubbleContainer.setAttribute('class', 'gp-crx-bubble');
   this.originalBubbleContainer.innerHTML =
       '<div class="e-x-r-i">' + 
       // Content.
@@ -39,7 +38,7 @@ Injection.CONTENT_PANE_ID = '#contentPane';
 Injection.STREAM_ARTICLE_ID = '.Us.Gk';
 Injection.STREAM_ACTION_BAR_ID = '.dl';
 Injection.STREAM_AUTHOR_ID = '.eE a';
-Injection.BUBBLE_CONTAINER_ID = 'e-x';
+Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
 Injection.BUBBLE_SHARE_CONTENT_ID = '.a-l-k';
 Injection.BUBBLE_CLOSE_ID = '.gp-crx-close';
 
