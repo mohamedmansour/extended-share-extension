@@ -32,7 +32,7 @@ Injection = function() {
       '  <div class="e-x-xa"></div>' + 
       '  <div class="e-x-ya"></div>' + 
       '</div>' +
-      '<div class="gp-crx-settings" style="cursor: pointer;position: absolute;right: 0;padding-right: 5px;font-size: 10px; color: #aaa" role="button" tabindex="0">options</div>';
+      '<div class="gp-crx-settings" role="button" tabindex="0">options</div>';
 };
 
 Injection.CONTENT_PANE_ID = '#contentPane';

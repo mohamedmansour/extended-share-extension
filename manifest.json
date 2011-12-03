@@ -14,6 +14,7 @@
   "content_scripts": [{
       "matches": ["https://plus.google.com/*"],
       "js": ["js/extended_shares.js", "js/extended_injection.js"],
+      "css": ["css/extended_injection.css"],
       "run_at": "document_end",
       "all_frames": true
   }]
