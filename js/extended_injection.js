@@ -260,6 +260,9 @@ Injection.prototype.createBubble = function(src, event) {
   var settingsButton = bubbleContainer.querySelector('.gp-crx-settings');
   settingsButton.onclick = this.visitOptions.bind(this);
   
+  // Setup the mouse listeners.
+  bubbleContainer.style.left = event.target.offsetLeft + 'px';
+  
   src.parentNode.appendChild(bubbleContainer);
 };
 
