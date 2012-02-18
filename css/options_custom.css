@@ -33,3 +33,9 @@
   border: 1px solid #ccc;
   background-color: #fff;
 }
+
+ .shareIcon.checked , .shareIcon.checked:hover {
+  background-color: #333;
+  border-color: #000;
+  color: #eee;
+ }

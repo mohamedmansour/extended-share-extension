@@ -16,14 +16,6 @@ window.addEventListener('load', onLoad, false);
 function onLoad() {
   onRestore();
   $('button-close').addEventListener('click', onClose, false);
-  $('release-notes').addEventListener('click', onReleaseNotes, false);
-}
-
-/**
- * When release notes is clicked.
- */
-function onReleaseNotes() {
-  window.open(chrome.extension.getURL('updates.html'));
 }
 
 /**
