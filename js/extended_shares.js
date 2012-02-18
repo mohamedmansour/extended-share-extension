@@ -27,6 +27,13 @@ Shares = {
     url: 'http://www.facebook.com/sharer.php?u=${link}&t=${text}',
     trim: false
   },
+  pinterest: {
+    name: 'Pinterest',
+    media: true,
+    icon: '/img/pinterest.png',
+    url: 'http://pinterest.com/pin/create/bookmarklet/?media=${media}&url=${link}&description=${text}',
+    trim: false // should be 500
+  },
   linkedin: {
     name: 'Linkedin',
     icon: '/img/linkedin.png',

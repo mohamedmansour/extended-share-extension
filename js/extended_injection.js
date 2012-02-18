@@ -39,6 +39,7 @@ Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
 Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
 Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div > div:nth-of-type(3)';
 Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
+Injection.STREAM_IMAGE_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div div[data-content-type] > img';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
 Injection.BUBBLE_SHARE_CONTENT_ID = '.gp-crx-shares';
 Injection.BUBBLE_CLOSE_ID = '.gp-crx-close';
@@ -109,13 +110,18 @@ Injection.prototype.onSettingsReceived = function(response) {
 Injection.prototype.parseURL = function(dom) {
   var parent = dom.parentNode.parentNode.parentNode;
   var link = parent.querySelector('a[target="_blank"]');
+  var image = parent.querySelector(Injection.STREAM_IMAGE_SELECTOR);
   var text = '';
   var title = parent.querySelector(Injection.STREAM_AUTHOR_SELECTOR);
-
+  
   if (title) {
     title = title.innerText + ' @ Google+';
   }
 
+  if (image) {
+    image = image.src;
+  }
+  
   if (link) {
     // Smartly find out the contents of that div.
     var postContent = dom.parentNode.previousSibling.cloneNode(true);
@@ -148,7 +154,8 @@ Injection.prototype.parseURL = function(dom) {
     status: link ? true : false,
     link: link,
     text: text,
-    title: title
+    title: title,
+    media: image
   };
 };
 
@@ -187,6 +194,9 @@ Injection.prototype.createSocialLink = function(share, result) {
   var url = share.url;
   var limit = share.trim;
   var text = limit ? result.text.substring(0, 100) : result.text;
+  if (share.media) {
+    url = url.replace('\${media}', encodeURIComponent(result.media));
+  }
   url = url.replace('\${link}', encodeURIComponent(result.link));
   url = url.replace('\${text}',  encodeURIComponent(text.trim()));
   url = url.replace('\${title}', encodeURIComponent(result.title));
@@ -235,8 +245,10 @@ Injection.prototype.createBubble = function(src, event) {
     if (this.availableShares.length > 1) { // User has some shares, display them.
       for (var i in this.availableShares) {
         var share = Shares[this.availableShares[i]];
-        var url = this.createSocialLink(share, result);
-        nodeToFill.appendChild(this.createSocialIcon(share.icon, share.name, url));
+        if (!share.media || result.media) {
+          var url = this.createSocialLink(share, result);
+          nodeToFill.appendChild(this.createSocialIcon(share.icon, share.name, url));
+        }
       }
     }
     else if (this.availableShares.length == 1) { // Single share, auto link it directly.
