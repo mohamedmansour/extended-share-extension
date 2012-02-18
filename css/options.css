@@ -1,10 +1,11 @@
 /* Extension Options Default Style */
 
 body {
-  min-width: 650px;
+  min-width: 800px;
   font-size: 87%;
   font-family: Arial, Helvetica, 'Helvetica Neue', Verdana, sans-serif;
   margin: 10px;
+  padding: 0;
 }
 
 #header h1 {
@@ -13,7 +14,7 @@ body {
   margin: 0;
   padding-bottom: 43px;
   padding-left: 55px;
-  padding-top: 40px;
+  padding-top: 35px;
   font-size: 150%;
   font-weight: bold;
 }
@@ -57,13 +58,21 @@ p {
   font-weight: bold;
 }
 
+.extension-header span {
+  font-size: 0.7em;
+  color: #333;
+}
+
 .extension-options {
   background: #f4f6fc;
   border-bottom: 1px solid #edeff5;
   font-size: 85%;
   padding: 0.8em 10px;
 }
- 
+
+.extension-options li {
+  margin: 2px 0;
+}
 .note {
   background-color: #e0f2c0;
   border-radius: 5px;
@@ -71,18 +80,56 @@ p {
   margin-right: 30px;
 }
 
-#extension-footer {
+#buttons {
+  float: right;
   text-align: right;
   padding: 10px 0px;
+  position: absolute;
+  right: 5px;
+  bottom: 0px;
 }
 
 #header {
   margin-bottom: 1.05em;
   overflow: hidden;
-  padding-bottom: 1.5em;
-  padding-left: 0;
+  padding-left: 1.5em;
   padding-top: 1.5em;
-  position: relative;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: white;
+  min-width: 960px;
+}
+
+#header p {
+  padding-left: 55px;
+  margin-bottom: 5px;
+}
+
+#footer {
+  position: fixed;
+  width: 100%;
+  box-shadow: -5px -5px 5px #ebeff9;
+  background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      color-stop(0.03, #bebebe),
+      color-stop(0.52, #bcbcbc),
+      color-stop(0.76, #ccc)
+  );
+  bottom: 0;
+  left: 0;
+  float: right;
+  height: 50px;
+}
+
+#main {
+  margin-top: 85px;
+  margin-bottom: 50px;
+  overflow: hidden;
+  height: 100%;
 }
 
 #info-message {
@@ -95,7 +142,13 @@ p {
 }
 
 #credits {
+  margin-left: 10px;
   font-size: 85%;
-  margin-top: 1em;
-  text-align: right;
+  float: left;
+  line-height: 50px;
+}
+
+#button-save {
+  background: -webkit-linear-gradient(#ff0000, #cc0000 40%, #ff0000);
+  color: #fff;
 }

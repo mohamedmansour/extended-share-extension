@@ -15,8 +15,15 @@ window.addEventListener('load', onLoad, false);
  */
 function onLoad() {
   onRestore();
-  $('button-save').addEventListener('click', onSave, false);
   $('button-close').addEventListener('click', onClose, false);
+  $('release-notes').addEventListener('click', onReleaseNotes, false);
+}
+
+/**
+ * When release notes is clicked.
+ */
+function onReleaseNotes() {
+  window.open(chrome.extension.getURL('updates.html'));
 }
 
 /**
@@ -29,10 +36,7 @@ function onClose() {
 /**
  * Saves options to localStorage.
  */
-function onSave() {
-  // Save settings.
-  bkg.settings.opt_out = $('opt_out').checked;
-
+function shareUpdated() {
   var shares = [];
   var shareNodes = document.querySelectorAll("input[name='shares']:checked");
   for (var i = 0; i < shareNodes.length; i++) {
@@ -40,14 +44,6 @@ function onSave() {
   }
   bkg.settings.shares = shares;
   bkg.backgroundController.updateSettings();
-
-  // Update status to let user know options were saved.
-  var info = $('info-message');
-  info.style.display = 'inline';
-  info.style.opacity = 1;
-  setTimeout(function() {
-    info.style.opacity = 0.0;
-  }, 1000);
 }
 
 /**
@@ -56,7 +52,12 @@ function onSave() {
 function onRestore() {
   // Restore settings.
   $('version').innerHTML = ' (v' + bkg.settings.version + ')';
-  $('opt_out').checked = bkg.settings.opt_out;
+
+  var optElement = $('opt_out');
+  optElement.addEventListener('click', function(e) {
+    bkg.settings.opt_out = optElement.checked;
+  });
+  optElement.checked = bkg.settings.opt_out;
 
   var container_shares = $('container-shares');
   for (var share in Shares) {
@@ -108,5 +109,9 @@ function createSharesItem(share) {
   name.innerText = shareItem.name;
   label.appendChild(name);
 
+  // Persist event.
+  label.addEventListener('click', function(e) {
+    shareUpdated();
+  });
   return label;
 }
