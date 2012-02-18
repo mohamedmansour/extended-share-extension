@@ -216,7 +216,7 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
   a.setAttribute('style', 'margin: 0 .4em');
   a.onclick = function() {
     chrome.extension.sendRequest({method: 'OpenURL', data: url});
-    this.destroyBubble.bind(this);
+    this.destroyBubble({srcElement: a});
     return false;
   }.bind(this);
 
