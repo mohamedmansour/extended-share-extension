@@ -6,11 +6,13 @@
  *   - icon (relative path of the icon)
  *   - url (contains some attributes that will be replaced)
  *   - trim  (true to trim upto 100 chars)
+ *   - media (true if the post contains any images)
  *
  * The URL has the following keys that will be replaced:
  *   - ${link} The link to share.
  *   - ${text} The text to place.
  *   - ${title} The title of the post.
+ *   - ${media} The URL to the media resource.
  *
  * @author Mohamed Mansour 2011 (http://mohamedmansour.com)
  */
