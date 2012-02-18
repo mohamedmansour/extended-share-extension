@@ -33,10 +33,21 @@ function onClose() {
   window.close();
 }
 
+function shareRendered(shareElement) {
+  var labelElement = shareElement.parentNode;
+  var classList = labelElement.classList;
+  if (shareElement.checked) {
+    classList.add('checked');
+  }
+  else {
+    classList.remove('checked');
+  }
+}
+
 /**
  * Saves options to localStorage.
  */
-function shareUpdated() {
+function shareUpdated() {  
   var shares = [];
   var shareNodes = document.querySelectorAll("input[name='shares']:checked");
   for (var i = 0; i < shareNodes.length; i++) {
@@ -72,6 +83,7 @@ function onRestore() {
       var shareDOM =  $(shares[share]);
       if (shareDOM) {
         shareDOM.checked = true;
+        shareRendered(shareDOM);
       }
     }
   }
@@ -110,8 +122,10 @@ function createSharesItem(share) {
   label.appendChild(name);
 
   // Persist event.
-  label.addEventListener('click', function(e) {
+  input.addEventListener('click', function(e) {
+    shareRendered(e.target);
     shareUpdated();
   });
+
   return label;
 }
