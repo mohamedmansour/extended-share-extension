@@ -37,7 +37,7 @@ Injection = function() {
 Injection.CONTENT_PANE_ID = '#contentPane';
 Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
 Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
-Injection.STREAM_ACTION_BAR_SELECTOR = 'div:first-child > div:nth-child(3) > button';
+Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div > div:nth-of-type(3)';
 Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
 Injection.BUBBLE_SHARE_CONTENT_ID = '.gp-crx-shares';
@@ -301,19 +301,15 @@ Injection.prototype.resetAndRenderAll = function() {
  * @param {Object<ModifiedDOM>} event modified event.
  */
 Injection.prototype.renderItem = function(itemDOM) {
-  if (!itemDOM) {
-    return;
-  }
-  var barDOM = itemDOM.parentNode;
-  if (!barDOM.classList.contains('gpi-crx')) {
+  if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
     var shareNode = this.originalShareNode.cloneNode(true);
     if (this.availableShares.length == 1) {
       shareNode.innerHTML = 'Share on ' + Shares[this.availableShares[0]].name;
     }
     shareNode.onclick = this.onSendClick.bind(this);
-    barDOM.appendChild(this.originalTextNode.cloneNode(true));
-    barDOM.appendChild(shareNode);
-    barDOM.classList.add('gpi-crx');
+    itemDOM.appendChild(this.originalTextNode.cloneNode(true));
+    itemDOM.appendChild(shareNode);
+    itemDOM.classList.add('gpi-crx');
   }
 };
 
@@ -336,9 +332,8 @@ Injection.prototype.onGooglePlusContentModified = function(e) {
  * if applicable
  */
 Injection.prototype.renderAllItems = function(subtreeDOM) {
-  var barSelector = Injection.STREAM_UPDATE_SELECTOR + '>' +Injection.STREAM_ACTION_BAR_SELECTOR;
   var actionBars = typeof subtreeDOM == 'undefined' ?
-    document.querySelectorAll(barSelector) : subtreeDOM.querySelectorAll(barSelector);
+    document.querySelectorAll(Injection.STREAM_ACTION_BAR_SELECTOR) : subtreeDOM.querySelectorAll(Injection.STREAM_ACTION_BAR_SELECTOR);
   for (var i = 0; i < actionBars.length; i++) {
     this.renderItem(actionBars[i]);
   }
