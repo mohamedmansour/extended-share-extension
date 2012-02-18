@@ -1,13 +1,30 @@
 .shareIcon {
-  width: 48px;
-  height: 58px;
   text-align: center;
-  display: inline-block;
   border: 1px solid transparent;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 75px;
+  height: 92px; 
+  float: left;
+}
+.shareIcon input, .shareIcon  img, .shareIcon p {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+.shareIcon input {
+  height: 20px;
+  width: 75px;
 }
 .shareIcon  img {
-  vertical-align: middle;
+  margin: 0 auto;
+  width: 32px;
+  height: 32px;
+}
+.shareIcon p {
+  height: 40px;
+  font-size: 0.9em;
 }
 
 .shareIcon:hover {

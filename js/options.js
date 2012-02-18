@@ -102,6 +102,11 @@ function createSharesItem(share) {
   icon.src = shareItem.icon;
   icon.title = shareItem.name;
   label.appendChild(icon);
-  
+
+  // Render name.
+  var name = document.createElement('p');
+  name.innerText = shareItem.name;
+  label.appendChild(name);
+
   return label;
 }
