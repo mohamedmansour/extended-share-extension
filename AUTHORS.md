@@ -13,3 +13,4 @@ Contributors
 * Jim Tittsler (https://github.com/jimt)
 * Huy Zing (https://github.com/huyz)
 * Bruno Leonardo Michels (https://github.com/brunolm)
+* Matt Senter (https://github.com/kungfuters)
