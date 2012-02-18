@@ -37,7 +37,7 @@ Injection = function() {
 Injection.CONTENT_PANE_ID = '#contentPane';
 Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
 Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
-Injection.STREAM_ACTION_BAR_SELECTOR = 'div > div:nth-of-type(3)';
+Injection.STREAM_ACTION_BAR_SELECTOR = 'div:first-child > div:nth-child(3) > button';
 Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
 Injection.BUBBLE_SHARE_CONTENT_ID = '.gp-crx-shares';
@@ -301,15 +301,19 @@ Injection.prototype.resetAndRenderAll = function() {
  * @param {Object<ModifiedDOM>} event modified event.
  */
 Injection.prototype.renderItem = function(itemDOM) {
-  if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
+  if (!itemDOM) {
+    return;
+  }
+  var barDOM = itemDOM.parentNode;
+  if (!barDOM.classList.contains('gpi-crx')) {
     var shareNode = this.originalShareNode.cloneNode(true);
     if (this.availableShares.length == 1) {
       shareNode.innerHTML = 'Share on ' + Shares[this.availableShares[0]].name;
     }
     shareNode.onclick = this.onSendClick.bind(this);
-    itemDOM.appendChild(this.originalTextNode.cloneNode(true));
-    itemDOM.appendChild(shareNode);
-    itemDOM.classList.add('gpi-crx');
+    barDOM.appendChild(this.originalTextNode.cloneNode(true));
+    barDOM.appendChild(shareNode);
+    barDOM.classList.add('gpi-crx');
   }
 };
 
