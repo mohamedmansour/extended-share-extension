@@ -7,6 +7,8 @@
   width: 75px;
   height: 72px; 
   float: left;
+  border-radius: 10px;
+  -webkit-transition: background-color .25s linear;
 }
 .shareIcon input, .shareIcon  img, .shareIcon p {
   display: block;
@@ -29,13 +31,11 @@
 }
 
 .shareIcon:hover, .shareIcon.checked {
-  border-radius: 10px;
-  border: 1px solid #ccc;
+  border-color: #ccc;
   background-color: #fff;
 }
 
  .shareIcon.checked , .shareIcon.checked:hover {
   background-color: #333;
-  border-color: #000;
   color: #eee;
  }
