@@ -47,7 +47,8 @@
   border-image: initial;
   border-color: #BBB #BBB #A8A8A8;
   margin-top: 4px;
-  opacity: 1;
+  opacity: 0;
+  -webkit-transition: opacity .25s linear;
 }
 
 .gp-crx-arrow {

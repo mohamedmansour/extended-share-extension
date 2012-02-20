@@ -170,6 +170,8 @@ Injection.prototype.destroyBubble = function(event) {
   while (element.className != Injection.BUBBLE_CONTAINER_ID) {
     element = element.parentNode;
   }
+  
+  // Animate it by fading out.
   element.parentNode.removeChild(element);
   this.currentlyOpenedBubble = null;
 };
@@ -283,9 +285,14 @@ Injection.prototype.createBubble = function(src, event) {
   bubbleContainer.style.left = event.target.offsetLeft + 'px';
   
   src.parentNode.appendChild(bubbleContainer);
-  
+
   // Save the current state so we can ensure only a single bubble could live.
   this.currentlyOpenedBubble = bubbleContainer;
+
+  // Animate it by fading in.
+  setTimeout(function() {
+    this.currentlyOpenedBubble.style.opacity = 1.0;
+  }.bind(this));
 };
 
 /**
