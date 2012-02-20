@@ -33,6 +33,7 @@ Injection = function() {
       '</div>' +
       '<div class="gp-crx-settings" role="button" tabindex="0">options</div>';
   this.currentlyOpenedBubble = null;
+  this.windowPressedListener = this.onWindowPressed.bind(this);
 };
 
 Injection.CONTENT_PANE_ID = '#contentPane';
@@ -166,14 +167,9 @@ Injection.prototype.parseURL = function(dom) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.destroyBubble = function(event) {
-  var element = event.srcElement;
-  while (element.className != Injection.BUBBLE_CONTAINER_ID) {
-    element = element.parentNode;
-  }
-  
-  // Animate it by fading out.
-  element.parentNode.removeChild(element);
+  this.currentlyOpenedBubble.parentNode.removeChild(this.currentlyOpenedBubble);
   this.currentlyOpenedBubble = null;
+  window.removeEventListener('keyup', this.windowPressedListener, false);
 };
 
 /**
@@ -182,7 +178,7 @@ Injection.prototype.destroyBubble = function(event) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.visitOptions = function(event) {
-  this.destroyBubble(event);
+  this.destroyBubble();
   window.open(chrome.extension.getURL('options.html'));
 };
 
@@ -220,7 +216,7 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
   a.setAttribute('style', 'margin: 0 .4em');
   a.onclick = function() {
     chrome.extension.sendRequest({method: 'OpenURL', data: url});
-    this.destroyBubble({srcElement: a});
+    this.destroyBubble();
     return false;
   }.bind(this);
 
@@ -243,7 +239,7 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
 Injection.prototype.createBubble = function(src, event) {
   // Only allow a singleton instance of the bubble opened at all times.
   if (this.currentlyOpenedBubble) {
-    this.destroyBubble({srcElement: this.currentlyOpenedBubble});
+    this.destroyBubble();
   }
 
   var bubbleContainer = this.originalBubbleContainer.cloneNode(true);
@@ -284,15 +280,28 @@ Injection.prototype.createBubble = function(src, event) {
   // Setup the mouse listeners.
   bubbleContainer.style.left = event.target.offsetLeft + 'px';
   
+  // Show the share bubble.
   src.parentNode.appendChild(bubbleContainer);
 
   // Save the current state so we can ensure only a single bubble could live.
   this.currentlyOpenedBubble = bubbleContainer;
 
+  // Close the share bubble when the user hits escape.
+  window.addEventListener('keyup', this.windowPressedListener, false);
+
   // Animate it by fading in.
   setTimeout(function() {
     this.currentlyOpenedBubble.style.opacity = 1.0;
   }.bind(this));
+};
+
+/**
+ * Listens on key presses while the share bubble is active.
+ */
+Injection.prototype.onWindowPressed = function(e) {
+  if (e.keyCode  == 27) { // ESCAPE.
+    this.destroyBubble();
+  }
 };
 
 /**
