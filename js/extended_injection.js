@@ -32,6 +32,7 @@ Injection = function() {
       '  <div class="gp-crx-arrow-right"></div>' + 
       '</div>' +
       '<div class="gp-crx-settings" role="button" tabindex="0">options</div>';
+  this.currentlyOpenedBubble = null;
 };
 
 Injection.CONTENT_PANE_ID = '#contentPane';
@@ -170,6 +171,7 @@ Injection.prototype.destroyBubble = function(event) {
     element = element.parentNode;
   }
   element.parentNode.removeChild(element);
+  this.currentlyOpenedBubble = null;
 };
 
 /**
@@ -237,6 +239,11 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
  * @param {Object<HTMLElement>} src The parent DOM source for the item.
  */
 Injection.prototype.createBubble = function(src, event) {
+  // Only allow a singleton instance of the bubble opened at all times.
+  if (this.currentlyOpenedBubble) {
+    this.destroyBubble({srcElement: this.currentlyOpenedBubble});
+  }
+
   var bubbleContainer = this.originalBubbleContainer.cloneNode(true);
   var nodeToFill = bubbleContainer.querySelector(Injection.BUBBLE_SHARE_CONTENT_ID);
 
@@ -276,6 +283,9 @@ Injection.prototype.createBubble = function(src, event) {
   bubbleContainer.style.left = event.target.offsetLeft + 'px';
   
   src.parentNode.appendChild(bubbleContainer);
+  
+  // Save the current state so we can ensure only a single bubble could live.
+  this.currentlyOpenedBubble = bubbleContainer;
 };
 
 /**
