@@ -39,6 +39,8 @@ Injection = function() {
 Injection.CONTENT_PANE_ID = '#contentPane';
 Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
 Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
+Injection.STREAM_POST_LINK = 'a[target="_blank"]';
+Injection.STREAM_SHARING_DETAILS = 'span[title="Sharing details"]';
 Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div > div:nth-of-type(3)';
 Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
 Injection.STREAM_IMAGE_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div div[data-content-type] > img';
@@ -111,10 +113,13 @@ Injection.prototype.onSettingsReceived = function(response) {
  */
 Injection.prototype.parseURL = function(dom) {
   var parent = dom.parentNode.parentNode.parentNode;
-  var link = parent.querySelector('a[target="_blank"]');
+  var link = parent.querySelector(Injection.STREAM_POST_LINK);
   var image = parent.querySelector(Injection.STREAM_IMAGE_SELECTOR);
-  var text = '';
   var title = parent.querySelector(Injection.STREAM_AUTHOR_SELECTOR);
+  var sharingDetails = parent.querySelector(Injection.STREAM_SHARING_DETAILS);
+
+  var isPublic = sharingDetails.innerText === 'Public';
+  var text = '';
   
   if (title) {
     title = title.innerText + ' @ Google+';
@@ -156,7 +161,8 @@ Injection.prototype.parseURL = function(dom) {
     link: link,
     text: text,
     title: title,
-    media: image
+    media: image,
+    isPublic: isPublic
   };
 };
 
@@ -245,7 +251,10 @@ Injection.prototype.createBubble = function(src, event) {
   var nodeToFill = bubbleContainer.querySelector(Injection.BUBBLE_SHARE_CONTENT_ID);
 
   var result = this.parseURL(src);
-  if (result.status) {
+  if (!result.isPublic) {
+    nodeToFill.appendChild(document.createTextNode('You cannot share this post because it is not public.'));
+  }
+  else if (result.status) {
     if (this.availableShares.length > 1) { // User has some shares, display them.
       for (var i in this.availableShares) {
         var share = Shares[this.availableShares[i]];
