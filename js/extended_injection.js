@@ -151,7 +151,6 @@ Injection.prototype.parseURL = function(dom) {
     link = link.replace(/plus\.google\.com\/u\/(\d*)/, 'plus.google.com');
   }
 
-  console.log(text);
   return {
     status: link ? true : false,
     link: link,
