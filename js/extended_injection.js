@@ -71,7 +71,7 @@ Injection.prototype.init = function() {
  * @return true if arrays are the same otherwise false.
  */
 Injection.prototype.compareArrays = function(a, b) {
-  if (a.length != b.length) {
+  if (a.length !== b.length) {
     return false;
   }
   for (var i = 0; i < a.length; i++) {
@@ -312,7 +312,7 @@ Injection.prototype.createBubble = function(src, event) {
  * Listens on key presses while the share bubble is active.
  */
 Injection.prototype.onWindowPressed = function(e) {
-  if (e.keyCode  == 27) { // ESCAPE.
+  if (e.keyCode  === 27) { // ESCAPE.
     this.destroyBubble();
   }
 };
@@ -339,9 +339,9 @@ Injection.prototype.resetAndRenderAll = function() {
   var googlePlusContentPane = document.querySelector(Injection.CONTENT_PANE_ID);
   if (googlePlusContentPane) {
     googlePlusContentPane.removeEventListener('DOMNodeInserted',
-                                              this.onGooglePlusContentModified.bind(this), false);
+        this.onGooglePlusContentModified.bind(this), false);
     googlePlusContentPane.addEventListener('DOMNodeInserted',
-                                           this.onGooglePlusContentModified.bind(this), false);
+        this.onGooglePlusContentModified.bind(this), false);
   }
   this.renderAllItems();
 };
@@ -354,7 +354,7 @@ Injection.prototype.resetAndRenderAll = function() {
 Injection.prototype.renderItem = function(itemDOM) {
   if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
     var shareNode = this.originalShareNode.cloneNode(true);
-    if (this.availableShares.length == 1) {
+    if (this.availableShares.length === 1) {
       shareNode.innerHTML = 'Share on ' + Shares[this.availableShares[0]].name;
     }
     shareNode.onclick = this.onSendClick.bind(this);
@@ -369,10 +369,10 @@ Injection.prototype.renderItem = function(itemDOM) {
  */
 Injection.prototype.onGooglePlusContentModified = function(e) {
   // This happens when a new stream is selected
-  if (e.relatedNode && e.relatedNode.parentNode && e.relatedNode.parentNode.id == 'contentPane') {
+  if (e.relatedNode && e.relatedNode.parentNode && e.relatedNode.parentNode.id === 'contentPane') {
     // We're only interested in the insertion of entire content pane
     this.renderAllItems(e.target);
-  } else if (e.target.nodeType == Node.ELEMENT_NODE && e.target.id.indexOf('update') == 0) {
+  } else if (e.target.nodeType === Node.ELEMENT_NODE && e.target.id.indexOf('update') === 0) {
     var actionBar = e.target.querySelector(Injection.STREAM_ACTION_BAR_SELECTOR);
     this.renderItem(actionBar);
   }
@@ -383,7 +383,7 @@ Injection.prototype.onGooglePlusContentModified = function(e) {
  * if applicable
  */
 Injection.prototype.renderAllItems = function(subtreeDOM) {
-  var actionBars = typeof subtreeDOM == 'undefined' ?
+  var actionBars = typeof subtreeDOM === 'undefined' ?
     document.querySelectorAll(Injection.STREAM_ACTION_BAR_SELECTOR) : subtreeDOM.querySelectorAll(Injection.STREAM_ACTION_BAR_SELECTOR);
   for (var i = 0; i < actionBars.length; i++) {
     this.renderItem(actionBars[i]);
@@ -395,10 +395,10 @@ Injection.prototype.renderAllItems = function(subtreeDOM) {
  * play well with DOMSubtreeModified
  */
 Injection.prototype.onExternalRequest = function(request, sender, sendResponse) {
-  if (request.method == 'RenderShares' || request.method == 'InitialInjection') {
+  if (request.method === 'RenderShares' || request.method === 'InitialInjection') {
     this.resetAndRenderAll();
   }
-  else if (request.method == 'SettingsUpdated') {
+  else if (request.method === 'SettingsUpdated') {
     this.onSettingsReceived(request);
   }
   sendResponse({});
