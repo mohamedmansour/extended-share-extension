@@ -211,11 +211,7 @@ Injection.prototype.createSocialLink = function(share, result) {
 /**
  * Social Icon share clicked.
  */
-Injection.prototype.onSocialIconClicked = function(e) {
-  chrome.extension.sendRequest({method: 'OpenURL', data: e.target.href});
-  this.destroyBubble();
-  return false;
-};
+Injection.prototype.onSocialIconClicked 
 
 /**
  * Creates the social hyperlink image.
@@ -226,9 +222,14 @@ Injection.prototype.onSocialIconClicked = function(e) {
  */
 Injection.prototype.createSocialIcon = function(icon, name, url) {
   var a = document.createElement('a');
-  a.setAttribute('href', url);
+  a.setAttribute('href', '#');
   a.setAttribute('style', 'margin: 0 .4em');
-  a.onclick = this.onSocialIconClicked.bind(this);
+  a.onclick = function(e) {
+    e.preventDefault();
+    chrome.extension.sendRequest({method: 'OpenURL', data: url});
+    this.destroyBubble();
+    return false;
+  }.bind(this);
 
   var img = document.createElement('img');
   img.setAttribute('src', chrome.extension.getURL(icon));

@@ -139,7 +139,12 @@ BackgroundController.prototype.onExternalRequest = function(request, sender, sen
     });
   }
   else if (request.method == 'OpenURL') {
-    chrome.tabs.create({url: request.data});
+    if (settings.open_as_popup) {
+      chrome.windows.create({url: request.data, type: 'popup', width: 700, height: 400});
+    }
+    else {
+      chrome.tabs.create({url: request.data});
+    }
     sendResponse({});
   }
   else {

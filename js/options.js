@@ -62,6 +62,12 @@ function onRestore() {
   });
   optElement.checked = bkg.settings.opt_out;
 
+  var openPopupElement = $('open_as_popup');
+  openPopupElement.addEventListener('click', function(e) {
+    bkg.settings.open_as_popup = openPopupElement.checked;
+  });
+  openPopupElement.checked = bkg.settings.open_as_popup;
+
   var container_shares = $('container-shares');
   for (var share in Shares) {
     if (Shares.hasOwnProperty(share)) {

@@ -25,5 +25,12 @@ settings = {
     if (typeof val == 'object') {
       localStorage['shares'] = val.sort().join(', ');
     }
+  },
+  get open_as_popup() {
+    var key = localStorage['open_as_popup'];
+    return (typeof key == 'undefined') ? false : key === 'true';
+  },
+  set open_as_popup(val) {
+    localStorage['open_as_popup'] = val;
   }
 };
