@@ -62,22 +62,76 @@ Injection.prototype.compareArrays = function(a, b) {
 };
 
 /**
+ * Prepares the share data by prefetching the icon and display name.
+ *
+ * @param {data} List of shares we are modifying.
+ */
+Injection.prototype.prepareShareData = function(data) {
+  var shareName = 'Share on ';
+  var shareIcon = null;
+  var shareHeight = null;
+  var shareTop = null;
+  var shareWidth = null;
+  var shareZoom = null;
+  if (data.length === 1) {
+    var shareItem = Shares[data[0]];
+    shareName += shareItem.name;
+    shareIcon = chrome.extension.getURL(shareItem.icon);
+    shareTop = '-3px';
+    shareHeight = '32px';
+    shareWidth = '32px';
+    shareZoom = 0.6;
+  }
+  else {
+    shareName += '...';
+    shareIcon = chrome.extension.getURL('/img/share.png');
+    shareTop = '0';
+    shareHeight = '14px';
+    shareWidth = '22px';
+    shareZoom = 1;
+  }
+  return {
+    name: shareName,
+    icon: shareIcon,
+    top: shareTop,
+    height: shareHeight,
+    width: shareWidth,
+    zoom: shareZoom
+  }
+};
+
+/**
+ * Decorates the exisiting share based on a specific state.
+ *
+ * @param {Element} shareNode the share to decorate.
+ * @param {Object} shareData the properties for the decoration.
+ */
+Injection.prototype.decorateShare = function(shareNode, shareData) {
+  shareNode.setAttribute('data-tooltip', shareData.name);
+  var shareIcon = shareNode.childNodes[0];
+  shareIcon.style.background = 'no-repeat url(' + shareData.icon + ')';
+  shareIcon.style.top = shareData.top;
+  shareIcon.style.height = shareData.height;
+  shareIcon.style.width = shareData.width;
+  shareIcon.style.zoom = shareData.zoom;
+};
+
+/**
  * Settings received, update content script.
  */
 Injection.prototype.onSettingsReceived = function(response) { 
   // If only a single share is enabled, just rename all the links to that share name.
   if (!this.compareArrays(this.availableShares, response.data)) {
+    // Destroy all the shares since it is easier for it to re-render it.
+    this.destroyShelf();
+    
+    // Query all the existing shares on the page.
     var existingShares = document.querySelectorAll('.external-share');
-    if (response.data.length == 1) {
-      var shareName = Shares[response.data[0]].name;
-      for (var i in existingShares) {
-        existingShares[i].innerHTML = 'Share on ' + shareName;
-      }
-    }
-    else {
-      for (var i in existingShares) {
-        existingShares[i].innerHTML = 'Share on ...';
-      }
+
+    var shareData = this.prepareShareData(response.data);
+    for (var s = 0; s < existingShares.length; s++) {
+      var existingShare = existingShares[s];
+      this.decorateShare(existingShare, shareData);
     }
   }
   this.availableShares = response.data;
@@ -144,6 +198,9 @@ Injection.prototype.parseURL = function(parent) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.destroyShelf = function(event) {
+  if (!this.currentlyOpenedShelf) {
+    return;
+  }
   this.currentlyOpenedShelf.style.height = '1px';
   setTimeout(function() {
     this.currentlyOpenedShelf.parentNode.removeChild(this.currentlyOpenedShelf);
@@ -241,7 +298,6 @@ Injection.prototype.createShelf = function(itemDOM) {
   
   var nodeToFill = document.createElement('div');
   nodeToFill.setAttribute('class', 'gp-crx-shelf');
-  itemDOM.parentNode.insertBefore(nodeToFill, itemDOM.nextSibling );
   
   var result = this.parseURL(itemDOM);
   if (!result.isPublic) {
@@ -257,7 +313,7 @@ Injection.prototype.createShelf = function(itemDOM) {
         }
       }
     }
-    else if (this.availableShares.length == 1) { // Single share, auto link it directly.
+    else if (this.availableShares.length === 1) { // Single share, auto link it directly.
       var url = this.createSocialLink(Shares[this.availableShares[0]], result);
       // Pass the URL to the background page so we can open it. This is needed
       // to overcome the block that Google+ is putting to redirect links.
@@ -271,6 +327,9 @@ Injection.prototype.createShelf = function(itemDOM) {
   else {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
+
+  // Add the shelf node to the existing DOM.
+  itemDOM.parentNode.insertBefore(nodeToFill, itemDOM.nextSibling);
 
   // Add close icon.
   var closeIcon = this.closeIcon.cloneNode(true);
@@ -311,7 +370,7 @@ Injection.prototype.onWindowPressed = function(e) {
 Injection.prototype.onSendClick = function(event) {
   // discover update parent.
   var cardDOM = event.srcElement;
-  while (cardDOM.id.indexOf('update-') != 0) {
+  while (cardDOM.id.indexOf('update-') !== 0) {
     cardDOM = cardDOM.parentNode;
   }
   
@@ -336,15 +395,9 @@ Injection.prototype.renderItem = function(itemDOM) {
     shareNode.classList.remove(lastClassNameItem);
     shareNode.classList.add('external-share');
 
-    var shareName;
-    if (this.availableShares.length === 1) {
-      shareName = 'Share on ' + Shares[this.availableShares[0]].name;
-    }
-    else {
-      shareName = 'Share on ...';
-    }
-    shareNode.setAttribute('aria-label', shareName);
-    shareNode.setAttribute('data-tooltip', shareName);
+    var shareData = this.prepareShareData(this.availableShares);
+    shareNode.setAttribute('aria-label', shareData.name);
+    this.decorateShare(shareNode, shareData);
     shareNode.onclick = this.onSendClick.bind(this);
 
     originalShareNode.parentNode.insertBefore(shareNode, originalShareNode.nextSibling );
