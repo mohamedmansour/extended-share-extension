@@ -1,27 +1,11 @@
-.external-share {
-  color: #36C;
-  cursor: pointer;
-  outline: none;
-  text-decoration: none;
-}
-
 .gp-crx-settings {
   cursor: pointer;
   position: absolute;
   right: 0;
+  bottom: 0;
   padding-right: 5px;
   font-size: 10px; 
   color: #aaa;
-}
-
-.gp-crx-wrapper {
-  width: auto;
-}
-
-.gp-crx-shares {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 0px;
 }
 
 .gp-crx-close {
@@ -35,54 +19,6 @@
   right: 2px;
   top: 2px;
   width: 21px;
-}
-
-.gp-crx-bubble {
-  box-shadow: 0 1px 3px rgba(0,0,0,.2);
-  background-color: white;
-  border: 1px solid;
-  padding: 16px;
-  position: absolute;
-  z-index: 1201!important;
-  border-image: initial;
-  border-color: #BBB #BBB #A8A8A8;
-  top: 25px;
-  opacity: 0;
-  -webkit-transition: opacity .25s linear;
-}
-
-.gp-crx-arrow {
-  position: absolute;
-  left: 20px;
-  top: -9px;
-}
-
-.gp-crx-arrow-left, .gp-crx-arrow-right {
-  display: block;
-  height: 0;
-  position: absolute;
-  width: 0;
-}
-
-.gp-crx-arrow-left {
-  border: 9px solid;
-}
-
-.gp-crx-arrow-right {
-  border:8px solid;
-}
-
-.gp-crx-arrow .gp-crx-arrow-right {
-  border-color: white transparent;
-  left: -8px;
-  border-top-width: 0;
-  top: 1px;
-}
-
-.gp-crx-arrow .gp-crx-arrow-left {
-  border-color: #BBB transparent;
-  left: -9px;
-  border-top-width: 0;
 }
 
 .gp-crx-shelf {

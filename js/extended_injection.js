@@ -6,31 +6,9 @@
  */
 Injection = function() {
   this.availableShares = [];
-  this.originalShareNode = document.createElement('span');
-  this.originalShareNode.setAttribute('role', 'button');
-  this.originalShareNode.setAttribute('class', 'external-share');
-  this.originalShareNode.innerHTML = 'Share on ...';
-
-  this.originalBubbleContainer = document.createElement('div');
-  this.originalBubbleContainer.setAttribute('class', 'gp-crx-bubble');
-  this.originalBubbleContainer.innerHTML =
-      '<div class="gp-crx-content">' + 
-      // Content.
-      '  <div class="gp-crx-wrapper">' + 
-      '    <div class="gp-crx-shares"></div>' + 
-      '  </div>' + 
-      '</div>' + 
-      // Close button.
-      '<div class="gp-crx-close" role="button" tabindex="0">' +
-      '  <div></div>' +
-      '</div>' +
-      // Arrow on top.
-      '<div class="gp-crx-arrow">' + 
-      '  <div class="gp-crx-arrow-left"></div>' + 
-      '  <div class="gp-crx-arrow-right"></div>' + 
-      '</div>' +
-      '<div class="gp-crx-settings" role="button" tabindex="0">options</div>';
-  this.currentlyOpenedBubble = null;
+  this.closeIcon = this.createCloseIcon();
+  this.settingsIcon = this.createSettingsIcon();
+  this.currentlyOpenedShelf = null;
   this.windowPressedListener = this.onWindowPressed.bind(this);
 };
 
@@ -102,7 +80,6 @@ Injection.prototype.onSettingsReceived = function(response) {
       }
     }
   }
-
   this.availableShares = response.data;
 };
 
@@ -166,9 +143,9 @@ Injection.prototype.parseURL = function(parent) {
  *
  * @param {Object<MouseEvent>} event The mouse event.
  */
-Injection.prototype.destroyBubble = function(event) {
-  this.currentlyOpenedBubble.parentNode.removeChild(this.currentlyOpenedBubble);
-  this.currentlyOpenedBubble = null;
+Injection.prototype.destroyShelf = function(event) {
+  this.currentlyOpenedShelf.parentNode.removeChild(this.currentlyOpenedShelf);
+  this.currentlyOpenedShelf = null;
   window.removeEventListener('keyup', this.windowPressedListener, false);
 };
 
@@ -178,7 +155,7 @@ Injection.prototype.destroyBubble = function(event) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.visitOptions = function(event) {
-  this.destroyBubble();
+  this.destroyShelf();
   window.open(chrome.extension.getURL('options.html'));
 };
 
@@ -203,6 +180,24 @@ Injection.prototype.createSocialLink = function(share, result) {
   return url;
 };
 
+/**
+ * Creates the DOM for the close button.
+ */
+Injection.prototype.createCloseIcon = function() {
+  var closeIcon = document.createElement('div');
+  closeIcon.setAttribute('class', 'gp-crx-close');
+  return closeIcon;
+};
+
+/**
+ * Creates the DOM for the settings button.
+ */
+Injection.prototype.createSettingsIcon = function() {
+  var settingsButton = document.createElement('span');
+  settingsButton.setAttribute('class', 'gp-crx-settings');
+  settingsButton.innerText = 'options';
+  return settingsButton;
+};
 
 /**
  * Creates the social hyperlink image.
@@ -218,7 +213,7 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
   a.onclick = function(e) {
     e.preventDefault();
     chrome.extension.sendRequest({method: 'OpenURL', data: url});
-    this.destroyBubble();
+    this.destroyShelf();
     return false;
   }.bind(this);
 
@@ -231,11 +226,19 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
   return a;
 };
 
+/**
+ * Creates the DOM for the shelf.
+ */
 Injection.prototype.createShelf = function(itemDOM) {
+  // Only allow a singleton instance of the bubble opened at all times.
+  if (this.currentlyOpenedShelf) {
+    this.destroyShelf();
+  }
+  
   var nodeToFill = document.createElement('div');
   nodeToFill.setAttribute('class', 'gp-crx-shelf');
   itemDOM.parentNode.insertBefore(nodeToFill, itemDOM.nextSibling );
-
+  
   var result = this.parseURL(itemDOM);
   if (!result.isPublic) {
     nodeToFill.appendChild(document.createTextNode('You cannot share this post because it is not public.'));
@@ -264,74 +267,26 @@ Injection.prototype.createShelf = function(itemDOM) {
   else {
     nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
   }
-};
 
-/**
- * Creates the bubble overlay. Uses same CSS used in 
- *
- * @param {number} x The mouse x position.
- * @param {number} y The mouse y position.
- * @param {Object<HTMLElement>} src The parent DOM source for the item.
- */
-Injection.prototype.createBubble = function(src, event) {
-  // Only allow a singleton instance of the bubble opened at all times.
-  if (this.currentlyOpenedBubble) {
-    this.destroyBubble();
-  }
+  // Add close icon.
+  var closeIcon = this.closeIcon.cloneNode(true);
+  closeIcon.onclick = this.destroyShelf.bind(this);
+  nodeToFill.appendChild(closeIcon);
 
-  var bubbleContainer = this.originalBubbleContainer.cloneNode(true);
-  var nodeToFill = bubbleContainer.querySelector(Injection.BUBBLE_SHARE_CONTENT_ID);
-
-  var result = this.parseURL(src);
-  if (!result.isPublic) {
-    nodeToFill.appendChild(document.createTextNode('You cannot share this post because it is not public.'));
-  }
-  else if (result.status) {
-    if (this.availableShares.length > 1) { // User has some shares, display them.
-      for (var i in this.availableShares) {
-        var share = Shares[this.availableShares[i]];
-        if (!share.media || result.media) {
-          var url = this.createSocialLink(share, result);
-          nodeToFill.appendChild(this.createSocialIcon(share.icon, share.name, url));
-        }
-      }
-    }
-    else if (this.availableShares.length == 1) { // Single share, auto link it directly.
-      var url = this.createSocialLink(Shares[this.availableShares[0]], result);
-      // Pass the URL to the background page so we can open it. This is needed
-      // to overcome the block that Google+ is putting to redirect links.
-      chrome.extension.sendRequest({method: 'OpenURL', data: url});
-      return; // TODO(mohamed): Figure out a better way.
-    }
-    else { // Nothing setup.
-      nodeToFill.appendChild(document.createTextNode('No share links enabled, visit options to add a couple!'));
-    }
-  }
-  else {
-    nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
-  }
-
-  var closeCross = bubbleContainer.querySelector(Injection.BUBBLE_CLOSE_ID);
-  closeCross.onclick = this.destroyBubble.bind(this);
-
-  var settingsButton = bubbleContainer.querySelector('.gp-crx-settings');
-  settingsButton.onclick = this.visitOptions.bind(this);
+  // Add settings button.
+  var settingsIcon = this.settingsIcon.cloneNode(true);
+  settingsIcon.onclick = this.visitOptions.bind(this);
+  nodeToFill.appendChild(settingsIcon);
   
-  // Setup the mouse listeners.
-  bubbleContainer.style.left = event.target.offsetLeft + 'px';
-  
-  // Show the share bubble.
-  src.parentNode.appendChild(bubbleContainer);
-
-  // Save the current state so we can ensure only a single bubble could live.
-  this.currentlyOpenedBubble = bubbleContainer;
-
   // Close the share bubble when the user hits escape.
   window.addEventListener('keyup', this.windowPressedListener, false);
 
+  // Save the current shelf so we can refer back to it later on.
+  this.currentlyOpenedShelf = nodeToFill;
+
   // Animate it by fading in.
   setTimeout(function() {
-    this.currentlyOpenedBubble.style.opacity = 1.0;
+    this.currentlyOpenedShelf.style.opacity = 1.0;
   }.bind(this));
 };
 
@@ -340,7 +295,7 @@ Injection.prototype.createBubble = function(src, event) {
  */
 Injection.prototype.onWindowPressed = function(e) {
   if (e.keyCode  === 27) { // ESCAPE.
-    this.destroyBubble();
+    this.destroyShelf();
   }
 };
 
@@ -363,20 +318,6 @@ Injection.prototype.onSendClick = function(event) {
 };
 
 /**
- * Render all the items in the current page.
- */
-Injection.prototype.resetAndRenderAll = function() {
-  var googlePlusContentPane = document.querySelector(Injection.CONTENT_PANE_ID);
-  if (googlePlusContentPane) {
-    googlePlusContentPane.removeEventListener('DOMNodeInserted',
-        this.onGooglePlusContentModified.bind(this), false);
-    googlePlusContentPane.addEventListener('DOMNodeInserted',
-        this.onGooglePlusContentModified.bind(this), false);
-  }
-  this.renderAllItems();
-};
-
-/**
  * Render the "Share on ..." Link on each post.
  *
  * @param {Object<ModifiedDOM>} event modified event.
@@ -389,6 +330,7 @@ Injection.prototype.renderItem = function(itemDOM) {
     // Remove the last class (I believe that is the trigger class from inspector).
     var lastClassNameItem = originalShareNode.classList[2];
     shareNode.classList.remove(lastClassNameItem);
+    shareNode.classList.add('external-share');
 
     var shareName;
     if (this.availableShares.length === 1) {
@@ -404,6 +346,23 @@ Injection.prototype.renderItem = function(itemDOM) {
     originalShareNode.parentNode.insertBefore(shareNode, originalShareNode.nextSibling );
     itemDOM.classList.add('gpi-crx');
   }
+};
+
+// TODO: Everything under here should be converted to a Mutation event instead.
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Render all the items in the current page.
+ */
+Injection.prototype.resetAndRenderAll = function() {
+  var googlePlusContentPane = document.querySelector(Injection.CONTENT_PANE_ID);
+  if (googlePlusContentPane) {
+    googlePlusContentPane.removeEventListener('DOMNodeInserted',
+        this.onGooglePlusContentModified.bind(this), false);
+    googlePlusContentPane.addEventListener('DOMNodeInserted',
+        this.onGooglePlusContentModified.bind(this), false);
+  }
+  this.renderAllItems();
 };
 
 /**
@@ -430,7 +389,7 @@ Injection.prototype.renderAllItems = function(subtreeDOM) {
   for (var i = 0; i < actionBars.length; i++) {
     this.renderItem(actionBars[i]);
   }
-}
+};
 
 /**
  * API to handle when clicking on different HTML5 push API. This somehow doesn't
