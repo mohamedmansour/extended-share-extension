@@ -74,6 +74,7 @@ Injection.prototype.prepareShareData = function(data) {
   var shareTop = null;
   var shareWidth = null;
   var shareZoom = null;
+  var shareMarginLeft = null;
   if (data.length === 1) {
     var shareItem = Shares[data[0]];
     shareName += shareItem.name;
@@ -82,14 +83,16 @@ Injection.prototype.prepareShareData = function(data) {
     shareHeight = '32px';
     shareWidth = '32px';
     shareZoom = 0.6;
+    shareMarginLeft = '7px';
   }
   else {
     shareName += '...';
     shareIcon = chrome.extension.getURL('/img/share.png');
-    shareTop = '0';
+    shareTop = '2px';
     shareHeight = '14px';
-    shareWidth = '22px';
+    shareWidth = '10px';
     shareZoom = 1;
+    shareMarginLeft = '0px';
   }
   return {
     name: shareName,
@@ -97,7 +100,8 @@ Injection.prototype.prepareShareData = function(data) {
     top: shareTop,
     height: shareHeight,
     width: shareWidth,
-    zoom: shareZoom
+    zoom: shareZoom,
+    marginLeft: shareMarginLeft
   }
 };
 
@@ -109,12 +113,14 @@ Injection.prototype.prepareShareData = function(data) {
  */
 Injection.prototype.decorateShare = function(shareNode, shareData) {
   shareNode.setAttribute('data-tooltip', shareData.name);
+  shareNode.style.marginLeft = shareData.marginLeft;
+  shareNode.style.width = shareData.width;
   var shareIcon = shareNode.childNodes[0];
   shareIcon.style.background = 'no-repeat url(' + shareData.icon + ')';
   shareIcon.style.top = shareData.top;
   shareIcon.style.height = shareData.height;
-  shareIcon.style.width = shareData.width;
   shareIcon.style.zoom = shareData.zoom;
+  shareIcon.style.width = shareData.width;
 };
 
 /**
