@@ -144,9 +144,12 @@ Injection.prototype.parseURL = function(parent) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.destroyShelf = function(event) {
-  this.currentlyOpenedShelf.parentNode.removeChild(this.currentlyOpenedShelf);
-  this.currentlyOpenedShelf = null;
-  window.removeEventListener('keyup', this.windowPressedListener, false);
+  this.currentlyOpenedShelf.style.height = '1px';
+  setTimeout(function() {
+    this.currentlyOpenedShelf.parentNode.removeChild(this.currentlyOpenedShelf);
+    this.currentlyOpenedShelf = null;
+    window.removeEventListener('keyup', this.windowPressedListener, false);
+  }.bind(this), 300);
 };
 
 /**
@@ -219,7 +222,7 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
 
   var img = document.createElement('img');
   img.setAttribute('src', chrome.extension.getURL(icon));
-  img.setAttribute('title', 'Share on ' + name);
+  img.setAttribute('data-tooltip', 'Share on ' + name);
   img.setAttribute('style', 'vertical-align: middle');
 
   a.appendChild(img);
@@ -233,6 +236,7 @@ Injection.prototype.createShelf = function(itemDOM) {
   // Only allow a singleton instance of the bubble opened at all times.
   if (this.currentlyOpenedShelf) {
     this.destroyShelf();
+    return;
   }
   
   var nodeToFill = document.createElement('div');
@@ -286,7 +290,7 @@ Injection.prototype.createShelf = function(itemDOM) {
 
   // Animate it by fading in.
   setTimeout(function() {
-    this.currentlyOpenedShelf.style.opacity = 1.0;
+    this.currentlyOpenedShelf.style.height = '32px';
   }.bind(this));
 };
 

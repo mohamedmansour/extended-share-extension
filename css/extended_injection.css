@@ -23,7 +23,8 @@
 
 .gp-crx-shelf {
   border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;background-color: #F2F2F2;
+  border-right: 1px solid #ccc;
+  background-color: #F2F2F2;
   border-bottom: 1px solid #CCC;
   box-shadow: 1px 1px 10px #ccc;
   color: #999;
@@ -32,9 +33,11 @@
   overflow: hidden;
   white-space: nowrap;
   vertical-align: top;
+  height: 1px;
   padding: 10px;
   position: relative;
   left: 0;
   right: 0;
   z-index: 1000;
+  -webkit-transition: height 0.3s linear;
 }
