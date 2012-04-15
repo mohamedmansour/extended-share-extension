@@ -46,7 +46,7 @@
   z-index: 1201!important;
   border-image: initial;
   border-color: #BBB #BBB #A8A8A8;
-  margin-top: 4px;
+  top: 25px;
   opacity: 0;
   -webkit-transition: opacity .25s linear;
 }
@@ -83,4 +83,22 @@
   border-color: #BBB transparent;
   left: -9px;
   border-top-width: 0;
+}
+
+.gp-crx-shelf {
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;background-color: #F2F2F2;
+  border-bottom: 1px solid #CCC;
+  box-shadow: 1px 1px 10px #ccc;
+  color: #999;
+  cursor: pointer;
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: top;
+  padding: 10px;
+  position: relative;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }

@@ -40,10 +40,11 @@ Injection.HANGOUT_BUTTON_SELECTOR = 'div[aria-label="Start a hangout about this 
 Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
 Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
 Injection.STREAM_POST_LINK = 'a[target="_blank"]';
+Injection.STREAM_CONTENTS_SELECTOR = 'div:nth-last-of-type(1)';
 Injection.STREAM_SHARING_DETAILS = 'span[title="Sharing details"]';
-Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div > div:nth-of-type(1) > div:last-child';
+Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + '> div > div:nth-of-type(1) > div:last-child';
 Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
-Injection.STREAM_IMAGE_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div div[data-content-type] > img';
+Injection.STREAM_IMAGE_SELECTOR = 'img:not([oid])';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
 Injection.BUBBLE_SHARE_CONTENT_ID = '.gp-crx-shares';
 Injection.BUBBLE_CLOSE_ID = '.gp-crx-close';
@@ -111,8 +112,7 @@ Injection.prototype.onSettingsReceived = function(response) {
  *
  * @param {Object<HTMLElement>} dom The parent DOM source for the item.
  */
-Injection.prototype.parseURL = function(dom) {
-  var parent = dom.parentNode.parentNode.parentNode;
+Injection.prototype.parseURL = function(parent) {
   var link = parent.querySelector(Injection.STREAM_POST_LINK);
   var image = parent.querySelector(Injection.STREAM_IMAGE_SELECTOR);
   var title = parent.querySelector(Injection.STREAM_AUTHOR_SELECTOR);
@@ -131,12 +131,7 @@ Injection.prototype.parseURL = function(dom) {
   
   if (link) {
     // Smartly find out the contents of that div.
-    var postContent = dom.parentNode.previousSibling.cloneNode(true);
-    var tmp = postContent.querySelectorAll('span[class]');
-    if (tmp && tmp.length) {
-        var editLink = tmp[tmp.length - 1];
-        editLink.parentNode.removeChild(editLink);
-    }
+    var postContent = parent.querySelector(Injection.STREAM_CONTENTS_SELECTOR);
     if (postContent.innerText.replace(/\s+/g, '')) {
       // prevent huge querystring
       // addthis trims automatically to fit on twitter
@@ -208,10 +203,6 @@ Injection.prototype.createSocialLink = function(share, result) {
   return url;
 };
 
-/**
- * Social Icon share clicked.
- */
-Injection.prototype.onSocialIconClicked 
 
 /**
  * Creates the social hyperlink image.
@@ -238,6 +229,41 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
 
   a.appendChild(img);
   return a;
+};
+
+Injection.prototype.createShelf = function(itemDOM) {
+  var nodeToFill = document.createElement('div');
+  nodeToFill.setAttribute('class', 'gp-crx-shelf');
+  itemDOM.parentNode.insertBefore(nodeToFill, itemDOM.nextSibling );
+
+  var result = this.parseURL(itemDOM);
+  if (!result.isPublic) {
+    nodeToFill.appendChild(document.createTextNode('You cannot share this post because it is not public.'));
+  }
+  else if (result.status) {
+    if (this.availableShares.length > 1) { // User has some shares, display them.
+      for (var i in this.availableShares) {
+        var share = Shares[this.availableShares[i]];
+        if (!share.media || result.media) {
+          var url = this.createSocialLink(share, result);
+          nodeToFill.appendChild(this.createSocialIcon(share.icon, share.name, url));
+        }
+      }
+    }
+    else if (this.availableShares.length == 1) { // Single share, auto link it directly.
+      var url = this.createSocialLink(Shares[this.availableShares[0]], result);
+      // Pass the URL to the background page so we can open it. This is needed
+      // to overcome the block that Google+ is putting to redirect links.
+      chrome.extension.sendRequest({method: 'OpenURL', data: url});
+      return; // TODO(mohamed): Figure out a better way.
+    }
+    else { // Nothing setup.
+      nodeToFill.appendChild(document.createTextNode('No share links enabled, visit options to add a couple!'));
+    }
+  }
+  else {
+    nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
+  }
 };
 
 /**
@@ -324,12 +350,15 @@ Injection.prototype.onWindowPressed = function(e) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.onSendClick = function(event) {
-  var element = event.srcElement.parentNode.querySelector('.' + Injection.BUBBLE_CONTAINER_ID);
-  if (!element) {
-    this.createBubble(event.srcElement, event);
+  // discover update parent.
+  var cardDOM = event.srcElement;
+  while (cardDOM.id.indexOf('update-') != 0) {
+    cardDOM = cardDOM.parentNode;
   }
-  else {
-    element.style.display = 'block';
+  
+  var mainContentCardDOM = cardDOM.childNodes[0].childNodes[0];
+  if (mainContentCardDOM) {
+    this.createShelf(mainContentCardDOM);
   }
 };
 
@@ -355,18 +384,12 @@ Injection.prototype.resetAndRenderAll = function() {
 Injection.prototype.renderItem = function(itemDOM) {
   if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
     var originalShareNode = itemDOM.querySelector(Injection.SHARE_BUTTON_SELECTOR);
-    var tempLookupNode = itemDOM.querySelector(Injection.HANGOUT_BUTTON_SELECTOR);
     var shareNode = originalShareNode.cloneNode(true);
 
-    // Remove the class that has the click element.
-    var a = tempLookupNode.classList;
-    var b = shareNode.classList;
-    for (var i = 0; i < a.length; i++) {
-      if (a[i] !== b[i]) {
-        shareNode.classList.remove(b[i]);
-        break;
-      }
-    }
+    // Remove the last class (I believe that is the trigger class from inspector).
+    var lastClassNameItem = originalShareNode.classList[2];
+    shareNode.classList.remove(lastClassNameItem);
+
     var shareName;
     if (this.availableShares.length === 1) {
       shareName = 'Share on ' + Shares[this.availableShares[0]].name;
@@ -378,7 +401,7 @@ Injection.prototype.renderItem = function(itemDOM) {
     shareNode.setAttribute('data-tooltip', shareName);
     shareNode.onclick = this.onSendClick.bind(this);
 
-    originalShareNode.parentNode.appendChild(shareNode);
+    originalShareNode.parentNode.insertBefore(shareNode, originalShareNode.nextSibling );
     itemDOM.classList.add('gpi-crx');
   }
 };
