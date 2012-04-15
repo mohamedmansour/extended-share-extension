@@ -68,6 +68,13 @@ function onRestore() {
   });
   openPopupElement.checked = bkg.settings.open_as_popup;
 
+  var autocloseShareElement = $('auto_close_shelf');
+  autocloseShareElement.addEventListener('click', function(e) {
+    bkg.settings.auto_close_shelf = autocloseShareElement.checked;
+    bkg.backgroundController.updateSettings();
+  });
+  autocloseShareElement.checked = bkg.settings.auto_close_shelf;
+
   var container_shares = $('container-shares');
   for (var share in Shares) {
     if (Shares.hasOwnProperty(share)) {

@@ -75,7 +75,7 @@ BackgroundController.prototype.updateSettings = function() {
   this.doWorkTabs(function(tab) {
     chrome.tabs.sendRequest(tab.id, {
         method: 'SettingsUpdated',
-        data: settings.shares
+        data: settings
     });
   });
 };
@@ -135,7 +135,7 @@ BackgroundController.prototype.tabUpdated = function(tabId, changeInfo, tab) {
 BackgroundController.prototype.onExternalRequest = function(request, sender, sendResponse) {
   if (request.method == 'GetSettings') {
     sendResponse({
-        data: settings.shares
+        data: settings
     });
   }
   else if (request.method == 'OpenURL') {

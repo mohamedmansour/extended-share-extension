@@ -5,6 +5,7 @@
  * @constructor
  */
 Injection = function() {
+  this.auto_close_shelf = false;
   this.availableShares = [];
   this.closeIcon = this.createCloseIcon();
   this.settingsIcon = this.createSettingsIcon();
@@ -119,22 +120,25 @@ Injection.prototype.decorateShare = function(shareNode, shareData) {
 /**
  * Settings received, update content script.
  */
-Injection.prototype.onSettingsReceived = function(response) { 
+Injection.prototype.onSettingsReceived = function(response) {
+  this.auto_close_shelf = response.data.auto_close_shelf;
+  var shares = response.data.shares;
+  
   // If only a single share is enabled, just rename all the links to that share name.
-  if (!this.compareArrays(this.availableShares, response.data)) {
+  if (!this.compareArrays(this.availableShares, shares)) {
     // Destroy all the shares since it is easier for it to re-render it.
     this.destroyShelf();
     
     // Query all the existing shares on the page.
     var existingShares = document.querySelectorAll('.external-share');
 
-    var shareData = this.prepareShareData(response.data);
+    var shareData = this.prepareShareData(shares);
     for (var s = 0; s < existingShares.length; s++) {
       var existingShare = existingShares[s];
       this.decorateShare(existingShare, shareData);
     }
   }
-  this.availableShares = response.data;
+  this.availableShares = shares;
 };
 
 /**
@@ -215,7 +219,9 @@ Injection.prototype.destroyShelf = function(event) {
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.visitOptions = function(event) {
-  this.destroyShelf();
+  if (this.auto_close_shelf) {
+    this.destroyShelf();
+  }
   window.open(chrome.extension.getURL('options.html'));
 };
 
@@ -273,7 +279,9 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
   a.onclick = function(e) {
     e.preventDefault();
     chrome.extension.sendRequest({method: 'OpenURL', data: url});
-    this.destroyShelf();
+    if (this.auto_close_shelf) {
+      this.destroyShelf();
+    }
     return false;
   }.bind(this);
 

@@ -32,5 +32,12 @@ settings = {
   },
   set open_as_popup(val) {
     localStorage['open_as_popup'] = val;
-  }
+  },
+  get auto_close_shelf() {
+    var key = localStorage['auto_close_shelf'];
+    return (typeof key == 'undefined') ? false : key === 'true';
+  },
+  set auto_close_shelf(val) {
+    localStorage['auto_close_shelf'] = val;
+  }  
 };
