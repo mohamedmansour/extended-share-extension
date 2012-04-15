@@ -402,6 +402,10 @@ Injection.prototype.onSendClick = function(event) {
 Injection.prototype.renderItem = function(itemDOM) {
   if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
     var originalShareNode = itemDOM.querySelector(Injection.SHARE_BUTTON_SELECTOR);
+    // This means you cannot share this post, because it is locked.
+    if (!originalShareNode) {
+      return;
+    }
     var shareNode = originalShareNode.cloneNode(true);
 
     // Remove the last class (I believe that is the trigger class from inspector).
