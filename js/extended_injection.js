@@ -6,8 +6,6 @@
  */
 Injection = function() {
   this.availableShares = [];
-  this.originalTextNode = document.createTextNode(' \u00a0-\u00a0 ');
-
   this.originalShareNode = document.createElement('span');
   this.originalShareNode.setAttribute('role', 'button');
   this.originalShareNode.setAttribute('class', 'external-share');
@@ -37,11 +35,13 @@ Injection = function() {
 };
 
 Injection.CONTENT_PANE_ID = '#contentPane';
+Injection.SHARE_BUTTON_SELECTOR = 'div[aria-label="Share this post"]';
+Injection.HANGOUT_BUTTON_SELECTOR = 'div[aria-label="Start a hangout about this post"]';
 Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
 Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
 Injection.STREAM_POST_LINK = 'a[target="_blank"]';
 Injection.STREAM_SHARING_DETAILS = 'span[title="Sharing details"]';
-Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div > div:nth-of-type(3)';
+Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div > div:nth-of-type(1) > div:last-child';
 Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
 Injection.STREAM_IMAGE_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + ' > div div[data-content-type] > img';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
@@ -354,13 +354,31 @@ Injection.prototype.resetAndRenderAll = function() {
  */
 Injection.prototype.renderItem = function(itemDOM) {
   if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
-    var shareNode = this.originalShareNode.cloneNode(true);
-    if (this.availableShares.length === 1) {
-      shareNode.innerHTML = 'Share on ' + Shares[this.availableShares[0]].name;
+    var originalShareNode = itemDOM.querySelector(Injection.SHARE_BUTTON_SELECTOR);
+    var tempLookupNode = itemDOM.querySelector(Injection.HANGOUT_BUTTON_SELECTOR);
+    var shareNode = originalShareNode.cloneNode(true);
+
+    // Remove the class that has the click element.
+    var a = tempLookupNode.classList;
+    var b = shareNode.classList;
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) {
+        shareNode.classList.remove(b[i]);
+        break;
+      }
     }
+    var shareName;
+    if (this.availableShares.length === 1) {
+      shareName = 'Share on ' + Shares[this.availableShares[0]].name;
+    }
+    else {
+      shareName = 'Share on ...';
+    }
+    shareNode.setAttribute('aria-label', shareName);
+    shareNode.setAttribute('data-tooltip', shareName);
     shareNode.onclick = this.onSendClick.bind(this);
-    itemDOM.appendChild(this.originalTextNode.cloneNode(true));
-    itemDOM.appendChild(shareNode);
+
+    originalShareNode.parentNode.appendChild(shareNode);
     itemDOM.classList.add('gpi-crx');
   }
 };
