@@ -28,7 +28,7 @@ settings = {
   },
   get open_as_popup() {
     var key = localStorage['open_as_popup'];
-    return (typeof key == 'undefined') ? false : key === 'true';
+    return (typeof key == 'undefined') ? true : key === 'true';
   },
   set open_as_popup(val) {
     localStorage['open_as_popup'] = val;
