@@ -152,3 +152,8 @@ p {
   background: -webkit-linear-gradient(#ff0000, #cc0000 40%, #ff0000);
   color: #fff;
 }
+
+.widget {
+  float: right;
+  width: 250px;
+}
