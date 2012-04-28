@@ -99,6 +99,7 @@ function onRestore() {
   addCheckboxOption('open_as_popup');
   addCheckboxOption('auto_close_shelf');
   addCheckboxOption('share_limited');
+  addCheckboxOption('use_link');
   
   var container_shares = $('container-shares');
   for (var share in Shares) {

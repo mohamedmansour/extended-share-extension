@@ -46,5 +46,12 @@ settings = {
   },
   set share_limited(val) {
     localStorage['share_limited'] = val;
+  },
+  get use_link() {
+    var key = localStorage['use_link'];
+    return (typeof key == 'undefined') ? true : key === 'true';
+  },
+  set use_link(val) {
+    localStorage['use_link'] = val;
   }
 };

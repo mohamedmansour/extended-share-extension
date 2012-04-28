@@ -7,6 +7,7 @@
 Injection = function() {
   this.auto_close_shelf = false;
   this.share_limited = false;
+  this.use_link = true;
   this.availableShares = [];
   this.closeIcon = this.createCloseIcon();
   this.settingsIcon = this.createSettingsIcon();
@@ -129,6 +130,7 @@ Injection.prototype.decorateShare = function(shareNode, shareData) {
 Injection.prototype.onSettingsReceived = function(response) {
   this.auto_close_shelf = response.data.auto_close_shelf;
   this.share_limited = response.data.share_limited;
+  this.use_link = response.data.use_link;
   var shares = response.data.shares;
   
   // If only a single share is enabled, just rename all the links to that share name.
@@ -173,24 +175,30 @@ Injection.prototype.parseURL = function(parent) {
   
   if (link) {
     // Smartly find out the contents of that div.
+    link = link.href.replace(/plus\.google\.com\/u\/(\d*)/, 'plus.google.com');
     var postContent = parent.querySelector(Injection.STREAM_CONTENTS_SELECTOR);
+    var textDOM = null;
     if (postContent.innerText.replace(/\s+/g, '')) {
-      // prevent huge querystring
-      // addthis trims automatically to fit on twitter
-      text = postContent.innerText.substring(0, 800);
+      textDOM = postContent;
     }
     else {
-      text = parent.querySelector(Injection.STREAM_ARTICLE_ID);
-      if (text) {
-        text = text.innerText;
-      }
-      else {
-        text = ''; // Empty for now till we figure out what to do.
+      textDOM = parent.querySelector(Injection.STREAM_ARTICLE_ID);
+    }
+
+    if (textDOM) {
+      text = textDOM.innerText.substring(0, 800);
+
+      // Use link instead of post link.
+      if (this.use_link) {
+        var linkDOM = textDOM.querySelector('a');
+        if (linkDOM) {
+          link = linkDOM.href;
+        }
       }
     }
-    link = link.href;
-    // Support multiple accounts.
-    link = link.replace(/plus\.google\.com\/u\/(\d*)/, 'plus.google.com');
+    else {
+      text = ''; // Empty for now till we figure out what to do.
+    }
   }
 
   return {
