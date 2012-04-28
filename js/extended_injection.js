@@ -14,13 +14,12 @@ Injection = function() {
 };
 
 Injection.CONTENT_PANE_ID = '#contentPane';
-Injection.SHARE_BUTTON_SELECTOR = 'div[aria-label="Share this post"]';
-Injection.HANGOUT_BUTTON_SELECTOR = 'div[aria-label="Start a hangout about this post"]';
+Injection.SHARE_BUTTON_SELECTOR = 'div[role="button"]:nth-of-type(2)';
 Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
 Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
 Injection.STREAM_POST_LINK = 'a[target="_blank"]';
 Injection.STREAM_CONTENTS_SELECTOR = 'div:nth-last-of-type(1)';
-Injection.STREAM_SHARING_DETAILS = 'span[title="Sharing details"]';
+Injection.STREAM_SHARING_DETAILS = 'header > span > span:last-of-type';
 Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + '> div > div:nth-of-type(1) > div:last-child';
 Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
 Injection.STREAM_IMAGE_SELECTOR = 'img:not([oid])';
