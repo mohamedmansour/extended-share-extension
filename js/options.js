@@ -15,7 +15,9 @@ window.addEventListener('load', onLoad, false);
  */
 function onLoad() {
   onRestore();
+  onRenderGooglePlus();
   $('button-close').addEventListener('click', onClose, false);
+  $('donate').addEventListener('click', onDonate, false);
 }
 
 /**
@@ -23,6 +25,17 @@ function onLoad() {
  */
 function onClose() {
   window.close();
+}
+
+function onDonate() {
+  chrome.tabs.create({url: 'http://mohamedmansour.com/donate'});
+}
+
+function onRenderGooglePlus() {
+  var script = document.createElement('script');
+  script.src = 'https://apis.google.com/js/plusone.js';
+  script.innerText = '{lang: "en"}';
+  document.body.appendChild(script);
 }
 
 function shareRendered(shareElement) {
@@ -55,11 +68,6 @@ function shareUpdated() {
 function onRestore() {
   // Restore settings.
   $('version').innerHTML = ' (v' + bkg.settings.version + ')';
-
-  var donateElement = $('donate');
-  donateElement.addEventListener('click', function(e) {
-    chrome.tabs.create({url: 'http://mohamedmansour.com/donate'});
-  });
   
   var optElement = $('opt_out');
   optElement.addEventListener('click', function(e) {
