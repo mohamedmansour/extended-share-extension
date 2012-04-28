@@ -39,5 +39,12 @@ settings = {
   },
   set auto_close_shelf(val) {
     localStorage['auto_close_shelf'] = val;
-  }  
+  },
+  get share_limited() {
+    var key = localStorage['share_limited'];
+    return (typeof key == 'undefined') ? false : key === 'true';
+  },
+  set share_limited(val) {
+    localStorage['share_limited'] = val;
+  }
 };

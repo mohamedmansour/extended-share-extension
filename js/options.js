@@ -95,25 +95,11 @@ function onRestore() {
   // Restore settings.
   $('version').innerHTML = ' (v' + bkg.settings.version + ')';
   
-  var optElement = $('opt_out');
-  optElement.addEventListener('click', function(e) {
-    bkg.settings.opt_out = optElement.checked;
-  });
-  optElement.checked = bkg.settings.opt_out;
-
-  var openPopupElement = $('open_as_popup');
-  openPopupElement.addEventListener('click', function(e) {
-    bkg.settings.open_as_popup = openPopupElement.checked;
-  });
-  openPopupElement.checked = bkg.settings.open_as_popup;
-
-  var autocloseShareElement = $('auto_close_shelf');
-  autocloseShareElement.addEventListener('click', function(e) {
-    bkg.settings.auto_close_shelf = autocloseShareElement.checked;
-    bkg.backgroundController.updateSettings();
-  });
-  autocloseShareElement.checked = bkg.settings.auto_close_shelf;
-
+  addCheckboxOption('opt_out');
+  addCheckboxOption('open_as_popup');
+  addCheckboxOption('auto_close_shelf');
+  addCheckboxOption('share_limited');
+  
   var container_shares = $('container-shares');
   for (var share in Shares) {
     if (Shares.hasOwnProperty(share)) {
@@ -131,6 +117,15 @@ function onRestore() {
       }
     }
   }
+}
+
+function addCheckboxOption(shareName) {
+  var elt = $(shareName);
+  elt.addEventListener('click', function(e) {
+    bkg.settings[shareName] = elt.checked;
+    bkg.backgroundController.updateSettings();
+  });
+  elt.checked = bkg.settings[shareName];
 }
 
 /**

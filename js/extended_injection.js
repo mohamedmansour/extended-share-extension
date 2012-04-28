@@ -6,6 +6,7 @@
  */
 Injection = function() {
   this.auto_close_shelf = false;
+  this.share_limited = false;
   this.availableShares = [];
   this.closeIcon = this.createCloseIcon();
   this.settingsIcon = this.createSettingsIcon();
@@ -127,6 +128,7 @@ Injection.prototype.decorateShare = function(shareNode, shareData) {
  */
 Injection.prototype.onSettingsReceived = function(response) {
   this.auto_close_shelf = response.data.auto_close_shelf;
+  this.share_limited = response.data.share_limited;
   var shares = response.data.shares;
   
   // If only a single share is enabled, just rename all the links to that share name.
@@ -313,7 +315,7 @@ Injection.prototype.createShelf = function(itemDOM) {
   nodeToFill.setAttribute('class', 'gp-crx-shelf');
   
   var result = this.parseURL(itemDOM);
-  if (!result.isPublic) {
+  if (!result.isPublic && !this.share_limited) {
     nodeToFill.appendChild(document.createTextNode('You cannot share this post because it is not public.'));
   }
   else if (result.status) {
