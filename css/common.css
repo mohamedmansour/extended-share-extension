@@ -1,5 +1,10 @@
 /* Common Chrome Style */
-
+body {
+  font-size: 87%;
+  margin: 10px;
+  font-family: Arial, Helvetica, 'Helvetica Neue', Verdana, sans-serif;
+  padding: 0;
+}
 .clear {
   clear: both;
 }

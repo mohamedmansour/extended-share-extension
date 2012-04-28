@@ -1,0 +1,15 @@
+<!DOCTYPE html> 
+<html>
+<link rel="stylesheet" type="text/css" href="/css/common.css" />
+<link rel="stylesheet" type="text/css" href="/css/update.css" />
+<body>
+  <h1>Just updated to <em id="version"></em>!</h1>
+  <ul>
+    <li><span class="status fixed">Fixed</span> All Google+ languages should work now. <a href="https://github.com/mohamedmansour/extended-share-extension/issues/54" class="issue">Issue54</a></li>
+    <li><span class="status enhancement">Enhancement</span> Options page loads much faster now.</li>
+  </ul>
+  <script>
+  document.getElementById('version').innerHTML = ' v' + chrome.extension.getBackgroundPage().settings.version ;
+  </script>
+</body>
+</html>

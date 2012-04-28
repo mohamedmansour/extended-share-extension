@@ -1,0 +1,36 @@
+body {
+  color: white;
+}
+
+h1 {
+ text-align: center;
+}
+
+a {
+  color: #ccc;
+  text-decoration: none;
+}
+a:hover {
+  background-color: #eee;
+  color: #333;
+}
+li {
+  margin: 20px 0;
+}
+.issue {
+  border: 1px dotted white;
+  padding: 4px;
+}
+.status {
+  border-radius: 5px;
+  padding: 4px;
+}
+.fixed {
+  background-color: #cc0000;
+}
+.feature {
+  background-color: green;
+}
+.enhancement {
+  background-color: orange;
+}

@@ -16,6 +16,7 @@ window.addEventListener('load', onLoad, false);
 function onLoad() {
   onRestore();
   onRenderGooglePlus();
+  onRenderUpdate();
   $('button-close').addEventListener('click', onClose, false);
   $('donate').addEventListener('click', onDonate, false);
   $('charity').addEventListener('click', onCharity, false);
@@ -41,6 +42,26 @@ function onRenderGooglePlus() {
   script.src = 'https://apis.google.com/js/plusone.js';
   script.innerText = '{lang: "en"}';
   document.body.appendChild(script);
+}
+
+function onRenderUpdate() {
+  if (location.hash === '#updated') {
+    var iframeContainer = document.createElement('div');
+    iframeContainer.id = 'updatecontainer';
+    
+    var closeContainer = document.createElement('div');
+    closeContainer.innerText = 'close dialog';
+    iframeContainer.appendChild(closeContainer);
+    iframeContainer.onclick = function(e) {
+      iframeContainer.parentNode.removeChild(iframeContainer);
+    };
+    
+    var iframe = document.createElement('iframe');
+    iframe.id = 'updateframe';
+    iframe.src = chrome.extension.getURL('updates.html');
+    iframeContainer.appendChild(iframe);
+    document.body.appendChild(iframeContainer);
+  }
 }
 
 function shareRendered(shareElement) {
