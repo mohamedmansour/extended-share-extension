@@ -26,9 +26,8 @@ em {
 
 dt {
   width: 15em;
-  padding: .5em;
   float: left;
-  margin: 0;
+  margin-top: 10px;
 }
 
 dd {

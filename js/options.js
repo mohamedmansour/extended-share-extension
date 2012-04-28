@@ -18,6 +18,7 @@ function onLoad() {
   onRenderGooglePlus();
   $('button-close').addEventListener('click', onClose, false);
   $('donate').addEventListener('click', onDonate, false);
+  $('charity').addEventListener('click', onCharity, false);
 }
 
 /**
@@ -29,6 +30,10 @@ function onClose() {
 
 function onDonate() {
   chrome.tabs.create({url: 'http://mohamedmansour.com/donate'});
+}
+
+function onCharity() {
+  chrome.tabs.create({url: 'http://www.crowdrise.com/code-for-charity'});
 }
 
 function onRenderGooglePlus() {
