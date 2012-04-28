@@ -22,7 +22,7 @@ Injection.STREAM_POST_LINK = 'a[target="_blank"]';
 Injection.STREAM_CONTENTS_SELECTOR = 'div:nth-last-of-type(1)';
 Injection.STREAM_SHARING_DETAILS = 'header > span > span:last-of-type';
 Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + '> div > div:nth-of-type(1) > div:last-child';
-Injection.STREAM_AUTHOR_SELECTOR = 'div > div > h3 > span';
+Injection.STREAM_AUTHOR_SELECTOR = 'header > h3';
 Injection.STREAM_IMAGE_SELECTOR = 'img:not([oid])';
 Injection.BUBBLE_CONTAINER_ID = 'gp-crx-bubble';
 Injection.BUBBLE_SHARE_CONTENT_ID = '.gp-crx-shares';
