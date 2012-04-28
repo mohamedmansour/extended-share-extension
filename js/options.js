@@ -56,6 +56,11 @@ function onRestore() {
   // Restore settings.
   $('version').innerHTML = ' (v' + bkg.settings.version + ')';
 
+  var donateElement = $('donate');
+  donateElement.addEventListener('click', function(e) {
+    chrome.tabs.create({url: 'http://mohamedmansour.com/donate'});
+  });
+  
   var optElement = $('opt_out');
   optElement.addEventListener('click', function(e) {
     bkg.settings.opt_out = optElement.checked;

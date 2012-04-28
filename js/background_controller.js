@@ -98,6 +98,7 @@ BackgroundController.prototype.isValidURL = function(url) {
  * @param {string} current  The new version updating to.
  */
 BackgroundController.prototype.onUpdate = function(previous, current) {
+  chrome.tabs.create({url: 'options.html#updated'});
 };
 
 /**
