@@ -17,10 +17,11 @@ Injection = function() {
 
 Injection.CONTENT_PANE_ID = '#contentPane';
 Injection.SHARE_BUTTON_SELECTOR = 'div[role="button"]:nth-of-type(2)';
-Injection.STREAM_ARTICLE_ID = 'div:nth-of-type(2) > div:first-child';
 Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
 Injection.STREAM_POST_LINK = 'a[target="_blank"]';
-Injection.STREAM_CONTENTS_SELECTOR = 'div:nth-last-of-type(1)';
+Injection.STREAM_CONTENTS_SELECTOR = 'div > div > div:nth-of-type(3)';
+Injection.STREAM_CONTENTS_MAIN_SELECTOR = Injection.STREAM_CONTENTS_SELECTOR + ' > div:nth-of-type(1)';
+Injection.STREAM_CONTENTS_EMBED_SELECTOR = Injection.STREAM_CONTENTS_SELECTOR + ' > div:last-of-type';
 Injection.STREAM_SHARING_DETAILS = 'header > span > span:last-of-type';
 Injection.STREAM_ACTION_BAR_SELECTOR = Injection.STREAM_UPDATE_SELECTOR + '> div > div:nth-of-type(1) > div:last-child';
 Injection.STREAM_AUTHOR_SELECTOR = 'header > h3';
@@ -176,21 +177,23 @@ Injection.prototype.parseURL = function(parent) {
   if (link) {
     // Smartly find out the contents of that div.
     link = link.href.replace(/plus\.google\.com\/u\/(\d*)/, 'plus.google.com');
-    var postContent = parent.querySelector(Injection.STREAM_CONTENTS_SELECTOR);
     var textDOM = null;
-    if (postContent.innerText.replace(/\s+/g, '')) {
+    var postContent = parent.querySelector(Injection.STREAM_CONTENTS_MAIN_SELECTOR);
+    var postEmbed = parent.querySelector(Injection.STREAM_CONTENTS_EMBED_SELECTOR);
+    if (postContent.innerText.trim()) {
       textDOM = postContent;
     }
     else {
-      textDOM = parent.querySelector(Injection.STREAM_ARTICLE_ID);
+      textDOM = postEmbed;
     }
 
     if (textDOM) {
-      text = textDOM.innerText.substring(0, 800);
+      text = textDOM.innerText.trim().substring(0, 800);
 
-      // Use link instead of post link.
+      // Use link instead of post link. We put preference in links for the embedding
+      // content if exists.
       if (this.use_link) {
-        var linkDOM = textDOM.querySelector('a');
+        var linkDOM = (postEmbed && postEmbed.querySelector('a')) || textDOM.querySelector('a');
         if (linkDOM) {
           link = linkDOM.href;
         }
