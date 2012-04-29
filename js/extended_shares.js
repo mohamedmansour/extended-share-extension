@@ -135,7 +135,7 @@ Shares = {
   mailto: {
     name: 'Email',
     icon: '/img/mailto.png',
-    url: 'mailto:?subject=${title}&body=${text}',
+    url: 'mailto:?subject=${title}&body=${text}+${link}',
     trim: false
   }
 };
