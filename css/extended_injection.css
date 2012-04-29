@@ -38,6 +38,6 @@
   position: relative;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 900;
   -webkit-transition: height 0.3s linear;
 }
