@@ -1,7 +1,8 @@
 {
-  "name": "Extended Share for Google Plus",
+  "name": "__MSG_extName__",
   "version": "3.0",
-  "description": "Extends Google+ to share to Facebook, LinkedIn, Twitter, and many more.",
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
   "icons": {
     "16": "img/icon16.png",
     "32": "img/icon32.png",

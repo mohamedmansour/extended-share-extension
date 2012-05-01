@@ -1,0 +1,9 @@
+{
+  "extName": { "message": "Extended Share for Google Plus"},
+  "extDescription": { "message": "Extends Google+ to share to Facebook, LinkedIn, Twitter, and many more."},
+  "injectionNoShareLinks": { "message": "No share links enabled, visit options to add a couple!"},
+  "injectionError": { "message": "Cannot find URL, please file bug to developer. mhm@chromium.org"},
+  "injectionCannotShareSincePublic": { "message": "You cannot share this post because it is not public."},
+  "injectionShareOnNetwork": { "message": "Share on" },
+  "injectionPublicLabel": { "message": "Public" }
+}

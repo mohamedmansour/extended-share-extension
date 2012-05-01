@@ -15,6 +15,14 @@ Injection = function() {
   this.windowPressedListener = this.onWindowPressed.bind(this);
 };
 
+Injection.Translations = {
+  NO_SHARE_LINKS: chrome.i18n.getMessage('injectionNoShareLinks'),
+  ERROR: chrome.i18n.getMessage('injectionError'),
+  CANNOT_SHARE_NOT_PUBLIC: chrome.i18n.getMessage('injectionCannotShareSincePublic'),
+  SHARE_ON: chrome.i18n.getMessage('injectionShareOnNetwork'),
+  PUBLIC: chrome.i18n.getMessage('injectionPublicLabel'),
+};
+
 Injection.CONTENT_PANE_ID = '#contentPane';
 Injection.SHARE_BUTTON_SELECTOR = 'div[role="button"]:nth-of-type(2)';
 Injection.STREAM_UPDATE_SELECTOR = 'div[id^="update"]';
@@ -163,7 +171,7 @@ Injection.prototype.parseURL = function(parent) {
   var title = parent.querySelector(Injection.STREAM_AUTHOR_SELECTOR);
   var sharingDetails = parent.querySelector(Injection.STREAM_SHARING_DETAILS);
 
-  var isPublic = sharingDetails.innerText === 'Public';
+  var isPublic = sharingDetails.innerText === Injection.Translations.PUBLIC;
   var text = '';
   
   if (title) {
@@ -305,7 +313,7 @@ Injection.prototype.createSocialIcon = function(icon, name, url) {
 
   var img = document.createElement('img');
   img.setAttribute('src', chrome.extension.getURL(icon));
-  img.setAttribute('data-tooltip', 'Share on ' + name);
+  img.setAttribute('data-tooltip', Injection.Translations.SHARE_ON + ' ' + name);
   img.setAttribute('style', 'vertical-align: middle');
 
   a.appendChild(img);
@@ -327,7 +335,7 @@ Injection.prototype.createShelf = function(itemDOM) {
   
   var result = this.parseURL(itemDOM);
   if (!result.isPublic && !this.share_limited) {
-    nodeToFill.appendChild(document.createTextNode('You cannot share this post because it is not public.'));
+    nodeToFill.appendChild(document.createTextNode(Injection.Translations.CANNOT_SHARE_NOT_PUBLIC));
   }
   else if (result.status) {
     if (this.availableShares.length > 1) { // User has some shares, display them.
@@ -347,11 +355,11 @@ Injection.prototype.createShelf = function(itemDOM) {
       return; // TODO(mohamed): Figure out a better way.
     }
     else { // Nothing setup.
-      nodeToFill.appendChild(document.createTextNode('No share links enabled, visit options to add a couple!'));
+      nodeToFill.appendChild(document.createTextNode(Injection.Translations.NO_SHARE_LINKS));
     }
   }
   else {
-    nodeToFill.appendChild(document.createTextNode('Cannot find URL, please file bug to developer. hello@mohamedmansour.com'));
+    nodeToFill.appendChild(document.createTextNode(Injection.Translations.ERROR));
   }
 
   // Add the shelf node to the existing DOM.
