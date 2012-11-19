@@ -17,6 +17,12 @@
  * @author Mohamed Mansour 2011 (http://mohamedmansour.com)
  */
 Shares = {
+  app: {
+    name: 'App.net',
+    icon: '/img/app.png',
+    url: 'https://alpha.app.net/intent/post?text=${text}%20${link}',
+    trim: true
+  },
   twitter: {
     name: 'Twitter',
     icon: '/img/twitter.png',

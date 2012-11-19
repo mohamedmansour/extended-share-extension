@@ -23,6 +23,7 @@
       "all_frames": true
   }],
   "web_accessible_resources": [
+    "img/app.png",
     "img/addthis.png",
     "img/blogger.png",
     "img/digg.png",
