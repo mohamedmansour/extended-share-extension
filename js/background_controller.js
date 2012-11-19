@@ -59,7 +59,7 @@ BackgroundController.prototype.doWorkTabs = function(callback) {
       var tabs = windows[w].tabs;
       for (var t = 0; t < tabs.length; t++) {
         var tab = tabs[t];
-        if (self.isValidURL(tab.url)) { 
+        if (self.isValidURL(tab.url)) {
           callback(tab);
         }
       }
@@ -82,7 +82,7 @@ BackgroundController.prototype.updateSettings = function() {
 
 /**
  * Check if the URL is part of plus websites.
- 
+
  * @param {string} url The URL to check if valid.
  */
 BackgroundController.prototype.isValidURL = function(url) {
@@ -154,3 +154,6 @@ BackgroundController.prototype.onExternalRequest = function(request, sender, sen
     sendResponse({});
   }
 };
+
+var controller = new BackgroundController();
+controller.init();

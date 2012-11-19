@@ -1,6 +1,7 @@
 {
   "name": "__MSG_extName__",
   "version": "3.0",
+  "manifest_version": 2,
   "description": "__MSG_extDescription__",
   "default_locale": "en",
   "icons": {
@@ -10,7 +11,9 @@
     "128": "img/icon128.png"
   },
   "permissions": ["tabs", "https://plus.google.com/*"],
-  "background_page": "background.html",
+  "background": {
+    "scripts": [ "js/settings.js", "js/extended_shares.js", "js/background_controller.js" ]
+  },
   "options_page": "options.html",
   "content_scripts": [{
       "matches": ["https://plus.google.com/*"],
@@ -18,5 +21,29 @@
       "css": ["css/extended_injection.css"],
       "run_at": "document_end",
       "all_frames": true
-  }]
+  }],
+  "web_accessible_resources": [
+    "img/addthis.png",
+    "img/blogger.png",
+    "img/digg.png",
+    "img/facebook.png",
+    "img/google.png",
+    "img/hyves.png",
+    "img/identica.png",
+    "img/linkedin.png",
+    "img/livejournal.png",
+    "img/mailto.png",
+    "img/netvibes.png",
+    "img/pingfm.png",
+    "img/pinterest.png",
+    "img/popup_close.png",
+    "img/posterous.png",
+    "img/reddit.png",
+    "img/share.png",
+    "img/stumbleupon.png",
+    "img/technorati.png",
+    "img/tumblr.png",
+    "img/twitter.png",
+    "img/yahoo.png"
+  ]
 }
