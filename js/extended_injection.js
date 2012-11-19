@@ -433,6 +433,11 @@ Injection.prototype.renderItem = function(itemDOM) {
     shareNode.classList.remove(lastClassNameItem);
     shareNode.classList.add('external-share');
 
+    // This post is not shareable, for now just remove it.
+    if (shareNode.childNodes.length == 0) {
+      return;
+    }
+
     var shareData = this.prepareShareData(this.availableShares);
     shareNode.setAttribute('aria-label', shareData.name);
     this.decorateShare(shareNode, shareData);
