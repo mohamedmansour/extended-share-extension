@@ -1,19 +1,38 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 <link rel="stylesheet" type="text/css" href="/css/common.css" />
 <link rel="stylesheet" type="text/css" href="/css/update.css" />
 <body>
   <h1>Just updated to <em id="version"></em>!</h1>
   <ul>
-    <li><span class="status feature">Feature</span> If the post contains a link, treat that as the share URL. (setting) <a target="_blank" href="https://github.com/mohamedmansour/extended-share-extension/issues/52" class="issue">Issue52</a></li>
-    <li><span class="status feature">Feature</span> You have the option to share limited posts. (setting)</li>
-    <li><span class="status feature">Feature</span> New Share option to email the post. <a target="_blank" href="https://github.com/mohamedmansour/extended-share-extension/issues/48" class="issue">Issue48</a></li>
-    <li><span class="status fixed">Fixed</span> All Google+ languages should work now. <a target="_blank" href="https://github.com/mohamedmansour/extended-share-extension/issues/54" class="issue">Issue54</a></li>
-    <li><span class="status fixed">Fixed</span> The author of the post as the title is resolved.</li>
-    <li><span class="status enhancement">Enhancement</span> Options page loads much faster now.</li>
+    <li><span class="status fixed">Fixed</span> Update to the new Extension Security design. <a
+      target="_blank"
+      href="https://github.com/mohamedmansour/extended-share-extension/commit/66960b3351"
+      class="issue">66960b3351</a> </li>
+    <li><span class="status fixed">Fixed</span> Remove sharebox when more shares is clicked.
+    <a target="_blank"
+      href="https://github.com/mohamedmansour/extended-share-extension/commit/341377cb70"
+      class="issue">341377cb70</a>
+    </li>
+    <li><span class="status feature">Feature</span> Integrate app.net into the core shares.
+    <a target="_blank"
+      href="https://github.com/mohamedmansour/extended-share-extension/commit/809adaa81c"
+      class="issue">809adaa81c</a>
+
+    </li>
+    <li><span class="status feature">Feature</span> Deny sharing of locked posts.
+    <a target="_blank"
+      href="https://github.com/mohamedmansour/extended-share-extension/commit/6c8b641add"
+      class="issue">6c8b641add</a>
+
+    </li>
+    <li><span class="status enhancement">Enhancement</span> New extension icon,
+    by G. Hussain Chinoy
+    <a target="_blank"
+      href="https://github.com/mohamedmansour/extended-share-extension/commit/0be9008bbc"
+      class="issue">0be9008bbc</a>
+    </li>
   </ul>
-  <script>
-  document.getElementById('version').innerHTML = ' v' + chrome.extension.getBackgroundPage().settings.version ;
-  </script>
+  <script type="text/javascript" src="js/updates.js"></script>
 </body>
 </html>
