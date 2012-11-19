@@ -6,7 +6,6 @@
  */
 Injection = function() {
   this.auto_close_shelf = false;
-  this.share_limited = false;
   this.use_link = true;
   this.availableShares = [];
   this.closeIcon = this.createCloseIcon();
@@ -138,7 +137,6 @@ Injection.prototype.decorateShare = function(shareNode, shareData) {
  */
 Injection.prototype.onSettingsReceived = function(response) {
   this.auto_close_shelf = response.data.auto_close_shelf;
-  this.share_limited = response.data.share_limited;
   this.use_link = response.data.use_link;
   var shares = response.data.shares;
 
@@ -334,10 +332,12 @@ Injection.prototype.createShelf = function(itemDOM) {
   nodeToFill.setAttribute('class', 'gp-crx-shelf');
 
   var result = this.parseURL(itemDOM);
+  /* // Disable this cause it causes a internationalization bug
   if (!result.isPublic && !this.share_limited) {
     nodeToFill.appendChild(document.createTextNode(Injection.Translations.CANNOT_SHARE_NOT_PUBLIC));
   }
-  else if (result.status) {
+  else*/
+  if (result.status) {
     if (this.availableShares.length > 1) { // User has some shares, display them.
       for (var i in this.availableShares) {
         var share = Shares[this.availableShares[i]];

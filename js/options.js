@@ -3,7 +3,7 @@
  *
  * @author Mohamed Mansour 2011 (http://mohamedmansour.com)
  */
- 
+
 // Extensions pages can all have access to the bacground page.
 var bkg = chrome.extension.getBackgroundPage();
 
@@ -48,14 +48,14 @@ function onRenderUpdate() {
   if (location.hash === '#updated') {
     var iframeContainer = document.createElement('div');
     iframeContainer.id = 'updatecontainer';
-    
+
     var closeContainer = document.createElement('div');
     closeContainer.innerText = 'close dialog';
     iframeContainer.appendChild(closeContainer);
     iframeContainer.onclick = function(e) {
       iframeContainer.parentNode.removeChild(iframeContainer);
     };
-    
+
     var iframe = document.createElement('iframe');
     iframe.id = 'updateframe';
     iframe.src = chrome.extension.getURL('updates.html');
@@ -78,7 +78,7 @@ function shareRendered(shareElement) {
 /**
  * Saves options to localStorage.
  */
-function shareUpdated() {  
+function shareUpdated() {
   var shares = [];
   var shareNodes = document.querySelectorAll("input[name='shares']:checked");
   for (var i = 0; i < shareNodes.length; i++) {
@@ -94,20 +94,19 @@ function shareUpdated() {
 function onRestore() {
   // Restore settings.
   $('version').innerHTML = ' (v' + bkg.settings.version + ')';
-  
+
   addCheckboxOption('opt_out');
   addCheckboxOption('open_as_popup');
   addCheckboxOption('auto_close_shelf');
-  addCheckboxOption('share_limited');
   addCheckboxOption('use_link');
-  
+
   var container_shares = $('container-shares');
   for (var share in Shares) {
     if (Shares.hasOwnProperty(share)) {
       container_shares.appendChild(createSharesItem(share));
      }
   }
-  
+
   if (bkg.settings.shares) {
     var shares = bkg.settings.shares;
     for (var share in shares) {
