@@ -65,7 +65,7 @@ Injection.prototype.compareArrays = function(a, b) {
     return false;
   }
   for (var i = 0; i < a.length; i++) {
-    if (a[i] !== b[i]) { 
+    if (a[i] !== b[i]) {
       return false;
     }
   }
@@ -141,12 +141,12 @@ Injection.prototype.onSettingsReceived = function(response) {
   this.share_limited = response.data.share_limited;
   this.use_link = response.data.use_link;
   var shares = response.data.shares;
-  
+
   // If only a single share is enabled, just rename all the links to that share name.
   if (!this.compareArrays(this.availableShares, shares)) {
     // Destroy all the shares since it is easier for it to re-render it.
     this.destroyShelf();
-    
+
     // Query all the existing shares on the page.
     var existingShares = document.querySelectorAll('.external-share');
 
@@ -173,7 +173,7 @@ Injection.prototype.parseURL = function(parent) {
 
   var isPublic = sharingDetails.innerText === Injection.Translations.PUBLIC;
   var text = '';
-  
+
   if (title) {
     title = title.innerText + ' @ Google+';
   }
@@ -181,7 +181,7 @@ Injection.prototype.parseURL = function(parent) {
   if (image) {
     image = image.src;
   }
-  
+
   if (link) {
     // Smartly find out the contents of that div.
     link = link.href.replace(/plus\.google\.com\/u\/(\d*)/, 'plus.google.com');
@@ -241,7 +241,7 @@ Injection.prototype.destroyShelf = function(event) {
 
 /**
  * Visits the options page.
- * 
+ *
  * @param {Object<MouseEvent>} event The mouse event.
  */
 Injection.prototype.visitOptions = function(event) {
@@ -252,7 +252,7 @@ Injection.prototype.visitOptions = function(event) {
 };
 
 /**
- * Computes the 
+ * Computes the
  *
  * @param {string} share The social share object defined in Shares array.
  * @param {string} result The URL detail request that contains the parsed data.
@@ -295,7 +295,7 @@ Injection.prototype.createSettingsIcon = function() {
  * Creates the social hyperlink image.
  *
  * @param {string} icon The image for the share name.
- * @param {string} name The social name 
+ * @param {string} name The social name
  * @param {string} url The URL to share.
  */
 Injection.prototype.createSocialIcon = function(icon, name, url) {
@@ -329,10 +329,10 @@ Injection.prototype.createShelf = function(itemDOM) {
     this.destroyShelf();
     return;
   }
-  
+
   var nodeToFill = document.createElement('div');
   nodeToFill.setAttribute('class', 'gp-crx-shelf');
-  
+
   var result = this.parseURL(itemDOM);
   if (!result.isPublic && !this.share_limited) {
     nodeToFill.appendChild(document.createTextNode(Injection.Translations.CANNOT_SHARE_NOT_PUBLIC));
@@ -374,7 +374,7 @@ Injection.prototype.createShelf = function(itemDOM) {
   var settingsIcon = this.settingsIcon.cloneNode(true);
   settingsIcon.onclick = this.visitOptions.bind(this);
   nodeToFill.appendChild(settingsIcon);
-  
+
   // Close the share bubble when the user hits escape.
   window.addEventListener('keyup', this.windowPressedListener, false);
 
@@ -407,7 +407,7 @@ Injection.prototype.onSendClick = function(event) {
   while (cardDOM.id.indexOf('update-') !== 0) {
     cardDOM = cardDOM.parentNode;
   }
-  
+
   var mainContentCardDOM = cardDOM.childNodes[0].childNodes[0];
   if (mainContentCardDOM) {
     this.createShelf(mainContentCardDOM);
@@ -429,7 +429,7 @@ Injection.prototype.renderItem = function(itemDOM) {
     var shareNode = originalShareNode.cloneNode(true);
 
     // Remove the last class (I believe that is the trigger class from inspector).
-    var lastClassNameItem = originalShareNode.classList[2];
+    var lastClassNameItem = originalShareNode.classList[originalShareNode.classList.length - 1];
     shareNode.classList.remove(lastClassNameItem);
     shareNode.classList.add('external-share');
 
