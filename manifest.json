@@ -46,5 +46,6 @@
     "img/tumblr.png",
     "img/twitter.png",
     "img/yahoo.png"
-  ]
+  ],
+  "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'"
 }
