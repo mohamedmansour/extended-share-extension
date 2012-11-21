@@ -85,7 +85,7 @@ function shareUpdated() {
     shares.push(shareNodes[i].id);
   }
   bkg.settings.shares = shares;
-  bkg.backgroundController.updateSettings();
+  bkg.controller.updateSettings();
 }
 
 /**
@@ -123,7 +123,7 @@ function addCheckboxOption(shareName) {
   var elt = $(shareName);
   elt.addEventListener('click', function(e) {
     bkg.settings[shareName] = elt.checked;
-    bkg.backgroundController.updateSettings();
+    bkg.controller.updateSettings();
   });
   elt.checked = bkg.settings[shareName];
 }
