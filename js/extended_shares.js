@@ -143,5 +143,11 @@ Shares = {
     icon: '/img/mailto.png',
     url: 'mailto:?subject=${title}&body=${text}+${link}',
     trim: false
+  },
+  researchgate: {
+    name: 'ResearchGate',
+    icon: '/img/researchgate.png',
+    url: 'https://www.researchgate.net/go.Share.html?url=${link}&title=${text}',
+    trim: false
   }
 };
