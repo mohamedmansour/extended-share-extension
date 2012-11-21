@@ -5,5 +5,5 @@
   "injectionError": { "message": "Cannot find URL, please file bug to developer. mhm@chromium.org"},
   "injectionCannotShareSincePublic": { "message": "You cannot share this post because it is not public."},
   "injectionShareOnNetwork": { "message": "Share on" },
-  "injectionPublicLabel": { "message": "Öffentlich" }
+  "injectionPublicLabel": { "message": "Ã–ffentlich" }
 }
