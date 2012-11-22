@@ -149,5 +149,11 @@ Shares = {
     icon: '/img/researchgate.png',
     url: 'https://www.researchgate.net/go.Share.html?url=${link}&title=${text}',
     trim: false
+  },
+  scoopit: {
+    name: 'Scoop.it!',
+    icon: '/img/scoopit.png',
+    url: 'http://www.scoop.it/bookmarklet?url=${link}',
+    trim: false
   }
 };
