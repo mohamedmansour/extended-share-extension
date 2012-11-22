@@ -420,32 +420,43 @@ Injection.prototype.onSendClick = function(event) {
  * @param {Object<ModifiedDOM>} event modified event.
  */
 Injection.prototype.renderItem = function(itemDOM) {
-  if (itemDOM && !itemDOM.classList.contains('gpi-crx')) {
-    var originalShareNode = itemDOM.querySelector(Injection.SHARE_BUTTON_SELECTOR);
-    // This means you cannot share this post, because it is locked.
-    if (!originalShareNode) {
-      return;
-    }
-    var shareNode = originalShareNode.cloneNode(true);
-
-    // Remove the last class (I believe that is the trigger class from inspector).
-    var lastClassNameItem = originalShareNode.classList[originalShareNode.classList.length - 1];
-    shareNode.classList.remove(lastClassNameItem);
-    shareNode.classList.add('external-share');
-
-    // This post is not shareable, for now just remove it.
-    if (shareNode.childNodes.length == 0) {
-      return;
-    }
-
-    var shareData = this.prepareShareData(this.availableShares);
-    shareNode.setAttribute('aria-label', shareData.name);
-    this.decorateShare(shareNode, shareData);
-    shareNode.onclick = this.onSendClick.bind(this);
-
-    originalShareNode.parentNode.insertBefore(shareNode, originalShareNode.nextSibling );
-    itemDOM.classList.add('gpi-crx');
+  if (!itemDOM || itemDOM.classList.contains('gpi-crx')) {
+    return;
   }
+
+  // Check if there is a share button, if not, then we cannot share this post.
+  // Basically, the shelf contains exactly two components, the left share buttons
+  // and the right share information. If the left bar has only one item then we know
+  // they cannot share since the minimal case is just a plus widget.
+  if (itemDOM.childNodes.length < 3) {
+    return;
+  }
+
+
+  var originalShareNode = itemDOM.querySelector(Injection.SHARE_BUTTON_SELECTOR);
+  // This means you cannot share this post, because it is locked.
+  if (!originalShareNode) {
+    return;
+  }
+  var shareNode = originalShareNode.cloneNode(true);
+
+  // Remove the last class (I believe that is the trigger class from inspector).
+  var lastClassNameItem = originalShareNode.classList[originalShareNode.classList.length - 1];
+  shareNode.classList.remove(lastClassNameItem);
+  shareNode.classList.add('external-share');
+
+  // This post is not shareable, for now just remove it.
+  if (shareNode.childNodes.length == 0) {
+    return;
+  }
+
+  var shareData = this.prepareShareData(this.availableShares);
+  shareNode.setAttribute('aria-label', shareData.name);
+  this.decorateShare(shareNode, shareData);
+  shareNode.onclick = this.onSendClick.bind(this);
+
+  originalShareNode.parentNode.insertBefore(shareNode, originalShareNode.nextSibling );
+  itemDOM.classList.add('gpi-crx');
 };
 
 // TODO: Everything under here should be converted to a Mutation event instead.
