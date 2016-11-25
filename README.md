@@ -1,9 +1,4 @@
-Extended Share for Google+ Chrome Extension
-=====================================
-
-This Google Chrome extension will inject a link to your Google Plus profile so
-that you can share your post to many social networks.
-
+Extended Share for Google+ Chrome Extension (No longer maintained)
 Contribute!
 -----------------
 Please submit your pull requests if you have anything interesting! Let me know
