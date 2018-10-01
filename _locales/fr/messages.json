@@ -1,0 +1,9 @@
+{
+  "extName": { "message": "Extended Share pour Google Plus"},
+  "extDescription": { "message": "Améliore Google+ pour partager sur Facebook, LinkedIn, Twitter, et plus encore."},
+  "injectionNoShareLinks": { "message": "Pas de liens de partage activés, visitez les options pour en ajouter!"},
+  "injectionError": { "message": "URL non trouvée, informez le développeur à propos de ce bug. mhm@chromium.org"},
+  "injectionCannotShareSincePublic": { "message": "Vous ne pouvez pas partager un post privé."},
+  "injectionShareOnNetwork": { "message": "Partager sur" },
+  "injectionPublicLabel": { "message": "Publique" }
+}
